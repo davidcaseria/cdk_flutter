@@ -7,6 +7,9 @@ import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+// These functions are ignored because they are not marked as `pub`: `update_balance_streams`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`
+
 Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
 
 String generateHexSeed() =>
@@ -16,7 +19,11 @@ String generateHexSeed() =>
 abstract class MultiMintWallet implements RustOpaqueInterface {
   Future<void> addWallet({required Wallet wallet});
 
-  Future<Wallet?> getWallet({required String mintUrl, required String unit});
+  String get unit;
+
+  set unit(String unit);
+
+  Future<Wallet?> getWallet({required String mintUrl});
 
   Future<List<Wallet>> listWallets();
 
@@ -42,6 +49,10 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
           seed: seed,
           targetProofCount: targetProofCount,
           localstore: localstore);
+
+  Stream<BigInt> streamBalance();
+
+  Future<BigInt> totalBalance();
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Wallet>>
@@ -55,6 +66,8 @@ abstract class Wallet implements RustOpaqueInterface {
   set unit(String unit);
 
   Future<BigInt> balance();
+
+  Stream<MintQuote> mint({required BigInt amount, String? description});
 
   factory Wallet(
           {required String mintUrl,
@@ -86,10 +99,54 @@ abstract class Wallet implements RustOpaqueInterface {
       {required String token, String? p2PkSigningKey, String? preimage});
 
   Future<String> send({required BigInt amount, String? memo, String? pubkey});
+
+  Stream<BigInt> streamBalance();
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>>
 abstract class WalletDatabase implements RustOpaqueInterface {
   factory WalletDatabase({required String path}) =>
       RustLib.instance.api.crateApiWalletWalletDatabaseNew(path: path);
+}
+
+class MintQuote {
+  final String id;
+  final String request;
+  final BigInt amount;
+  final BigInt? expiry;
+  final MintQuoteState state;
+
+  const MintQuote({
+    required this.id,
+    required this.request,
+    required this.amount,
+    this.expiry,
+    required this.state,
+  });
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      request.hashCode ^
+      amount.hashCode ^
+      expiry.hashCode ^
+      state.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MintQuote &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          request == other.request &&
+          amount == other.amount &&
+          expiry == other.expiry &&
+          state == other.state;
+}
+
+enum MintQuoteState {
+  unpaid,
+  paid,
+  issued,
+  ;
 }

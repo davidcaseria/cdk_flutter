@@ -1,25 +1,32 @@
-use std::{path::Path, str::FromStr, sync::Arc};
+use std::{collections::HashMap, path::Path, str::FromStr, sync::Arc, time::Duration};
 
 use cdk::{
-    amount::SplitTarget,
+    amount::{Amount, SplitTarget},
     cdk_database::WalletDatabase as _,
     mint_url::MintUrl,
-    nuts::{CurrencyUnit, PublicKey, SecretKey, SpendingConditions},
-    util::hex,
-    wallet::{
-        multi_mint_wallet::WalletKey, MultiMintWallet as CdkMultiMintWallet, SendKind,
-        Wallet as CdkWallet,
+    nuts::{
+        CurrencyUnit, MintQuoteState as CdkMintQuoteState, PublicKey, SecretKey, SpendingConditions,
     },
+    util::hex,
+    wallet::{MintQuote as CdkMintQuote, SendKind, Wallet as CdkWallet},
 };
 use cdk_redb::WalletRedbDatabase;
 use flutter_rust_bridge::frb;
+use tokio::{
+    sync::{broadcast, Mutex},
+    time::sleep,
+};
+
+use crate::frb_generated::StreamSink;
 
 use super::error::Error;
 
+#[derive(Clone)]
 pub struct Wallet {
     pub mint_url: String,
     pub unit: String,
 
+    balance_broadcast: broadcast::Sender<u64>,
     inner: CdkWallet,
 }
 
@@ -36,6 +43,7 @@ impl Wallet {
         Ok(Self {
             mint_url: mint_url.clone(),
             unit: unit.to_string(),
+            balance_broadcast: broadcast::channel(1).0,
             inner: CdkWallet::new(
                 &mint_url,
                 unit,
@@ -68,6 +76,69 @@ impl Wallet {
         Ok(self.inner.total_balance().await?.into())
     }
 
+    pub async fn stream_balance(&self, sink: StreamSink<u64>) -> Result<(), Error> {
+        let mut receiver = self.balance_broadcast.subscribe();
+        let _ = sink.add(self.balance().await?);
+        flutter_rust_bridge::spawn(async move {
+            loop {
+                match receiver.recv().await {
+                    Ok(balance) => {
+                        if sink.add(balance).is_err() {
+                            break;
+                        }
+                    }
+                    Err(_) => break,
+                }
+            }
+        });
+        Ok(())
+    }
+
+    pub async fn mint(
+        &self,
+        amount: u64,
+        description: Option<String>,
+        sink: StreamSink<MintQuote>,
+    ) -> Result<(), Error> {
+        let quote = self.inner.mint_quote(amount.into(), description).await?;
+        let _ = sink.add(MintQuote::from(quote.clone()));
+        let _self = self.clone();
+        flutter_rust_bridge::spawn(async move {
+            loop {
+                if let Ok(state_res) = _self.inner.mint_quote_state(&quote.id).await {
+                    if state_res.state == CdkMintQuoteState::Issued
+                        || state_res.state == CdkMintQuoteState::Paid
+                    {
+                        let _ = sink.add(MintQuote {
+                            id: state_res.quote,
+                            request: state_res.request,
+                            amount: quote.amount.into(),
+                            expiry: state_res.expiry,
+                            state: state_res.state.into(),
+                        });
+                        if state_res.state == CdkMintQuoteState::Paid {
+                            if let Ok(mint_amount) =
+                                _self.inner.mint(&quote.id, SplitTarget::None, None).await
+                            {
+                                let _ = sink.add(MintQuote {
+                                    id: quote.id,
+                                    request: quote.request,
+                                    amount: mint_amount.into(),
+                                    expiry: Some(quote.expiry),
+                                    state: CdkMintQuoteState::Issued.into(),
+                                });
+                            }
+                        }
+                        _self.update_balance_streams().await;
+                        break;
+                    }
+                }
+                sleep(Duration::from_secs(3)).await;
+            }
+        });
+        Ok(())
+    }
+
     pub async fn receive(
         &self,
         token: String,
@@ -85,11 +156,13 @@ impl Wallet {
             Some(preimage) => vec![preimage],
             None => vec![],
         };
-        Ok(self
+        let amount = self
             .inner
             .receive(&token, SplitTarget::None, &p2pk_signing_keys, &preimages)
             .await?
-            .into())
+            .into();
+        self.update_balance_streams().await;
+        Ok(amount)
     }
 
     pub async fn send(
@@ -100,7 +173,7 @@ impl Wallet {
     ) -> Result<String, Error> {
         let pubkey = pubkey.map(|s| PublicKey::from_str(&s)).transpose()?;
         let conditions = pubkey.map(|pubkey| SpendingConditions::new_p2pk(pubkey, None));
-        Ok(self
+        let token = self
             .inner
             .send(
                 amount.into(),
@@ -111,12 +184,63 @@ impl Wallet {
                 false,
             )
             .await?
-            .to_string())
+            .to_string();
+        self.update_balance_streams().await;
+        Ok(token)
+    }
+
+    async fn update_balance_streams(&self) {
+        let balance = self
+            .inner
+            .total_balance()
+            .await
+            .unwrap_or(Amount::ZERO)
+            .into();
+        let _ = self.balance_broadcast.send(balance);
     }
 }
 
+pub struct MintQuote {
+    pub id: String,
+    pub request: String,
+    pub amount: u64,
+    pub expiry: Option<u64>,
+    pub state: MintQuoteState,
+}
+
+impl From<CdkMintQuote> for MintQuote {
+    fn from(quote: CdkMintQuote) -> Self {
+        Self {
+            id: quote.id,
+            request: quote.request,
+            amount: quote.amount.into(),
+            expiry: Some(quote.expiry),
+            state: quote.state.into(),
+        }
+    }
+}
+
+pub enum MintQuoteState {
+    Unpaid,
+    Paid,
+    Issued,
+}
+
+impl From<CdkMintQuoteState> for MintQuoteState {
+    fn from(state: CdkMintQuoteState) -> Self {
+        match state {
+            CdkMintQuoteState::Unpaid => Self::Unpaid,
+            CdkMintQuoteState::Paid => Self::Paid,
+            CdkMintQuoteState::Issued => Self::Issued,
+            CdkMintQuoteState::Pending => Self::Unpaid,
+        }
+    }
+}
+
+#[derive(Clone)]
 pub struct MultiMintWallet {
-    inner: CdkMultiMintWallet,
+    pub unit: String,
+    wallets: Arc<Mutex<HashMap<MintUrl, Wallet>>>,
 }
 
 impl MultiMintWallet {
@@ -126,20 +250,23 @@ impl MultiMintWallet {
         target_proof_count: Option<usize>,
         localstore: WalletDatabase,
     ) -> Result<Self, Error> {
-        let unit = CurrencyUnit::from_str(&unit).unwrap_or(CurrencyUnit::Custom(unit));
         let mints = localstore.inner.get_mints().await?;
-        let mut wallets = vec![];
+        let mut wallets = HashMap::new();
         for (mint_url, _) in &mints {
-            wallets.push(CdkWallet::new(
-                &mint_url.to_string(),
-                unit.clone(),
-                Arc::new(localstore.inner.clone()),
-                &seed,
-                target_proof_count,
-            )?);
+            wallets.insert(
+                mint_url.clone(),
+                Wallet::new(
+                    mint_url.to_string(),
+                    unit.clone(),
+                    seed.clone(),
+                    target_proof_count,
+                    localstore.clone(),
+                )?,
+            );
         }
         Ok(Self {
-            inner: CdkMultiMintWallet::new(wallets),
+            unit: unit.to_string(),
+            wallets: Arc::new(Mutex::new(wallets)),
         })
     }
 
@@ -154,41 +281,62 @@ impl MultiMintWallet {
     }
 
     pub async fn add_wallet(&self, wallet: Wallet) -> Result<(), Error> {
-        self.inner.add_wallet(wallet.inner).await;
+        self.wallets
+            .lock()
+            .await
+            .insert(MintUrl::from_str(&wallet.mint_url)?, wallet);
         Ok(())
     }
 
-    pub async fn get_wallet(&self, mint_url: &str, unit: &str) -> Result<Option<Wallet>, Error> {
+    pub async fn get_wallet(&self, mint_url: &str) -> Result<Option<Wallet>, Error> {
         let mint_url = MintUrl::from_str(mint_url)?;
-        let unit = CurrencyUnit::from_str(unit).unwrap_or(CurrencyUnit::Custom(unit.to_string()));
-        if let Some(wallet) = self
-            .inner
-            .get_wallet(&WalletKey::new(mint_url.clone(), unit.clone()))
-            .await
-        {
-            return Ok(Some(Wallet {
-                mint_url: mint_url.to_string(),
-                unit: unit.to_string(),
-                inner: wallet,
-            }));
+        let wallets = self.wallets.lock().await;
+        if let Some(wallet) = wallets.get(&mint_url) {
+            return Ok(Some(wallet.clone()));
         }
         Ok(None)
     }
 
     pub async fn list_wallets(&self) -> Vec<Wallet> {
-        self.inner
-            .get_wallets()
-            .await
-            .into_iter()
-            .map(|wallet| Wallet {
-                mint_url: wallet.mint_url.to_string(),
-                unit: wallet.unit.to_string(),
-                inner: wallet,
-            })
-            .collect()
+        self.wallets.lock().await.values().cloned().collect()
+    }
+
+    pub async fn total_balance(&self) -> Result<u64, Error> {
+        let wallets = self.wallets.lock().await;
+        let mut total = 0;
+        for wallet in wallets.values() {
+            total += wallet.balance().await?;
+        }
+        Ok(total)
+    }
+
+    pub async fn stream_balance(&self, sink: StreamSink<u64>) -> Result<(), Error> {
+        let _ = sink.add(self.total_balance().await?);
+        let wallets = self.wallets.lock().await;
+        for wallet in wallets.values() {
+            let wallet = wallet.clone();
+            let sink = sink.clone();
+            let _self = self.clone();
+            flutter_rust_bridge::spawn(async move {
+                let mut rx = wallet.balance_broadcast.subscribe();
+                loop {
+                    match rx.recv().await {
+                        Ok(_) => {
+                            let total = _self.total_balance().await.unwrap_or_default();
+                            if sink.add(total).is_err() {
+                                break;
+                            }
+                        }
+                        Err(_) => break,
+                    }
+                }
+            });
+        }
+        Ok(())
     }
 }
 
+#[derive(Clone)]
 pub struct WalletDatabase {
     inner: WalletRedbDatabase,
 }

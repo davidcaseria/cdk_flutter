@@ -6,6 +6,12 @@ pub enum Error {
     Url(String),
 }
 
+impl From<cdk::amount::Error> for Error {
+    fn from(e: cdk::amount::Error) -> Self {
+        Self::Cdk(e.to_string())
+    }
+}
+
 impl From<cdk::cdk_database::Error> for Error {
     fn from(e: cdk::cdk_database::Error) -> Self {
         Self::Database(e.to_string())
