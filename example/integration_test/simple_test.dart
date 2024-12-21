@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  setUpAll(() async => await RustLib.init());
+  setUpAll(() async => await CdkFlutter.init());
   test('Create a wallet', () async {
     final path = await getTemporaryDirectory();
     final db = WalletDatabase(path: '${path.path}/wallet.db');

@@ -3,7 +3,7 @@ import 'package:cdk_flutter/cdk_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
-  await RustLib.init();
+  await CdkFlutter.init();
   final path = await getApplicationDocumentsDirectory();
   final db = WalletDatabase(path: '${path.path}/wallet.db');
   final wallet = Wallet(mintUrl: 'http://192.168.1.188:8085', unit: 'sat', seed: [0], localstore: db);
