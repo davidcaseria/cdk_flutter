@@ -6,7 +6,7 @@ use cdk::{
     mint_url::MintUrl,
     nuts::{
         nut00::ProofsMethods, CurrencyUnit, MintQuoteState as CdkMintQuoteState, PublicKey,
-        SecretKey, SpendingConditions, Token,
+        SecretKey, SpendingConditions, State as ProofState, Token,
     },
     util::hex,
     wallet::{MintQuote as CdkMintQuote, SendKind, Wallet as CdkWallet},
@@ -93,6 +93,14 @@ impl Wallet {
             }
         });
         Ok(())
+    }
+
+    pub async fn is_token_spent(&self, token: String) -> Result<bool, Error> {
+        let token = Token::from_str(&token)?;
+        let proof_states = self.inner.check_proofs_spent(token.proofs()).await?;
+        Ok(proof_states
+            .iter()
+            .any(|state| state.state == ProofState::Spent))
     }
 
     pub async fn mint(

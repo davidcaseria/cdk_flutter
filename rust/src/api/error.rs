@@ -30,6 +30,12 @@ impl From<cdk::mint_url::Error> for Error {
     }
 }
 
+impl From<cdk::nuts::nut00::Error> for Error {
+    fn from(e: cdk::nuts::nut00::Error) -> Self {
+        Self::Protocol(e.to_string())
+    }
+}
+
 impl From<cdk::nuts::nut01::Error> for Error {
     fn from(e: cdk::nuts::nut01::Error) -> Self {
         Self::Protocol(e.to_string())
