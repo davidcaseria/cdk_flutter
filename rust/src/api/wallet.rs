@@ -5,7 +5,8 @@ use cdk::{
     cdk_database::WalletDatabase as _,
     mint_url::MintUrl,
     nuts::{
-        CurrencyUnit, MintQuoteState as CdkMintQuoteState, PublicKey, SecretKey, SpendingConditions,
+        nut00::ProofsMethods, CurrencyUnit, MintQuoteState as CdkMintQuoteState, PublicKey,
+        SecretKey, SpendingConditions, Token,
     },
     util::hex,
     wallet::{MintQuote as CdkMintQuote, SendKind, Wallet as CdkWallet},
@@ -100,6 +101,8 @@ impl Wallet {
         description: Option<String>,
         sink: StreamSink<MintQuote>,
     ) -> Result<(), Error> {
+        let mint_url = self.mint_url()?;
+        let unit = self.unit();
         let quote = self.inner.mint_quote(amount.into(), description).await?;
         let _ = sink.add(MintQuote::from(quote.clone()));
         let _self = self.clone();
@@ -115,17 +118,22 @@ impl Wallet {
                             amount: quote.amount.into(),
                             expiry: state_res.expiry,
                             state: state_res.state.into(),
+                            token: None,
                         });
                         if state_res.state == CdkMintQuoteState::Paid {
-                            if let Ok(mint_amount) =
+                            if let Ok(mint_proofs) =
                                 _self.inner.mint(&quote.id, SplitTarget::None, None).await
                             {
+                                let mint_amount = mint_proofs.total_amount().unwrap_or_default();
                                 let _ = sink.add(MintQuote {
                                     id: quote.id,
                                     request: quote.request,
                                     amount: mint_amount.into(),
                                     expiry: Some(quote.expiry),
                                     state: CdkMintQuoteState::Issued.into(),
+                                    token: Some(
+                                        Token::new(mint_url, mint_proofs, None, unit).to_string(),
+                                    ),
                                 });
                             }
                         }
@@ -189,6 +197,14 @@ impl Wallet {
         Ok(token)
     }
 
+    fn mint_url(&self) -> Result<MintUrl, Error> {
+        Ok(MintUrl::from_str(&self.mint_url)?)
+    }
+
+    fn unit(&self) -> CurrencyUnit {
+        CurrencyUnit::from_str(&self.unit).unwrap_or(CurrencyUnit::Custom(self.unit.clone()))
+    }
+
     async fn update_balance_streams(&self) {
         let balance = self
             .inner
@@ -206,6 +222,7 @@ pub struct MintQuote {
     pub amount: u64,
     pub expiry: Option<u64>,
     pub state: MintQuoteState,
+    pub token: Option<String>,
 }
 
 impl From<CdkMintQuote> for MintQuote {
@@ -216,6 +233,7 @@ impl From<CdkMintQuote> for MintQuote {
             amount: quote.amount.into(),
             expiry: Some(quote.expiry),
             state: quote.state.into(),
+            token: None,
         }
     }
 }

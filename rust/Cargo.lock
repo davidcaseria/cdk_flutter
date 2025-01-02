@@ -101,6 +101,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "arc-swap"
+version = "1.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "69f7f8c3906b62b754cd5326047894316021dcfe5a194c8ea52bdd94934a3457"
+
+[[package]]
 name = "arrayvec"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -356,10 +362,10 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4e1988990754872a9aea75ed257b0213574267ce1d012113fbf8da42fa05bd20"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=return-mint-proofs#c290f3a0deb13e1d49790b2aecfef544c78bc137"
 dependencies = [
  "anyhow",
+ "arc-swap",
  "async-trait",
  "bech32 0.9.1",
  "bitcoin",
@@ -386,8 +392,7 @@ dependencies = [
 [[package]]
 name = "cdk-redb"
 version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86703e9baf7c5bd209d4112b3ac8e8170ba2cd9af9c80f4d899444daa77a3bd2"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=return-mint-proofs#c290f3a0deb13e1d49790b2aecfef544c78bc137"
 dependencies = [
  "async-trait",
  "cdk",

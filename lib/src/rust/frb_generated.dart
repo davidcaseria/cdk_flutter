@@ -1097,14 +1097,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MintQuote dco_decode_mint_quote(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return MintQuote(
       id: dco_decode_String(arr[0]),
       request: dco_decode_String(arr[1]),
       amount: dco_decode_u_64(arr[2]),
       expiry: dco_decode_opt_box_autoadd_u_64(arr[3]),
       state: dco_decode_mint_quote_state(arr[4]),
+      token: dco_decode_opt_String(arr[5]),
     );
   }
 
@@ -1376,12 +1377,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_amount = sse_decode_u_64(deserializer);
     var var_expiry = sse_decode_opt_box_autoadd_u_64(deserializer);
     var var_state = sse_decode_mint_quote_state(deserializer);
+    var var_token = sse_decode_opt_String(deserializer);
     return MintQuote(
         id: var_id,
         request: var_request,
         amount: var_amount,
         expiry: var_expiry,
-        state: var_state);
+        state: var_state,
+        token: var_token);
   }
 
   @protected
@@ -1688,6 +1691,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_64(self.amount, serializer);
     sse_encode_opt_box_autoadd_u_64(self.expiry, serializer);
     sse_encode_mint_quote_state(self.state, serializer);
+    sse_encode_opt_String(self.token, serializer);
   }
 
   @protected

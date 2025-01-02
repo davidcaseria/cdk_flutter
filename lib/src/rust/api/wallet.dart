@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `update_balance_streams`
+// These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`
 
 Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
@@ -115,6 +115,7 @@ class MintQuote {
   final BigInt amount;
   final BigInt? expiry;
   final MintQuoteState state;
+  final String? token;
 
   const MintQuote({
     required this.id,
@@ -122,6 +123,7 @@ class MintQuote {
     required this.amount,
     this.expiry,
     required this.state,
+    this.token,
   });
 
   @override
@@ -130,7 +132,8 @@ class MintQuote {
       request.hashCode ^
       amount.hashCode ^
       expiry.hashCode ^
-      state.hashCode;
+      state.hashCode ^
+      token.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -141,7 +144,8 @@ class MintQuote {
           request == other.request &&
           amount == other.amount &&
           expiry == other.expiry &&
-          state == other.state;
+          state == other.state &&
+          token == other.token;
 }
 
 enum MintQuoteState {

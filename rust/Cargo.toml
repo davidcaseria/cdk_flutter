@@ -7,8 +7,13 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-cdk = { version = "0.6.0", default-features = false, features = ["wallet"] }
-cdk-redb = { version = "0.6.0", default-features = false, features = ["wallet"] }
+# cdk = { version = "0.6.0", default-features = false, features = ["wallet"] }
+cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "return-mint-proofs", default-features = false, features = [
+    "wallet",
+] }
+cdk-redb = { git = "https://github.com/davidcaseria/cdk.git", branch = "return-mint-proofs", default-features = false, features = [
+    "wallet",
+] }
 flutter_rust_bridge = "=2.7.0"
 rand = { version = "0.8.5", default-features = false }
 tokio = { version = "1.42.0", default-features = false }

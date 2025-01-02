@@ -1417,12 +1417,14 @@ impl SseDecode for crate::api::wallet::MintQuote {
         let mut var_amount = <u64>::sse_decode(deserializer);
         let mut var_expiry = <Option<u64>>::sse_decode(deserializer);
         let mut var_state = <crate::api::wallet::MintQuoteState>::sse_decode(deserializer);
+        let mut var_token = <Option<String>>::sse_decode(deserializer);
         return crate::api::wallet::MintQuote {
             id: var_id,
             request: var_request,
             amount: var_amount,
             expiry: var_expiry,
             state: var_state,
+            token: var_token,
         };
     }
 }
@@ -1709,6 +1711,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::wallet::MintQuote {
             self.amount.into_into_dart().into_dart(),
             self.expiry.into_into_dart().into_dart(),
             self.state.into_into_dart().into_dart(),
+            self.token.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -1892,6 +1895,7 @@ impl SseEncode for crate::api::wallet::MintQuote {
         <u64>::sse_encode(self.amount, serializer);
         <Option<u64>>::sse_encode(self.expiry, serializer);
         <crate::api::wallet::MintQuoteState>::sse_encode(self.state, serializer);
+        <Option<String>>::sse_encode(self.token, serializer);
     }
 }
 
