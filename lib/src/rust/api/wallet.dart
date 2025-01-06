@@ -25,6 +25,8 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
 
   Future<Wallet?> getWallet({required String mintUrl});
 
+  Future<List<String>> listMints();
+
   Future<List<Wallet>> listWallets();
 
   // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
@@ -66,6 +68,8 @@ abstract class Wallet implements RustOpaqueInterface {
   set unit(String unit);
 
   Future<BigInt> balance();
+
+  Future<bool> isTokenSpent({required String token});
 
   Stream<MintQuote> mint({required BigInt amount, String? description});
 

@@ -2,6 +2,21 @@ import 'package:cdk_flutter/src/rust/api/wallet.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+class MintListBuilder extends StatelessWidget {
+  final AsyncWidgetBuilder<List<String>> builder;
+
+  const MintListBuilder({super.key, required this.builder});
+
+  @override
+  Widget build(BuildContext context) {
+    final wallet = context.read<MultiMintWallet>();
+    return FutureBuilder<List<String>>(
+      future: wallet.listMints(),
+      builder: builder,
+    );
+  }
+}
+
 class MintQuoteBuilder extends StatefulWidget {
   final String? mintUrl;
   final BigInt amount;
@@ -11,10 +26,10 @@ class MintQuoteBuilder extends StatefulWidget {
   const MintQuoteBuilder({super.key, required this.amount, this.mintUrl, this.listener, required this.builder});
 
   @override
-  _MintQuoteBuilderState createState() => _MintQuoteBuilderState();
+  MintQuoteBuilderState createState() => MintQuoteBuilderState();
 }
 
-class _MintQuoteBuilderState extends State<MintQuoteBuilder> {
+class MintQuoteBuilderState extends State<MintQuoteBuilder> {
   final ValueNotifier<MintQuote?> _mintQuoteNotifier = ValueNotifier<MintQuote?>(null);
 
   @override
@@ -93,6 +108,35 @@ class WalletBalanceBuilder extends StatelessWidget {
         builder: builder,
       );
     }
+  }
+}
+
+class WalletConsumer extends StatelessWidget {
+  final String? mintUrl;
+  final Widget Function(BuildContext context, Wallet wallet) builder;
+
+  const WalletConsumer({super.key, this.mintUrl, required this.builder});
+
+  @override
+  Widget build(BuildContext context) {
+    if (mintUrl != null) {
+      final wallet = context.read<MultiMintWallet>();
+      return FutureBuilder<Wallet?>(
+        future: wallet.getWallet(mintUrl: mintUrl!),
+        builder: (context, snapshot) {
+          // TODO: handle error
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox();
+          } else if (snapshot.hasData) {
+            return builder(context, snapshot.data!);
+          } else {
+            return const SizedBox();
+          }
+        },
+      );
+    }
+    final wallet = context.read<Wallet>();
+    return builder(context, wallet);
   }
 }
 

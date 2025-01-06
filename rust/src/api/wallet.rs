@@ -323,6 +323,15 @@ impl MultiMintWallet {
         Ok(None)
     }
 
+    pub async fn list_mints(&self) -> Vec<String> {
+        self.wallets
+            .lock()
+            .await
+            .keys()
+            .map(|k| k.to_string())
+            .collect()
+    }
+
     pub async fn list_wallets(&self) -> Vec<Wallet> {
         self.wallets.lock().await.values().cloned().collect()
     }
