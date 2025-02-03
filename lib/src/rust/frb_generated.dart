@@ -4,6 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/error.dart';
+import 'api/token.dart';
 import 'api/wallet.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -69,7 +70,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.7.1';
 
   @override
-  int get rustContentHash => -206028404;
+  int get rustContentHash => 761750464;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -131,7 +132,7 @@ abstract class RustLibApi extends BaseApi {
   Future<BigInt> crateApiWalletWalletBalance({required Wallet that});
 
   Future<bool> crateApiWalletWalletIsTokenSpent(
-      {required Wallet that, required String token});
+      {required Wallet that, required Token token});
 
   Stream<MintQuote> crateApiWalletWalletMint(
       {required Wallet that, required BigInt amount, String? description});
@@ -169,6 +170,8 @@ abstract class RustLibApi extends BaseApi {
   Uint8List crateApiWalletGenerateSeed();
 
   Future<void> crateApiInitInitApp();
+
+  Token crateApiTokenTokenParse({required String encoded});
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_MultiMintWallet;
@@ -653,13 +656,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<bool> crateApiWalletWalletIsTokenSpent(
-      {required Wallet that, required String token}) {
+      {required Wallet that, required Token token}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
             that, serializer);
-        sse_encode_String(token, serializer);
+        sse_encode_box_autoadd_token(token, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 17, port: port_);
       },
@@ -947,6 +950,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         argNames: [],
       );
 
+  @override
+  Token crateApiTokenTokenParse({required String encoded}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_String(encoded, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_token,
+        decodeErrorData: sse_decode_error,
+      ),
+      constMeta: kCrateApiTokenTokenParseConstMeta,
+      argValues: [encoded],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTokenTokenParseConstMeta => const TaskConstMeta(
+        debugName: "token_parse",
+        argNames: ["encoded"],
+      );
+
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_MultiMintWallet => wire
           .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet;
@@ -1091,6 +1117,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Token dco_decode_box_autoadd_token(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_token(raw);
+  }
+
+  @protected
   BigInt dco_decode_box_autoadd_u_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_u_64(raw);
@@ -1178,7 +1210,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       amount: dco_decode_u_64(arr[2]),
       expiry: dco_decode_opt_box_autoadd_u_64(arr[3]),
       state: dco_decode_mint_quote_state(arr[4]),
-      token: dco_decode_opt_String(arr[5]),
+      token: dco_decode_opt_box_autoadd_token(arr[5]),
     );
   }
 
@@ -1206,6 +1238,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Token? dco_decode_opt_box_autoadd_token(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_token(raw);
+  }
+
+  @protected
   BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_u_64(raw);
@@ -1215,6 +1253,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   BigInt? dco_decode_opt_box_autoadd_usize(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_usize(raw);
+  }
+
+  @protected
+  Token dco_decode_token(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return Token(
+      encoded: dco_decode_String(arr[0]),
+      amount: dco_decode_u_64(arr[1]),
+      mintUrl: dco_decode_String(arr[2]),
+    );
   }
 
   @protected
@@ -1375,6 +1426,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Token sse_decode_box_autoadd_token(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_token(deserializer));
+  }
+
+  @protected
   BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_u_64(deserializer));
@@ -1468,7 +1525,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_amount = sse_decode_u_64(deserializer);
     var var_expiry = sse_decode_opt_box_autoadd_u_64(deserializer);
     var var_state = sse_decode_mint_quote_state(deserializer);
-    var var_token = sse_decode_opt_String(deserializer);
+    var var_token = sse_decode_opt_box_autoadd_token(deserializer);
     return MintQuote(
         id: var_id,
         request: var_request,
@@ -1511,6 +1568,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Token? sse_decode_opt_box_autoadd_token(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_token(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -1530,6 +1598,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     } else {
       return null;
     }
+  }
+
+  @protected
+  Token sse_decode_token(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_encoded = sse_decode_String(deserializer);
+    var var_amount = sse_decode_u_64(deserializer);
+    var var_mintUrl = sse_decode_String(deserializer);
+    return Token(
+        encoded: var_encoded, amount: var_amount, mintUrl: var_mintUrl);
   }
 
   @protected
@@ -1706,6 +1784,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_token(Token self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_token(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_64(self, serializer);
@@ -1791,7 +1875,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_64(self.amount, serializer);
     sse_encode_opt_box_autoadd_u_64(self.expiry, serializer);
     sse_encode_mint_quote_state(self.state, serializer);
-    sse_encode_opt_String(self.token, serializer);
+    sse_encode_opt_box_autoadd_token(self.token, serializer);
   }
 
   @protected
@@ -1825,6 +1909,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_token(Token? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_token(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -1843,6 +1937,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (self != null) {
       sse_encode_box_autoadd_usize(self, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_token(Token self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.encoded, serializer);
+    sse_encode_u_64(self.amount, serializer);
+    sse_encode_String(self.mintUrl, serializer);
   }
 
   @protected
@@ -1982,7 +2084,7 @@ class WalletImpl extends RustOpaque implements Wallet {
         that: this,
       );
 
-  Future<bool> isTokenSpent({required String token}) => RustLib.instance.api
+  Future<bool> isTokenSpent({required Token token}) => RustLib.instance.api
       .crateApiWalletWalletIsTokenSpent(that: this, token: token);
 
   Stream<MintQuote> mint({required BigInt amount, String? description}) =>

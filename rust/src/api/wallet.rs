@@ -6,7 +6,7 @@ use cdk::{
     mint_url::MintUrl,
     nuts::{
         nut00::ProofsMethods, CurrencyUnit, MintQuoteState as CdkMintQuoteState, PublicKey,
-        SecretKey, SpendingConditions, State as ProofState, Token,
+        SecretKey, SpendingConditions, State as ProofState, Token as CdkToken,
     },
     util::hex,
     wallet::{MintQuote as CdkMintQuote, SendKind, Wallet as CdkWallet},
@@ -20,7 +20,7 @@ use tokio::{
 
 use crate::frb_generated::StreamSink;
 
-use super::error::Error;
+use super::{error::Error, token::Token};
 
 #[derive(Clone)]
 pub struct Wallet {
@@ -95,8 +95,8 @@ impl Wallet {
         Ok(())
     }
 
-    pub async fn is_token_spent(&self, token: String) -> Result<bool, Error> {
-        let token = Token::from_str(&token)?;
+    pub async fn is_token_spent(&self, token: Token) -> Result<bool, Error> {
+        let token: CdkToken = token.try_into()?;
         let proof_states = self.inner.check_proofs_spent(token.proofs()).await?;
         Ok(proof_states
             .iter()
@@ -139,9 +139,13 @@ impl Wallet {
                                     amount: mint_amount.into(),
                                     expiry: Some(quote.expiry),
                                     state: CdkMintQuoteState::Issued.into(),
-                                    token: Some(
-                                        Token::new(mint_url, mint_proofs, None, unit).to_string(),
-                                    ),
+                                    token: Token::try_from(CdkToken::new(
+                                        mint_url,
+                                        mint_proofs,
+                                        None,
+                                        unit,
+                                    ))
+                                    .ok(),
                                 });
                             }
                         }
@@ -230,7 +234,7 @@ pub struct MintQuote {
     pub amount: u64,
     pub expiry: Option<u64>,
     pub state: MintQuoteState,
-    pub token: Option<String>,
+    pub token: Option<Token>,
 }
 
 impl From<CdkMintQuote> for MintQuote {
@@ -384,24 +388,6 @@ impl WalletDatabase {
         Ok(Self { inner })
     }
 }
-
-// pub enum WellKnownCurrencyUnit {
-//     Sat,
-//     Msat,
-//     Usd,
-//     Eur,
-// }
-
-// impl Display for WellKnownCurrencyUnit {
-//     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-//         match self {
-//             Self::Sat => write!(f, "{}", CurrencyUnit::Sat),
-//             Self::Msat => write!(f, "{}", CurrencyUnit::Msat),
-//             Self::Usd => write!(f, "{}", CurrencyUnit::Usd),
-//             Self::Eur => write!(f, "{}", CurrencyUnit::Eur),
-//         }
-//     }
-// }
 
 #[frb(sync)]
 pub fn generate_seed() -> Vec<u8> {

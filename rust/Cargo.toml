@@ -15,8 +15,10 @@ cdk-redb = { git = "https://github.com/davidcaseria/cdk.git", branch = "return-m
     "wallet",
 ] }
 flutter_rust_bridge = "=2.7.1"
-rand = { version = "0.8.5", default-features = false }
-tokio = { version = "1.42.0", default-features = false }
+rand = { version = "0.9.0", default-features = false, features = [
+    "thread_rng",
+] }
+tokio = { version = "1.43.0", default-features = false }
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }

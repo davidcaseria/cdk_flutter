@@ -3,7 +3,7 @@ import 'package:cdk_flutter/cdk_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
-  await WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await CdkFlutter.init();
   final path = await getApplicationDocumentsDirectory();
   final db = WalletDatabase(path: '${path.path}/wallet.db');

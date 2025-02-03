@@ -6,6 +6,7 @@
 import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'token.dart';
 
 // These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`
@@ -69,7 +70,7 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<BigInt> balance();
 
-  Future<bool> isTokenSpent({required String token});
+  Future<bool> isTokenSpent({required Token token});
 
   Stream<MintQuote> mint({required BigInt amount, String? description});
 
@@ -119,7 +120,7 @@ class MintQuote {
   final BigInt amount;
   final BigInt? expiry;
   final MintQuoteState state;
-  final String? token;
+  final Token? token;
 
   const MintQuote({
     required this.id,
