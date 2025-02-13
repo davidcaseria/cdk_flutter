@@ -1,5 +1,6 @@
 import 'package:cdk_flutter_example/home.dart';
 import 'package:cdk_flutter_example/mint_quote.dart';
+import 'package:cdk_flutter_example/receive.dart';
 import 'package:cdk_flutter_example/send.dart';
 import 'package:flutter/material.dart';
 import 'package:cdk_flutter/cdk_flutter.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/mintQuote': (context) => const MintQuoteScreen(),
         '/send': (context) => const SendScreen(),
+        '/receive': (context) => const ReceiveScreen(),
       },
     );
   }

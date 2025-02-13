@@ -1550,8 +1550,8 @@ fn wire__crate__api__wallet__Wallet_receive_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Wallet>,
             >>::sse_decode(&mut deserializer);
-            let api_token = <String>::sse_decode(&mut deserializer);
-            let api_p2pk_signing_key = <Option<String>>::sse_decode(&mut deserializer);
+            let api_token = <crate::api::token::Token>::sse_decode(&mut deserializer);
+            let api_signing_key = <Option<String>>::sse_decode(&mut deserializer);
             let api_preimage = <Option<String>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -1577,7 +1577,7 @@ fn wire__crate__api__wallet__Wallet_receive_impl(
                         let output_ok = crate::api::wallet::Wallet::receive(
                             &*api_that_guard,
                             api_token,
-                            api_p2pk_signing_key,
+                            api_signing_key,
                             api_preimage,
                         )
                         .await?;

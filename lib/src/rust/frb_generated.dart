@@ -183,8 +183,8 @@ abstract class RustLibApi extends BaseApi {
 
   Future<BigInt> crateApiWalletWalletReceive(
       {required Wallet that,
-      required String token,
-      String? p2PkSigningKey,
+      required Token token,
+      String? signingKey,
       String? preimage});
 
   Future<String> crateApiWalletWalletSend(
@@ -1072,16 +1072,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @override
   Future<BigInt> crateApiWalletWalletReceive(
       {required Wallet that,
-      required String token,
-      String? p2PkSigningKey,
+      required Token token,
+      String? signingKey,
       String? preimage}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
             that, serializer);
-        sse_encode_String(token, serializer);
-        sse_encode_opt_String(p2PkSigningKey, serializer);
+        sse_encode_box_autoadd_token(token, serializer);
+        sse_encode_opt_String(signingKey, serializer);
         sse_encode_opt_String(preimage, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 30, port: port_);
@@ -1091,7 +1091,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletReceiveConstMeta,
-      argValues: [that, token, p2PkSigningKey, preimage],
+      argValues: [that, token, signingKey, preimage],
       apiImpl: this,
     ));
   }
@@ -1099,7 +1099,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletWalletReceiveConstMeta =>
       const TaskConstMeta(
         debugName: "Wallet_receive",
-        argNames: ["that", "token", "p2PkSigningKey", "preimage"],
+        argNames: ["that", "token", "signingKey", "preimage"],
       );
 
   @override
@@ -2546,12 +2546,9 @@ class WalletImpl extends RustOpaque implements Wallet {
           that: this, amount: amount, memo: memo, pubkey: pubkey);
 
   Future<BigInt> receive(
-          {required String token, String? p2PkSigningKey, String? preimage}) =>
+          {required Token token, String? signingKey, String? preimage}) =>
       RustLib.instance.api.crateApiWalletWalletReceive(
-          that: this,
-          token: token,
-          p2PkSigningKey: p2PkSigningKey,
-          preimage: preimage);
+          that: this, token: token, signingKey: signingKey, preimage: preimage);
 
   Future<String> send({required PreparedSend send}) =>
       RustLib.instance.api.crateApiWalletWalletSend(that: this, send: send);

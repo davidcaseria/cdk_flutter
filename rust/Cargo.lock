@@ -321,7 +321,7 @@ checksum = "f61dac84819c6588b558454b194026eb1f09c293b9036ae9b159e74e73ab6cf9"
 [[package]]
 name = "cashu"
 version = "0.7.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#ab29654212509c04e58f79293771ace92cdbbefc"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#333741f1551ed3acd9934fba4260e5d71371f7b4"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -371,7 +371,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.7.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#ab29654212509c04e58f79293771ace92cdbbefc"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#333741f1551ed3acd9934fba4260e5d71371f7b4"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -399,7 +399,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.7.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#ab29654212509c04e58f79293771ace92cdbbefc"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#333741f1551ed3acd9934fba4260e5d71371f7b4"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -422,7 +422,7 @@ dependencies = [
 [[package]]
 name = "cdk-redb"
 version = "0.7.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#ab29654212509c04e58f79293771ace92cdbbefc"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#333741f1551ed3acd9934fba4260e5d71371f7b4"
 dependencies = [
  "async-trait",
  "cdk-common",

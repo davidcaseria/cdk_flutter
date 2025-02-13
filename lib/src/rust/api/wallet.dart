@@ -123,7 +123,7 @@ abstract class Wallet implements RustOpaqueInterface {
       {required BigInt amount, String? memo, String? pubkey});
 
   Future<BigInt> receive(
-      {required String token, String? p2PkSigningKey, String? preimage});
+      {required Token token, String? signingKey, String? preimage});
 
   Future<String> send({required PreparedSend send});
 

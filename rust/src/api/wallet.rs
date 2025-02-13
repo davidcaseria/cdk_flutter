@@ -158,13 +158,11 @@ impl Wallet {
 
     pub async fn receive(
         &self,
-        token: String,
-        p2pk_signing_key: Option<String>,
+        token: Token,
+        signing_key: Option<String>,
         preimage: Option<String>,
     ) -> Result<u64, Error> {
-        let p2pk_signing_key = p2pk_signing_key
-            .map(|s| SecretKey::from_str(&s))
-            .transpose()?;
+        let p2pk_signing_key = signing_key.map(|s| SecretKey::from_str(&s)).transpose()?;
         let p2pk_signing_keys = match p2pk_signing_key {
             Some(p2pk_signing_key) => vec![p2pk_signing_key],
             None => vec![],
@@ -175,7 +173,12 @@ impl Wallet {
         };
         let amount = self
             .inner
-            .receive(&token, SplitTarget::None, &p2pk_signing_keys, &preimages)
+            .receive(
+                &token.encoded,
+                SplitTarget::None,
+                &p2pk_signing_keys,
+                &preimages,
+            )
             .await?
             .into();
         self.update_balance_streams().await;

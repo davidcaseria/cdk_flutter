@@ -15,7 +15,7 @@ cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send
 cdk-redb = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false, features = [
     "wallet",
 ] }
-flutter_rust_bridge = "=2.8.0"
+flutter_rust_bridge = { version = "=2.8.0", features = ["log"] }
 futures = "0.3.31"
 rand = { version = "0.9.0", default-features = false, features = [
     "thread_rng",

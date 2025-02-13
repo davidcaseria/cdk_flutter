@@ -1,3 +1,4 @@
+import 'package:cdk_flutter/src/rust/api/token.dart';
 import 'package:cdk_flutter/src/rust/api/wallet.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -88,6 +89,60 @@ class MintQuoteBuilderState extends State<MintQuoteBuilder> {
   }
 }
 
+class ReceiveBuilder extends StatelessWidget {
+  final String? mintUrl;
+  final String? signingKey;
+  final String? preimage;
+  final String token;
+  final AsyncWidgetBuilder<ReceiveResult> builder;
+
+  const ReceiveBuilder({super.key, this.mintUrl, this.signingKey, this.preimage, required this.token, required this.builder});
+
+  Widget _buildWithWallet(Wallet wallet) {
+    final token = Token.parse(encoded: this.token);
+    return FutureBuilder<BigInt?>(
+      future: wallet.receive(token: token),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return builder(context, AsyncSnapshot<ReceiveResult>.nothing());
+        } else if (snapshot.hasData) {
+          return builder(context, AsyncSnapshot<ReceiveResult>.withData(ConnectionState.active, ReceiveResult(token, snapshot.data!)));
+        } else {
+          return builder(context, AsyncSnapshot<ReceiveResult>.nothing());
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (mintUrl != null) {
+      final wallet = context.read<MultiMintWallet>();
+      return FutureBuilder<Wallet?>(
+        future: wallet.getWallet(mintUrl: mintUrl!),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox();
+          } else if (snapshot.hasData) {
+            return _buildWithWallet(snapshot.data!);
+          } else {
+            return const SizedBox();
+          }
+        },
+      );
+    }
+    final wallet = context.read<Wallet>();
+    return _buildWithWallet(wallet);
+  }
+}
+
+class ReceiveResult {
+  final Token token;
+  final BigInt receivedAmount;
+
+  const ReceiveResult(this.token, this.receivedAmount);
+}
+
 class SendBuilder extends StatelessWidget {
   final String? mintUrl;
   final BigInt amount;
@@ -110,6 +165,7 @@ class SendBuilder extends StatelessWidget {
               onSuccess(token);
             } catch (e) {
               // TODO: handle error
+              print(e);
             }
           }
 
