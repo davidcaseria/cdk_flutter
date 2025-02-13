@@ -9,7 +9,10 @@ use cdk::{
         SecretKey, SpendingConditions, State as ProofState, Token as CdkToken,
     },
     util::hex,
-    wallet::{MintQuote as CdkMintQuote, SendKind, Wallet as CdkWallet},
+    wallet::{
+        MintQuote as CdkMintQuote, PreparedSend as CdkPreparedSend, SendOptions,
+        Wallet as CdkWallet,
+    },
 };
 use cdk_redb::WalletRedbDatabase;
 use flutter_rust_bridge::frb;
@@ -58,19 +61,13 @@ impl Wallet {
     #[frb(sync)]
     pub fn new_from_hex_seed(
         mint_url: String,
-        currency_unit: String,
+        unit: String,
         seed: String,
         target_proof_count: Option<usize>,
         localstore: WalletDatabase,
     ) -> Result<Self, Error> {
         let seed = hex::decode(seed)?;
-        Self::new(
-            mint_url,
-            currency_unit,
-            seed,
-            target_proof_count,
-            localstore,
-        )
+        Self::new(mint_url, unit, seed, target_proof_count, localstore)
     }
 
     pub async fn balance(&self) -> Result<u64, Error> {
@@ -185,26 +182,24 @@ impl Wallet {
         Ok(amount)
     }
 
-    pub async fn send(
+    pub async fn prepare_send(
         &self,
         amount: u64,
         memo: Option<String>,
         pubkey: Option<String>,
-    ) -> Result<String, Error> {
+    ) -> Result<PreparedSend, Error> {
         let pubkey = pubkey.map(|s| PublicKey::from_str(&s)).transpose()?;
-        let conditions = pubkey.map(|pubkey| SpendingConditions::new_p2pk(pubkey, None));
-        let token = self
-            .inner
-            .send(
-                amount.into(),
-                memo,
-                conditions,
-                &SplitTarget::None,
-                &SendKind::OnlineExact,
-                false,
-            )
-            .await?
-            .to_string();
+        let opts = SendOptions {
+            memo,
+            conditions: pubkey.map(|pubkey| SpendingConditions::new_p2pk(pubkey, None)),
+            ..Default::default()
+        };
+        let prepared_send = self.inner.prepare_send(amount.into(), opts).await?;
+        Ok(prepared_send.into())
+    }
+
+    pub async fn send(&self, send: PreparedSend) -> Result<String, Error> {
+        let token = self.inner.send(send.inner).await?.to_string();
         self.update_balance_streams().await;
         Ok(token)
     }
@@ -263,6 +258,27 @@ impl From<CdkMintQuoteState> for MintQuoteState {
             CdkMintQuoteState::Paid => Self::Paid,
             CdkMintQuoteState::Issued => Self::Issued,
             CdkMintQuoteState::Pending => Self::Unpaid,
+        }
+    }
+}
+
+pub struct PreparedSend {
+    pub amount: u64,
+    pub swap_fee: u64,
+    pub send_fee: u64,
+    pub total_fee: u64,
+
+    inner: CdkPreparedSend,
+}
+
+impl From<CdkPreparedSend> for PreparedSend {
+    fn from(prepared_send: CdkPreparedSend) -> Self {
+        Self {
+            amount: prepared_send.amount().into(),
+            swap_fee: prepared_send.swap_fee().into(),
+            send_fee: prepared_send.send_fee().into(),
+            total_fee: prepared_send.total_fee().into(),
+            inner: prepared_send,
         }
     }
 }

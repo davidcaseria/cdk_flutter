@@ -88,6 +88,67 @@ class MintQuoteBuilderState extends State<MintQuoteBuilder> {
   }
 }
 
+class SendBuilder extends StatelessWidget {
+  final String? mintUrl;
+  final BigInt amount;
+  final String? memo;
+  final String? pubkey;
+  final Function(String) onSuccess;
+  final AsyncWidgetBuilder<PreparedSendResult> builder;
+
+  const SendBuilder({super.key, required this.amount, this.mintUrl, this.memo, this.pubkey, required this.onSuccess, required this.builder});
+
+  Widget _buildWithWallet(Wallet wallet) {
+    return FutureBuilder<PreparedSend>(
+      future: wallet.prepareSend(amount: amount, memo: memo, pubkey: pubkey),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final preparedSend = snapshot.data!;
+          send() async {
+            try {
+              final token = await wallet.send(send: preparedSend);
+              onSuccess(token);
+            } catch (e) {
+              // TODO: handle error
+            }
+          }
+
+          return builder(context, AsyncSnapshot<PreparedSendResult>.withData(ConnectionState.active, PreparedSendResult(preparedSend, send)));
+        } else {
+          return builder(context, AsyncSnapshot<PreparedSendResult>.nothing());
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (mintUrl != null) {
+      final wallet = context.read<MultiMintWallet>();
+      return FutureBuilder<Wallet?>(
+        future: wallet.getWallet(mintUrl: mintUrl!),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox();
+          } else if (snapshot.hasData) {
+            return _buildWithWallet(snapshot.data!);
+          } else {
+            return const SizedBox();
+          }
+        },
+      );
+    }
+    final wallet = context.read<Wallet>();
+    return _buildWithWallet(wallet);
+  }
+}
+
+class PreparedSendResult {
+  final PreparedSend preparedSend;
+  final VoidCallback send;
+  const PreparedSendResult(this.preparedSend, this.send);
+}
+
 class WalletBalanceBuilder extends StatelessWidget {
   final AsyncWidgetBuilder<BigInt> builder;
 

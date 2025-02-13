@@ -8,11 +8,11 @@ crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
 # cdk = { version = "0.6.0", default-features = false, features = ["wallet"] }
-cdk = { git = "https://github.com/cashubtc/cdk.git", default-features = false, features = [
+cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false, features = [
     "wallet",
 ] }
 # cdk-redb = { version = "0.6.0", default-features = false, features = ["wallet"] }
-cdk-redb = { git = "https://github.com/cashubtc/cdk.git", default-features = false, features = [
+cdk-redb = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false, features = [
     "wallet",
 ] }
 flutter_rust_bridge = "=2.8.0"
