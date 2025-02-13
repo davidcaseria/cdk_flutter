@@ -8,13 +8,15 @@ crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
 # cdk = { version = "0.6.0", default-features = false, features = ["wallet"] }
-cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "return-mint-proofs", default-features = false, features = [
+cdk = { git = "https://github.com/cashubtc/cdk.git", default-features = false, features = [
     "wallet",
 ] }
-cdk-redb = { git = "https://github.com/davidcaseria/cdk.git", branch = "return-mint-proofs", default-features = false, features = [
+# cdk-redb = { version = "0.6.0", default-features = false, features = ["wallet"] }
+cdk-redb = { git = "https://github.com/cashubtc/cdk.git", default-features = false, features = [
     "wallet",
 ] }
-flutter_rust_bridge = "=2.7.1"
+flutter_rust_bridge = "=2.8.0"
+futures = "0.3.31"
 rand = { version = "0.9.0", default-features = false, features = [
     "thread_rng",
 ] }
