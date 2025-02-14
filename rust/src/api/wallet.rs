@@ -10,8 +10,8 @@ use cdk::{
     },
     util::hex,
     wallet::{
-        MintQuote as CdkMintQuote, PreparedSend as CdkPreparedSend, SendOptions,
-        Wallet as CdkWallet,
+        MeltQuote as CdkMeltQuote, MintQuote as CdkMintQuote, PreparedSend as CdkPreparedSend,
+        SendOptions, Wallet as CdkWallet,
     },
 };
 use cdk_redb::WalletRedbDatabase;
@@ -98,6 +98,16 @@ impl Wallet {
         Ok(proof_states
             .iter()
             .any(|state| state.state == ProofState::Spent))
+    }
+
+    pub async fn melt_quote(&self, request: String) -> Result<MeltQuote, Error> {
+        Ok(self.inner.melt_quote(request, None).await?.into())
+    }
+
+    pub async fn melt(&self, quote: MeltQuote) -> Result<u64, Error> {
+        let melted = self.inner.melt(&quote.id).await?;
+        self.update_balance_streams().await;
+        Ok(melted.total_amount().into())
     }
 
     pub async fn mint(
@@ -223,6 +233,26 @@ impl Wallet {
             .unwrap_or(Amount::ZERO)
             .into();
         let _ = self.balance_broadcast.send(balance);
+    }
+}
+
+pub struct MeltQuote {
+    pub id: String,
+    pub request: String,
+    pub amount: u64,
+    pub fee_reserve: u64,
+    pub expiry: u64,
+}
+
+impl From<CdkMeltQuote> for MeltQuote {
+    fn from(quote: CdkMeltQuote) -> Self {
+        Self {
+            id: quote.id,
+            request: quote.request,
+            amount: quote.amount.into(),
+            fee_reserve: quote.fee_reserve.into(),
+            expiry: quote.expiry,
+        }
     }
 }
 

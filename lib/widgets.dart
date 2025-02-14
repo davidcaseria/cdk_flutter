@@ -3,6 +3,67 @@ import 'package:cdk_flutter/src/rust/api/wallet.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+class MeltQuoteBuilder extends StatefulWidget {
+  final String? mintUrl;
+  final String request;
+  final void Function(BigInt) onSuccess;
+  final AsyncWidgetBuilder<MeltQuoteResult> builder;
+
+  const MeltQuoteBuilder({super.key, this.mintUrl, required this.request, required this.onSuccess, required this.builder});
+
+  @override
+  MeltQuoteBuilderState createState() => MeltQuoteBuilderState();
+}
+
+class MeltQuoteBuilderState extends State<MeltQuoteBuilder> {
+  Future<MeltQuoteResult> _createMeltQuoteResult(Wallet wallet) async {
+    final quote = await wallet.meltQuote(request: widget.request);
+    return MeltQuoteResult(
+      quote: quote,
+      melt: () async {
+        final amount = await wallet.melt(quote: quote);
+        widget.onSuccess(amount);
+      },
+    );
+  }
+
+  Widget buildWithWallet(BuildContext context, Wallet wallet) {
+    return FutureBuilder<MeltQuoteResult>(
+      future: _createMeltQuoteResult(wallet),
+      builder: widget.builder,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.mintUrl == null) {
+      final wallet = context.read<Wallet>();
+      return buildWithWallet(context, wallet);
+    } else {
+      final wallet = context.read<MultiMintWallet>();
+      return FutureBuilder<Wallet?>(
+        future: wallet.getWallet(mintUrl: widget.mintUrl!),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return widget.builder(context, AsyncSnapshot<MeltQuoteResult>.nothing());
+          } else if (snapshot.hasData) {
+            return buildWithWallet(context, snapshot.data!);
+          } else {
+            return widget.builder(context, AsyncSnapshot<MeltQuoteResult>.nothing());
+          }
+        },
+      );
+    }
+  }
+}
+
+class MeltQuoteResult {
+  final MeltQuote quote;
+  final VoidCallback melt;
+
+  const MeltQuoteResult({required this.quote, required this.melt});
+}
+
 class MintListBuilder extends StatelessWidget {
   final AsyncWidgetBuilder<List<String>> builder;
 

@@ -70,7 +70,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.8.0';
 
   @override
-  int get rustContentHash => 764460280;
+  int get rustContentHash => -2123269849;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -157,6 +157,12 @@ abstract class RustLibApi extends BaseApi {
 
   Future<bool> crateApiWalletWalletIsTokenSpent(
       {required Wallet that, required Token token});
+
+  Future<BigInt> crateApiWalletWalletMelt(
+      {required Wallet that, required MeltQuote quote});
+
+  Future<MeltQuote> crateApiWalletWalletMeltQuote(
+      {required Wallet that, required String request});
 
   Stream<MintQuote> crateApiWalletWalletMint(
       {required Wallet that, required BigInt amount, String? description});
@@ -934,6 +940,61 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<BigInt> crateApiWalletWalletMelt(
+      {required Wallet that, required MeltQuote quote}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
+            that, serializer);
+        sse_encode_box_autoadd_melt_quote(quote, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 26, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_u_64,
+        decodeErrorData: sse_decode_error,
+      ),
+      constMeta: kCrateApiWalletWalletMeltConstMeta,
+      argValues: [that, quote],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletWalletMeltConstMeta => const TaskConstMeta(
+        debugName: "Wallet_melt",
+        argNames: ["that", "quote"],
+      );
+
+  @override
+  Future<MeltQuote> crateApiWalletWalletMeltQuote(
+      {required Wallet that, required String request}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
+            that, serializer);
+        sse_encode_String(request, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 27, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_melt_quote,
+        decodeErrorData: sse_decode_error,
+      ),
+      constMeta: kCrateApiWalletWalletMeltQuoteConstMeta,
+      argValues: [that, request],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletWalletMeltQuoteConstMeta =>
+      const TaskConstMeta(
+        debugName: "Wallet_melt_quote",
+        argNames: ["that", "request"],
+      );
+
+  @override
   Stream<MintQuote> crateApiWalletWalletMint(
       {required Wallet that, required BigInt amount, String? description}) {
     final sink = RustStreamSink<MintQuote>();
@@ -946,7 +1007,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_String(description, serializer);
         sse_encode_StreamSink_mint_quote_Sse(sink, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 26, port: port_);
+            funcId: 28, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -980,7 +1041,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_usize(targetProofCount, serializer);
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
             localstore, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 29)!;
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1014,7 +1075,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_usize(targetProofCount, serializer);
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
             localstore, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 28)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 30)!;
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1048,7 +1109,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_String(memo, serializer);
         sse_encode_opt_String(pubkey, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 29, port: port_);
+            funcId: 31, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1082,7 +1143,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_String(signingKey, serializer);
         sse_encode_opt_String(preimage, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 30, port: port_);
+            funcId: 32, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_u_64,
@@ -1111,7 +1172,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
             send, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 31, port: port_);
+            funcId: 33, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1138,7 +1199,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_StreamSink_u_64_Sse(sink, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 32, port: port_);
+            funcId: 34, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1162,7 +1223,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 33)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 35)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1185,7 +1246,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 34)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 36)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_prim_u_8_strict,
@@ -1208,7 +1269,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 35, port: port_);
+            funcId: 37, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1231,7 +1292,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(encoded, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 36)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 38)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_token,
@@ -1432,6 +1493,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MeltQuote dco_decode_box_autoadd_melt_quote(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_melt_quote(raw);
+  }
+
+  @protected
   Token dco_decode_box_autoadd_token(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_token(raw);
@@ -1511,6 +1578,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  MeltQuote dco_decode_melt_quote(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return MeltQuote(
+      id: dco_decode_String(arr[0]),
+      request: dco_decode_String(arr[1]),
+      amount: dco_decode_u_64(arr[2]),
+      feeReserve: dco_decode_u_64(arr[3]),
+      expiry: dco_decode_u_64(arr[4]),
+    );
   }
 
   @protected
@@ -1777,6 +1859,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MeltQuote sse_decode_box_autoadd_melt_quote(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_melt_quote(deserializer));
+  }
+
+  @protected
   Token sse_decode_box_autoadd_token(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_token(deserializer));
@@ -1866,6 +1954,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  MeltQuote sse_decode_melt_quote(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_request = sse_decode_String(deserializer);
+    var var_amount = sse_decode_u_64(deserializer);
+    var var_feeReserve = sse_decode_u_64(deserializer);
+    var var_expiry = sse_decode_u_64(deserializer);
+    return MeltQuote(
+        id: var_id,
+        request: var_request,
+        amount: var_amount,
+        feeReserve: var_feeReserve,
+        expiry: var_expiry);
   }
 
   @protected
@@ -2175,6 +2279,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_melt_quote(
+      MeltQuote self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_melt_quote(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_token(Token self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_token(self, serializer);
@@ -2256,6 +2367,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_melt_quote(MeltQuote self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.request, serializer);
+    sse_encode_u_64(self.amount, serializer);
+    sse_encode_u_64(self.feeReserve, serializer);
+    sse_encode_u_64(self.expiry, serializer);
   }
 
   @protected
@@ -2532,6 +2653,12 @@ class WalletImpl extends RustOpaque implements Wallet {
 
   Future<bool> isTokenSpent({required Token token}) => RustLib.instance.api
       .crateApiWalletWalletIsTokenSpent(that: this, token: token);
+
+  Future<BigInt> melt({required MeltQuote quote}) =>
+      RustLib.instance.api.crateApiWalletWalletMelt(that: this, quote: quote);
+
+  Future<MeltQuote> meltQuote({required String request}) => RustLib.instance.api
+      .crateApiWalletWalletMeltQuote(that: this, request: request);
 
   Stream<MintQuote> mint({required BigInt amount, String? description}) =>
       RustLib.instance.api.crateApiWalletWalletMint(

@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.8.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 764460280;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -2123269849;
 
 // Section: executor
 
@@ -1314,6 +1314,121 @@ fn wire__crate__api__wallet__Wallet_is_token_spent_impl(
         },
     )
 }
+fn wire__crate__api__wallet__Wallet_melt_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "Wallet_melt",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Wallet>,
+            >>::sse_decode(&mut deserializer);
+            let api_quote = <crate::api::wallet::MeltQuote>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::error::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::api::wallet::Wallet::melt(&*api_that_guard, api_quote).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__wallet__Wallet_melt_quote_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "Wallet_melt_quote",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Wallet>,
+            >>::sse_decode(&mut deserializer);
+            let api_request = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::error::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::api::wallet::Wallet::melt_quote(&*api_that_guard, api_request)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__wallet__Wallet_mint_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -2041,6 +2156,24 @@ impl SseDecode for Vec<u8> {
     }
 }
 
+impl SseDecode for crate::api::wallet::MeltQuote {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_request = <String>::sse_decode(deserializer);
+        let mut var_amount = <u64>::sse_decode(deserializer);
+        let mut var_feeReserve = <u64>::sse_decode(deserializer);
+        let mut var_expiry = <u64>::sse_decode(deserializer);
+        return crate::api::wallet::MeltQuote {
+            id: var_id,
+            request: var_request,
+            amount: var_amount,
+            fee_reserve: var_feeReserve,
+            expiry: var_expiry,
+        };
+    }
+}
+
 impl SseDecode for crate::api::wallet::MintQuote {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2225,14 +2358,16 @@ fn pde_ffi_dispatcher_primary_impl(
         25 => {
             wire__crate__api__wallet__Wallet_is_token_spent_impl(port, ptr, rust_vec_len, data_len)
         }
-        26 => wire__crate__api__wallet__Wallet_mint_impl(port, ptr, rust_vec_len, data_len),
-        29 => wire__crate__api__wallet__Wallet_prepare_send_impl(port, ptr, rust_vec_len, data_len),
-        30 => wire__crate__api__wallet__Wallet_receive_impl(port, ptr, rust_vec_len, data_len),
-        31 => wire__crate__api__wallet__Wallet_send_impl(port, ptr, rust_vec_len, data_len),
-        32 => {
+        26 => wire__crate__api__wallet__Wallet_melt_impl(port, ptr, rust_vec_len, data_len),
+        27 => wire__crate__api__wallet__Wallet_melt_quote_impl(port, ptr, rust_vec_len, data_len),
+        28 => wire__crate__api__wallet__Wallet_mint_impl(port, ptr, rust_vec_len, data_len),
+        31 => wire__crate__api__wallet__Wallet_prepare_send_impl(port, ptr, rust_vec_len, data_len),
+        32 => wire__crate__api__wallet__Wallet_receive_impl(port, ptr, rust_vec_len, data_len),
+        33 => wire__crate__api__wallet__Wallet_send_impl(port, ptr, rust_vec_len, data_len),
+        34 => {
             wire__crate__api__wallet__Wallet_stream_balance_impl(port, ptr, rust_vec_len, data_len)
         }
-        35 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
+        37 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -2316,11 +2451,11 @@ fn pde_ffi_dispatcher_sync_impl(
             rust_vec_len,
             data_len,
         ),
-        27 => wire__crate__api__wallet__Wallet_new_impl(ptr, rust_vec_len, data_len),
-        28 => wire__crate__api__wallet__Wallet_new_from_hex_seed_impl(ptr, rust_vec_len, data_len),
-        33 => wire__crate__api__wallet__generate_hex_seed_impl(ptr, rust_vec_len, data_len),
-        34 => wire__crate__api__wallet__generate_seed_impl(ptr, rust_vec_len, data_len),
-        36 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
+        29 => wire__crate__api__wallet__Wallet_new_impl(ptr, rust_vec_len, data_len),
+        30 => wire__crate__api__wallet__Wallet_new_from_hex_seed_impl(ptr, rust_vec_len, data_len),
+        35 => wire__crate__api__wallet__generate_hex_seed_impl(ptr, rust_vec_len, data_len),
+        36 => wire__crate__api__wallet__generate_seed_impl(ptr, rust_vec_len, data_len),
+        38 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -2415,6 +2550,27 @@ impl flutter_rust_bridge::IntoDart for crate::api::error::Error {
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::error::Error {}
 impl flutter_rust_bridge::IntoIntoDart<crate::api::error::Error> for crate::api::error::Error {
     fn into_into_dart(self) -> crate::api::error::Error {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::wallet::MeltQuote {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.id.into_into_dart().into_dart(),
+            self.request.into_into_dart().into_dart(),
+            self.amount.into_into_dart().into_dart(),
+            self.fee_reserve.into_into_dart().into_dart(),
+            self.expiry.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::wallet::MeltQuote {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::MeltQuote>
+    for crate::api::wallet::MeltQuote
+{
+    fn into_into_dart(self) -> crate::api::wallet::MeltQuote {
         self
     }
 }
@@ -2652,6 +2808,17 @@ impl SseEncode for Vec<u8> {
         for item in self {
             <u8>::sse_encode(item, serializer);
         }
+    }
+}
+
+impl SseEncode for crate::api::wallet::MeltQuote {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.request, serializer);
+        <u64>::sse_encode(self.amount, serializer);
+        <u64>::sse_encode(self.fee_reserve, serializer);
+        <u64>::sse_encode(self.expiry, serializer);
     }
 }
 

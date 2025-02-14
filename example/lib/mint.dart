@@ -1,14 +1,14 @@
 import 'package:cdk_flutter/cdk_flutter.dart';
 import 'package:flutter/material.dart';
 
-class MintQuoteScreen extends StatefulWidget {
-  const MintQuoteScreen({super.key});
+class MintScreen extends StatefulWidget {
+  const MintScreen({super.key});
 
   @override
-  MintQuoteScreenState createState() => MintQuoteScreenState();
+  MintScreenState createState() => MintScreenState();
 }
 
-class MintQuoteScreenState extends State<MintQuoteScreen> {
+class MintScreenState extends State<MintScreen> {
   final TextEditingController _amountController = TextEditingController();
   bool _isSubmitted = false;
 

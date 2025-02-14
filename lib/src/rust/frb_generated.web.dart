@@ -128,6 +128,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  MeltQuote dco_decode_box_autoadd_melt_quote(dynamic raw);
+
+  @protected
   Token dco_decode_box_autoadd_token(dynamic raw);
 
   @protected
@@ -155,6 +158,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  MeltQuote dco_decode_melt_quote(dynamic raw);
 
   @protected
   MintQuote dco_decode_mint_quote(dynamic raw);
@@ -287,6 +293,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  MeltQuote sse_decode_box_autoadd_melt_quote(SseDeserializer deserializer);
+
+  @protected
   Token sse_decode_box_autoadd_token(SseDeserializer deserializer);
 
   @protected
@@ -314,6 +323,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  MeltQuote sse_decode_melt_quote(SseDeserializer deserializer);
 
   @protected
   MintQuote sse_decode_mint_quote(SseDeserializer deserializer);
@@ -447,6 +459,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           Wallet self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_melt_quote(
+      MeltQuote self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_token(Token self, SseSerializer serializer);
 
   @protected
@@ -475,6 +491,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_melt_quote(MeltQuote self, SseSerializer serializer);
 
   @protected
   void sse_encode_mint_quote(MintQuote self, SseSerializer serializer);

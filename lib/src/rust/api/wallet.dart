@@ -9,7 +9,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'token.dart';
 
 // These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`, `from`, `from`
 
 Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
 
@@ -91,6 +91,10 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<bool> isTokenSpent({required Token token});
 
+  Future<BigInt> melt({required MeltQuote quote});
+
+  Future<MeltQuote> meltQuote({required String request});
+
   Stream<MintQuote> mint({required BigInt amount, String? description});
 
   factory Wallet(
@@ -134,6 +138,41 @@ abstract class Wallet implements RustOpaqueInterface {
 abstract class WalletDatabase implements RustOpaqueInterface {
   factory WalletDatabase({required String path}) =>
       RustLib.instance.api.crateApiWalletWalletDatabaseNew(path: path);
+}
+
+class MeltQuote {
+  final String id;
+  final String request;
+  final BigInt amount;
+  final BigInt feeReserve;
+  final BigInt expiry;
+
+  const MeltQuote({
+    required this.id,
+    required this.request,
+    required this.amount,
+    required this.feeReserve,
+    required this.expiry,
+  });
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      request.hashCode ^
+      amount.hashCode ^
+      feeReserve.hashCode ^
+      expiry.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MeltQuote &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          request == other.request &&
+          amount == other.amount &&
+          feeReserve == other.feeReserve &&
+          expiry == other.expiry;
 }
 
 class MintQuote {

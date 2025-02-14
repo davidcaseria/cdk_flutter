@@ -24,21 +24,27 @@ class HomeScreen extends StatelessWidget {
             }),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/mintQuote');
+                Navigator.pushNamed(context, '/melt');
               },
-              child: const Text('Mint'),
+              child: const Text('Melt'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/send');
+                Navigator.pushNamed(context, '/mint');
               },
-              child: const Text('Send'),
+              child: const Text('Mint'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/receive');
               },
               child: const Text('Receive'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/send');
+              },
+              child: const Text('Send'),
             ),
           ],
         ),
