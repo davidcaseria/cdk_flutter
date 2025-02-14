@@ -320,8 +320,8 @@ checksum = "f61dac84819c6588b558454b194026eb1f09c293b9036ae9b159e74e73ab6cf9"
 
 [[package]]
 name = "cashu"
-version = "0.7.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#333741f1551ed3acd9934fba4260e5d71371f7b4"
+version = "0.7.1"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#5dc9e311bbec60c14d2a69f1ea63cede11f278ae"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -359,9 +359,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.2.13"
+version = "1.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c7777341816418c02e033934a09f20dc0ccaf65a5201ef8a450ae0105a573fda"
+checksum = "0c3d1b2e905a3a7b00a6141adb0e4c0bb941d11caf55349d863942a1cc44e3c9"
 dependencies = [
  "jobserver",
  "libc",
@@ -370,8 +370,8 @@ dependencies = [
 
 [[package]]
 name = "cdk"
-version = "0.7.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#333741f1551ed3acd9934fba4260e5d71371f7b4"
+version = "0.7.1"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#5dc9e311bbec60c14d2a69f1ea63cede11f278ae"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -398,8 +398,8 @@ dependencies = [
 
 [[package]]
 name = "cdk-common"
-version = "0.7.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#333741f1551ed3acd9934fba4260e5d71371f7b4"
+version = "0.7.1"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#5dc9e311bbec60c14d2a69f1ea63cede11f278ae"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -421,8 +421,8 @@ dependencies = [
 
 [[package]]
 name = "cdk-redb"
-version = "0.7.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#333741f1551ed3acd9934fba4260e5d71371f7b4"
+version = "0.7.1"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#5dc9e311bbec60c14d2a69f1ea63cede11f278ae"
 dependencies = [
  "async-trait",
  "cdk-common",
@@ -1566,9 +1566,9 @@ dependencies = [
 
 [[package]]
 name = "quinn-udp"
-version = "0.5.9"
+version = "0.5.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c40286217b4ba3a71d644d752e6a0b71f13f1b6a2c5311acfcbe0c2418ed904"
+checksum = "e46f3055866785f6b92bc6164b76be02ca8f2eb4b002c0354b28cf4c119e5944"
 dependencies = [
  "cfg_aliases",
  "libc",
@@ -1735,15 +1735,14 @@ dependencies = [
 
 [[package]]
 name = "ring"
-version = "0.17.8"
+version = "0.17.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c17fa4cb658e3583423e915b9f3acc01cceaee1860e33d59ebae66adc3a2dc0d"
+checksum = "e75ec5e92c4d8aede845126adc388046234541629e76029599ed35a003c7ed24"
 dependencies = [
  "cc",
  "cfg-if",
  "getrandom 0.2.15",
  "libc",
- "spin",
  "untrusted",
  "windows-sys 0.52.0",
 ]
@@ -2067,12 +2066,6 @@ dependencies = [
  "libc",
  "windows-sys 0.52.0",
 ]
-
-[[package]]
-name = "spin"
-version = "0.9.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6980e8d7511241f8acf4aebddbb1ff938df5eebe98691418c4468d0b72a96a67"
 
 [[package]]
 name = "stable_deref_trait"

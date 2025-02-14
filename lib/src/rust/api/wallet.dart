@@ -62,19 +62,19 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
 abstract class PreparedSend implements RustOpaqueInterface {
   BigInt get amount;
 
+  BigInt get fee;
+
   BigInt get sendFee;
 
   BigInt get swapFee;
 
-  BigInt get totalFee;
-
   set amount(BigInt amount);
+
+  set fee(BigInt fee);
 
   set sendFee(BigInt sendFee);
 
   set swapFee(BigInt swapFee);
-
-  set totalFee(BigInt totalFee);
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Wallet>>

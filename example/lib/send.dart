@@ -49,7 +49,7 @@ class SendScreenState extends State<SendScreen> {
             return Column(
               children: [
                 Text('Amount: ${snapshot.data!.preparedSend.amount}'),
-                Text('Fee: ${snapshot.data!.preparedSend.sendFee}'),
+                Text('Fee: ${snapshot.data!.preparedSend.fee}'),
                 ElevatedButton(
                   onPressed: () {
                     snapshot.data!.send();

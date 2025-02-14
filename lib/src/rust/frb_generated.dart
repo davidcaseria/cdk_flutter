@@ -70,7 +70,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.8.0';
 
   @override
-  int get rustContentHash => 1942764102;
+  int get rustContentHash => 764460280;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -120,26 +120,26 @@ abstract class RustLibApi extends BaseApi {
   BigInt crateApiWalletPreparedSendAutoAccessorGetAmount(
       {required PreparedSend that});
 
+  BigInt crateApiWalletPreparedSendAutoAccessorGetFee(
+      {required PreparedSend that});
+
   BigInt crateApiWalletPreparedSendAutoAccessorGetSendFee(
       {required PreparedSend that});
 
   BigInt crateApiWalletPreparedSendAutoAccessorGetSwapFee(
       {required PreparedSend that});
 
-  BigInt crateApiWalletPreparedSendAutoAccessorGetTotalFee(
-      {required PreparedSend that});
-
   void crateApiWalletPreparedSendAutoAccessorSetAmount(
       {required PreparedSend that, required BigInt amount});
+
+  void crateApiWalletPreparedSendAutoAccessorSetFee(
+      {required PreparedSend that, required BigInt fee});
 
   void crateApiWalletPreparedSendAutoAccessorSetSendFee(
       {required PreparedSend that, required BigInt sendFee});
 
   void crateApiWalletPreparedSendAutoAccessorSetSwapFee(
       {required PreparedSend that, required BigInt swapFee});
-
-  void crateApiWalletPreparedSendAutoAccessorSetTotalFee(
-      {required PreparedSend that, required BigInt totalFee});
 
   WalletDatabase crateApiWalletWalletDatabaseNew({required String path});
 
@@ -561,7 +561,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  BigInt crateApiWalletPreparedSendAutoAccessorGetSendFee(
+  BigInt crateApiWalletPreparedSendAutoAccessorGetFee(
       {required PreparedSend that}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
@@ -569,6 +569,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
             that, serializer);
         return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_u_64,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiWalletPreparedSendAutoAccessorGetFeeConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletPreparedSendAutoAccessorGetFeeConstMeta =>
+      const TaskConstMeta(
+        debugName: "PreparedSend_auto_accessor_get_fee",
+        argNames: ["that"],
+      );
+
+  @override
+  BigInt crateApiWalletPreparedSendAutoAccessorGetSendFee(
+      {required PreparedSend that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_u_64,
@@ -595,7 +621,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
             that, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_u_64,
@@ -611,33 +637,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       get kCrateApiWalletPreparedSendAutoAccessorGetSwapFeeConstMeta =>
           const TaskConstMeta(
             debugName: "PreparedSend_auto_accessor_get_swap_fee",
-            argNames: ["that"],
-          );
-
-  @override
-  BigInt crateApiWalletPreparedSendAutoAccessorGetTotalFee(
-      {required PreparedSend that}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
-            that, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_u_64,
-        decodeErrorData: null,
-      ),
-      constMeta: kCrateApiWalletPreparedSendAutoAccessorGetTotalFeeConstMeta,
-      argValues: [that],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta
-      get kCrateApiWalletPreparedSendAutoAccessorGetTotalFeeConstMeta =>
-          const TaskConstMeta(
-            debugName: "PreparedSend_auto_accessor_get_total_fee",
             argNames: ["that"],
           );
 
@@ -669,6 +668,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  void crateApiWalletPreparedSendAutoAccessorSetFee(
+      {required PreparedSend that, required BigInt fee}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
+            that, serializer);
+        sse_encode_u_64(fee, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiWalletPreparedSendAutoAccessorSetFeeConstMeta,
+      argValues: [that, fee],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletPreparedSendAutoAccessorSetFeeConstMeta =>
+      const TaskConstMeta(
+        debugName: "PreparedSend_auto_accessor_set_fee",
+        argNames: ["that", "fee"],
+      );
+
+  @override
   void crateApiWalletPreparedSendAutoAccessorSetSendFee(
       {required PreparedSend that, required BigInt sendFee}) {
     return handler.executeSync(SyncTask(
@@ -677,7 +703,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
             that, serializer);
         sse_encode_u_64(sendFee, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -705,7 +731,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
             that, serializer);
         sse_encode_u_64(swapFee, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 18)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -722,34 +748,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           const TaskConstMeta(
             debugName: "PreparedSend_auto_accessor_set_swap_fee",
             argNames: ["that", "swapFee"],
-          );
-
-  @override
-  void crateApiWalletPreparedSendAutoAccessorSetTotalFee(
-      {required PreparedSend that, required BigInt totalFee}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
-            that, serializer);
-        sse_encode_u_64(totalFee, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 18)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: null,
-      ),
-      constMeta: kCrateApiWalletPreparedSendAutoAccessorSetTotalFeeConstMeta,
-      argValues: [that, totalFee],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta
-      get kCrateApiWalletPreparedSendAutoAccessorSetTotalFeeConstMeta =>
-          const TaskConstMeta(
-            debugName: "PreparedSend_auto_accessor_set_total_fee",
-            argNames: ["that", "totalFee"],
           );
 
   @override
@@ -2442,6 +2440,11 @@ class PreparedSendImpl extends RustOpaque implements PreparedSend {
         that: this,
       );
 
+  BigInt get fee =>
+      RustLib.instance.api.crateApiWalletPreparedSendAutoAccessorGetFee(
+        that: this,
+      );
+
   BigInt get sendFee =>
       RustLib.instance.api.crateApiWalletPreparedSendAutoAccessorGetSendFee(
         that: this,
@@ -2452,14 +2455,12 @@ class PreparedSendImpl extends RustOpaque implements PreparedSend {
         that: this,
       );
 
-  BigInt get totalFee =>
-      RustLib.instance.api.crateApiWalletPreparedSendAutoAccessorGetTotalFee(
-        that: this,
-      );
-
   set amount(BigInt amount) =>
       RustLib.instance.api.crateApiWalletPreparedSendAutoAccessorSetAmount(
           that: this, amount: amount);
+
+  set fee(BigInt fee) => RustLib.instance.api
+      .crateApiWalletPreparedSendAutoAccessorSetFee(that: this, fee: fee);
 
   set sendFee(BigInt sendFee) =>
       RustLib.instance.api.crateApiWalletPreparedSendAutoAccessorSetSendFee(
@@ -2468,10 +2469,6 @@ class PreparedSendImpl extends RustOpaque implements PreparedSend {
   set swapFee(BigInt swapFee) =>
       RustLib.instance.api.crateApiWalletPreparedSendAutoAccessorSetSwapFee(
           that: this, swapFee: swapFee);
-
-  set totalFee(BigInt totalFee) =>
-      RustLib.instance.api.crateApiWalletPreparedSendAutoAccessorSetTotalFee(
-          that: this, totalFee: totalFee);
 }
 
 @sealed

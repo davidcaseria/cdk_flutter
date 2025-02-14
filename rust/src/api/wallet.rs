@@ -269,7 +269,7 @@ pub struct PreparedSend {
     pub amount: u64,
     pub swap_fee: u64,
     pub send_fee: u64,
-    pub total_fee: u64,
+    pub fee: u64,
 
     inner: CdkPreparedSend,
 }
@@ -280,7 +280,7 @@ impl From<CdkPreparedSend> for PreparedSend {
             amount: prepared_send.amount().into(),
             swap_fee: prepared_send.swap_fee().into(),
             send_fee: prepared_send.send_fee().into(),
-            total_fee: prepared_send.total_fee().into(),
+            fee: prepared_send.fee().into(),
             inner: prepared_send,
         }
     }
