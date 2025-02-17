@@ -18,6 +18,8 @@ String generateHexSeed() =>
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MultiMintWallet>>
 abstract class MultiMintWallet implements RustOpaqueInterface {
+  Future<void> addMint({required String mintUrl});
+
   Future<void> addWallet({required Wallet wallet});
 
   String get unit;

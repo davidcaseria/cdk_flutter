@@ -319,6 +319,11 @@ impl From<CdkPreparedSend> for PreparedSend {
 #[derive(Clone)]
 pub struct MultiMintWallet {
     pub unit: String,
+
+    seed: Vec<u8>,
+    target_proof_count: Option<usize>,
+    localstore: WalletDatabase,
+
     wallets: Arc<Mutex<HashMap<MintUrl, Wallet>>>,
 }
 
@@ -345,6 +350,9 @@ impl MultiMintWallet {
         }
         Ok(Self {
             unit: unit.to_string(),
+            seed,
+            target_proof_count,
+            localstore,
             wallets: Arc::new(Mutex::new(wallets)),
         })
     }
@@ -357,6 +365,19 @@ impl MultiMintWallet {
     ) -> Result<Self, Error> {
         let seed = hex::decode(seed)?;
         Ok(Self::new(unit, seed, target_proof_count, localstore).await?)
+    }
+
+    pub async fn add_mint(&self, mint_url: String) -> Result<(), Error> {
+        let mint_url = MintUrl::from_str(&mint_url)?;
+        let wallet = Wallet::new(
+            mint_url.to_string(),
+            self.unit.clone(),
+            self.seed.clone(),
+            self.target_proof_count,
+            self.localstore.clone(),
+        )?;
+        self.wallets.lock().await.insert(mint_url, wallet);
+        Ok(())
     }
 
     pub async fn add_wallet(&self, wallet: Wallet) -> Result<(), Error> {
