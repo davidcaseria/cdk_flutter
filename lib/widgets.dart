@@ -1,3 +1,4 @@
+import 'package:cdk_flutter/src/rust/api/mint.dart';
 import 'package:cdk_flutter/src/rust/api/token.dart';
 import 'package:cdk_flutter/src/rust/api/wallet.dart';
 import 'package:flutter/widgets.dart';
@@ -65,14 +66,14 @@ class MeltQuoteResult {
 }
 
 class MintListBuilder extends StatelessWidget {
-  final AsyncWidgetBuilder<List<String>> builder;
+  final AsyncWidgetBuilder<Map<String, MintInfo?>> builder;
 
   const MintListBuilder({super.key, required this.builder});
 
   @override
   Widget build(BuildContext context) {
     final wallet = context.read<MultiMintWallet>();
-    return FutureBuilder<List<String>>(
+    return FutureBuilder<Map<String, MintInfo?>>(
       future: wallet.listMints(),
       builder: builder,
     );
