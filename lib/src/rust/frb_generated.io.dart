@@ -4,6 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/error.dart';
+import 'api/mint.dart';
 import 'api/token.dart';
 import 'api/wallet.dart';
 import 'dart:async';
@@ -89,6 +90,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  Map<String, MintInfo?> dco_decode_Map_String_opt_box_autoadd_mint_info(
+      dynamic raw);
+
+  @protected
   MultiMintWallet
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet(
           dynamic raw);
@@ -129,6 +134,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MeltQuote dco_decode_box_autoadd_melt_quote(dynamic raw);
 
   @protected
+  MintInfo dco_decode_box_autoadd_mint_info(dynamic raw);
+
+  @protected
+  MintVersion dco_decode_box_autoadd_mint_version(dynamic raw);
+
+  @protected
   Token dco_decode_box_autoadd_token(dynamic raw);
 
   @protected
@@ -136,6 +147,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt dco_decode_box_autoadd_usize(dynamic raw);
+
+  @protected
+  ContactInfo dco_decode_contact_info(dynamic raw);
 
   @protected
   Error dco_decode_error(dynamic raw);
@@ -152,19 +166,32 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> dco_decode_list_String(dynamic raw);
 
   @protected
+  List<ContactInfo> dco_decode_list_contact_info(dynamic raw);
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw);
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<(String, MintInfo?)>
+      dco_decode_list_record_string_opt_box_autoadd_mint_info(dynamic raw);
+
+  @protected
   MeltQuote dco_decode_melt_quote(dynamic raw);
+
+  @protected
+  MintInfo dco_decode_mint_info(dynamic raw);
 
   @protected
   MintQuote dco_decode_mint_quote(dynamic raw);
 
   @protected
   MintQuoteState dco_decode_mint_quote_state(dynamic raw);
+
+  @protected
+  MintVersion dco_decode_mint_version(dynamic raw);
 
   @protected
   String? dco_decode_opt_String(dynamic raw);
@@ -175,6 +202,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  MintInfo? dco_decode_opt_box_autoadd_mint_info(dynamic raw);
+
+  @protected
+  MintVersion? dco_decode_opt_box_autoadd_mint_version(dynamic raw);
+
+  @protected
   Token? dco_decode_opt_box_autoadd_token(dynamic raw);
 
   @protected
@@ -182,6 +215,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt? dco_decode_opt_box_autoadd_usize(dynamic raw);
+
+  @protected
+  List<String>? dco_decode_opt_list_String(dynamic raw);
+
+  @protected
+  List<ContactInfo>? dco_decode_opt_list_contact_info(dynamic raw);
+
+  @protected
+  (String, MintInfo?) dco_decode_record_string_opt_box_autoadd_mint_info(
+      dynamic raw);
 
   @protected
   Token dco_decode_token(dynamic raw);
@@ -252,6 +295,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  Map<String, MintInfo?> sse_decode_Map_String_opt_box_autoadd_mint_info(
+      SseDeserializer deserializer);
+
+  @protected
   MultiMintWallet
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet(
           SseDeserializer deserializer);
@@ -294,6 +341,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MeltQuote sse_decode_box_autoadd_melt_quote(SseDeserializer deserializer);
 
   @protected
+  MintInfo sse_decode_box_autoadd_mint_info(SseDeserializer deserializer);
+
+  @protected
+  MintVersion sse_decode_box_autoadd_mint_version(SseDeserializer deserializer);
+
+  @protected
   Token sse_decode_box_autoadd_token(SseDeserializer deserializer);
 
   @protected
@@ -301,6 +354,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt sse_decode_box_autoadd_usize(SseDeserializer deserializer);
+
+  @protected
+  ContactInfo sse_decode_contact_info(SseDeserializer deserializer);
 
   @protected
   Error sse_decode_error(SseDeserializer deserializer);
@@ -317,19 +373,33 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
+  List<ContactInfo> sse_decode_list_contact_info(SseDeserializer deserializer);
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer);
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<(String, MintInfo?)>
+      sse_decode_list_record_string_opt_box_autoadd_mint_info(
+          SseDeserializer deserializer);
+
+  @protected
   MeltQuote sse_decode_melt_quote(SseDeserializer deserializer);
+
+  @protected
+  MintInfo sse_decode_mint_info(SseDeserializer deserializer);
 
   @protected
   MintQuote sse_decode_mint_quote(SseDeserializer deserializer);
 
   @protected
   MintQuoteState sse_decode_mint_quote_state(SseDeserializer deserializer);
+
+  @protected
+  MintVersion sse_decode_mint_version(SseDeserializer deserializer);
 
   @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
@@ -340,6 +410,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  MintInfo? sse_decode_opt_box_autoadd_mint_info(SseDeserializer deserializer);
+
+  @protected
+  MintVersion? sse_decode_opt_box_autoadd_mint_version(
+      SseDeserializer deserializer);
+
+  @protected
   Token? sse_decode_opt_box_autoadd_token(SseDeserializer deserializer);
 
   @protected
@@ -347,6 +424,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt? sse_decode_opt_box_autoadd_usize(SseDeserializer deserializer);
+
+  @protected
+  List<String>? sse_decode_opt_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<ContactInfo>? sse_decode_opt_list_contact_info(
+      SseDeserializer deserializer);
+
+  @protected
+  (String, MintInfo?) sse_decode_record_string_opt_box_autoadd_mint_info(
+      SseDeserializer deserializer);
 
   @protected
   Token sse_decode_token(SseDeserializer deserializer);
@@ -418,6 +506,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           Wallet self, SseSerializer serializer);
 
   @protected
+  void sse_encode_Map_String_opt_box_autoadd_mint_info(
+      Map<String, MintInfo?> self, SseSerializer serializer);
+
+  @protected
   void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet(
           MultiMintWallet self, SseSerializer serializer);
@@ -461,6 +553,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MeltQuote self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_mint_info(
+      MintInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_mint_version(
+      MintVersion self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_token(Token self, SseSerializer serializer);
 
   @protected
@@ -468,6 +568,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_box_autoadd_usize(BigInt self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_contact_info(ContactInfo self, SseSerializer serializer);
 
   @protected
   void sse_encode_error(Error self, SseSerializer serializer);
@@ -484,6 +587,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_contact_info(
+      List<ContactInfo> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_prim_u_8_loose(List<int> self, SseSerializer serializer);
 
   @protected
@@ -491,7 +598,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Uint8List self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_record_string_opt_box_autoadd_mint_info(
+      List<(String, MintInfo?)> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_melt_quote(MeltQuote self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_mint_info(MintInfo self, SseSerializer serializer);
 
   @protected
   void sse_encode_mint_quote(MintQuote self, SseSerializer serializer);
@@ -499,6 +613,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_mint_quote_state(
       MintQuoteState self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_mint_version(MintVersion self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
@@ -509,6 +626,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           Wallet? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_mint_info(
+      MintInfo? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_mint_version(
+      MintVersion? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_token(Token? self, SseSerializer serializer);
 
   @protected
@@ -516,6 +641,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_usize(BigInt? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_String(List<String>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_contact_info(
+      List<ContactInfo>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_opt_box_autoadd_mint_info(
+      (String, MintInfo?) self, SseSerializer serializer);
 
   @protected
   void sse_encode_token(Token self, SseSerializer serializer);

@@ -5,6 +5,7 @@
 
 import '../frb_generated.dart';
 import 'error.dart';
+import 'mint.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'token.dart';
 
@@ -28,7 +29,7 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
 
   Future<Wallet?> getWallet({required String mintUrl});
 
-  Future<List<String>> listMints();
+  Future<Map<String, MintInfo?>> listMints();
 
   Future<List<Wallet>> listWallets();
 
@@ -90,6 +91,8 @@ abstract class Wallet implements RustOpaqueInterface {
   set unit(String unit);
 
   Future<BigInt> balance();
+
+  Future<MintInfo?> getInfo();
 
   Future<bool> isTokenSpent({required Token token});
 
