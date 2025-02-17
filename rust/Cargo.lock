@@ -440,6 +440,7 @@ name = "cdk_flutter"
 version = "0.1.0"
 dependencies = [
  "cdk",
+ "cdk-common",
  "cdk-redb",
  "flutter_rust_bridge",
  "futures",

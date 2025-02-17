@@ -23,7 +23,7 @@ use tokio::{
 
 use crate::frb_generated::StreamSink;
 
-use super::{error::Error, token::Token};
+use super::{error::Error, mint::MintInfo, token::Token};
 
 #[derive(Clone)]
 pub struct Wallet {
@@ -90,6 +90,10 @@ impl Wallet {
             }
         });
         Ok(())
+    }
+
+    pub async fn get_info(&self) -> Result<Option<MintInfo>, Error> {
+        Ok(self.inner.get_mint_info().await?.map(|info| info.into()))
     }
 
     pub async fn is_token_spent(&self, token: Token) -> Result<bool, Error> {
@@ -397,13 +401,15 @@ impl MultiMintWallet {
         Ok(None)
     }
 
-    pub async fn list_mints(&self) -> Vec<String> {
-        self.wallets
-            .lock()
-            .await
-            .keys()
-            .map(|k| k.to_string())
-            .collect()
+    pub async fn list_mints(&self) -> HashMap<String, Option<MintInfo>> {
+        let wallets_guard = self.wallets.lock().await;
+        let wallets = wallets_guard.iter();
+        let mut mints = HashMap::new();
+        for (mint_url, wallet) in wallets {
+            let mint_info = wallet.get_info().await.unwrap_or_default();
+            mints.insert(mint_url.to_string(), mint_info);
+        }
+        mints
     }
 
     pub async fn list_wallets(&self) -> Vec<Wallet> {

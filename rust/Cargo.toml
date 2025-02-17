@@ -11,6 +11,8 @@ crate-type = ["cdylib", "staticlib"]
 cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false, features = [
     "wallet",
 ] }
+# cdk-common = { version = "0.6.0", default-features = false }
+cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false }
 # cdk-redb = { version = "0.6.0", default-features = false, features = ["wallet"] }
 cdk-redb = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false, features = [
     "wallet",
