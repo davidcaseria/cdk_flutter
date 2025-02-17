@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.8.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 944770725;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -495342008;
 
 // Section: executor
 
@@ -350,7 +350,7 @@ fn wire__crate__api__wallet__MultiMintWallet_list_mints_impl(
             >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
-                transform_result_sse::<_, ()>(
+                transform_result_sse::<_, crate::api::error::Error>(
                     (move || async move {
                         let mut api_that_guard = None;
                         let decode_indices_ =
@@ -369,9 +369,9 @@ fn wire__crate__api__wallet__MultiMintWallet_list_mints_impl(
                             }
                         }
                         let api_that_guard = api_that_guard.unwrap();
-                        let output_ok = Result::<_, ()>::Ok(
-                            crate::api::wallet::MultiMintWallet::list_mints(&*api_that_guard).await,
-                        )?;
+                        let output_ok =
+                            crate::api::wallet::MultiMintWallet::list_mints(&*api_that_guard)
+                                .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -1316,7 +1316,7 @@ fn wire__crate__api__wallet__Wallet_balance_impl(
         },
     )
 }
-fn wire__crate__api__wallet__Wallet_get_info_impl(
+fn wire__crate__api__wallet__Wallet_get_mint_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -1324,7 +1324,7 @@ fn wire__crate__api__wallet__Wallet_get_info_impl(
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "Wallet_get_info",
+            debug_name: "Wallet_get_mint",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -1363,7 +1363,7 @@ fn wire__crate__api__wallet__Wallet_get_info_impl(
                         }
                         let api_that_guard = api_that_guard.unwrap();
                         let output_ok =
-                            crate::api::wallet::Wallet::get_info(&*api_that_guard).await?;
+                            crate::api::wallet::Wallet::get_mint(&*api_that_guard).await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -2126,15 +2126,6 @@ impl SseDecode for WalletDatabase {
     }
 }
 
-impl SseDecode for std::collections::HashMap<String, Option<crate::api::mint::MintInfo>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner =
-            <Vec<(String, Option<crate::api::mint::MintInfo>)>>::sse_decode(deserializer);
-        return inner.into_iter().collect();
-    }
-}
-
 impl SseDecode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MultiMintWallet>>
 {
@@ -2293,6 +2284,18 @@ impl SseDecode for Vec<crate::api::mint::ContactInfo> {
     }
 }
 
+impl SseDecode for Vec<crate::api::mint::Mint> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::mint::Mint>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2300,20 +2303,6 @@ impl SseDecode for Vec<u8> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<u8>::sse_decode(deserializer));
-        }
-        return ans_;
-    }
-}
-
-impl SseDecode for Vec<(String, Option<crate::api::mint::MintInfo>)> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
-        for idx_ in 0..len_ {
-            ans_.push(<(String, Option<crate::api::mint::MintInfo>)>::sse_decode(
-                deserializer,
-            ));
         }
         return ans_;
     }
@@ -2333,6 +2322,20 @@ impl SseDecode for crate::api::wallet::MeltQuote {
             amount: var_amount,
             fee_reserve: var_feeReserve,
             expiry: var_expiry,
+        };
+    }
+}
+
+impl SseDecode for crate::api::mint::Mint {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_url = <String>::sse_decode(deserializer);
+        let mut var_info = <Option<crate::api::mint::MintInfo>>::sse_decode(deserializer);
+        let mut var_balance = <u64>::sse_decode(deserializer);
+        return crate::api::mint::Mint {
+            url: var_url,
+            info: var_info,
+            balance: var_balance,
         };
     }
 }
@@ -2512,15 +2515,6 @@ impl SseDecode for Option<Vec<crate::api::mint::ContactInfo>> {
     }
 }
 
-impl SseDecode for (String, Option<crate::api::mint::MintInfo>) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_field0 = <String>::sse_decode(deserializer);
-        let mut var_field1 = <Option<crate::api::mint::MintInfo>>::sse_decode(deserializer);
-        return (var_field0, var_field1);
-    }
-}
-
 impl SseDecode for crate::api::token::Token {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2620,7 +2614,7 @@ fn pde_ffi_dispatcher_primary_impl(
             data_len,
         ),
         25 => wire__crate__api__wallet__Wallet_balance_impl(port, ptr, rust_vec_len, data_len),
-        26 => wire__crate__api__wallet__Wallet_get_info_impl(port, ptr, rust_vec_len, data_len),
+        26 => wire__crate__api__wallet__Wallet_get_mint_impl(port, ptr, rust_vec_len, data_len),
         27 => {
             wire__crate__api__wallet__Wallet_is_token_spent_impl(port, ptr, rust_vec_len, data_len)
         }
@@ -2859,6 +2853,23 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::MeltQuote>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::mint::Mint {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.url.into_into_dart().into_dart(),
+            self.info.into_into_dart().into_dart(),
+            self.balance.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::mint::Mint {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::mint::Mint> for crate::api::mint::Mint {
+    fn into_into_dart(self) -> crate::api::mint::Mint {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::mint::MintInfo {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -2994,16 +3005,6 @@ impl SseEncode for WalletDatabase {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
-    }
-}
-
-impl SseEncode for std::collections::HashMap<String, Option<crate::api::mint::MintInfo>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<(String, Option<crate::api::mint::MintInfo>)>>::sse_encode(
-            self.into_iter().collect(),
-            serializer,
-        );
     }
 }
 
@@ -3155,22 +3156,22 @@ impl SseEncode for Vec<crate::api::mint::ContactInfo> {
     }
 }
 
+impl SseEncode for Vec<crate::api::mint::Mint> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::mint::Mint>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <u8>::sse_encode(item, serializer);
-        }
-    }
-}
-
-impl SseEncode for Vec<(String, Option<crate::api::mint::MintInfo>)> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(self.len() as _, serializer);
-        for item in self {
-            <(String, Option<crate::api::mint::MintInfo>)>::sse_encode(item, serializer);
         }
     }
 }
@@ -3183,6 +3184,15 @@ impl SseEncode for crate::api::wallet::MeltQuote {
         <u64>::sse_encode(self.amount, serializer);
         <u64>::sse_encode(self.fee_reserve, serializer);
         <u64>::sse_encode(self.expiry, serializer);
+    }
+}
+
+impl SseEncode for crate::api::mint::Mint {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.url, serializer);
+        <Option<crate::api::mint::MintInfo>>::sse_encode(self.info, serializer);
+        <u64>::sse_encode(self.balance, serializer);
     }
 }
 
@@ -3326,14 +3336,6 @@ impl SseEncode for Option<Vec<crate::api::mint::ContactInfo>> {
         if let Some(value) = self {
             <Vec<crate::api::mint::ContactInfo>>::sse_encode(value, serializer);
         }
-    }
-}
-
-impl SseEncode for (String, Option<crate::api::mint::MintInfo>) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.0, serializer);
-        <Option<crate::api::mint::MintInfo>>::sse_encode(self.1, serializer);
     }
 }
 

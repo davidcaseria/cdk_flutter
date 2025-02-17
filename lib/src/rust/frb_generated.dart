@@ -71,7 +71,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.8.0';
 
   @override
-  int get rustContentHash => 944770725;
+  int get rustContentHash => -495342008;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -97,7 +97,7 @@ abstract class RustLibApi extends BaseApi {
   Future<Wallet?> crateApiWalletMultiMintWalletGetWallet(
       {required MultiMintWallet that, required String mintUrl});
 
-  Future<Map<String, MintInfo?>> crateApiWalletMultiMintWalletListMints(
+  Future<List<Mint>> crateApiWalletMultiMintWalletListMints(
       {required MultiMintWallet that});
 
   Future<List<Wallet>> crateApiWalletMultiMintWalletListWallets(
@@ -159,7 +159,7 @@ abstract class RustLibApi extends BaseApi {
 
   Future<BigInt> crateApiWalletWalletBalance({required Wallet that});
 
-  Future<MintInfo?> crateApiWalletWalletGetInfo({required Wallet that});
+  Future<Mint> crateApiWalletWalletGetMint({required Wallet that});
 
   Future<bool> crateApiWalletWalletIsTokenSpent(
       {required Wallet that, required Token token});
@@ -395,7 +395,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<Map<String, MintInfo?>> crateApiWalletMultiMintWalletListMints(
+  Future<List<Mint>> crateApiWalletMultiMintWalletListMints(
       {required MultiMintWallet that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -406,8 +406,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 6, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_Map_String_opt_box_autoadd_mint_info,
-        decodeErrorData: null,
+        decodeSuccessData: sse_decode_list_mint,
+        decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletMultiMintWalletListMintsConstMeta,
       argValues: [that],
@@ -946,7 +946,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<MintInfo?> crateApiWalletWalletGetInfo({required Wallet that}) {
+  Future<Mint> crateApiWalletWalletGetMint({required Wallet that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -956,18 +956,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 26, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_opt_box_autoadd_mint_info,
+        decodeSuccessData: sse_decode_mint,
         decodeErrorData: sse_decode_error,
       ),
-      constMeta: kCrateApiWalletWalletGetInfoConstMeta,
+      constMeta: kCrateApiWalletWalletGetMintConstMeta,
       argValues: [that],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kCrateApiWalletWalletGetInfoConstMeta =>
+  TaskConstMeta get kCrateApiWalletWalletGetMintConstMeta =>
       const TaskConstMeta(
-        debugName: "Wallet_get_info",
+        debugName: "Wallet_get_mint",
         argNames: ["that"],
       );
 
@@ -1488,15 +1488,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Map<String, MintInfo?> dco_decode_Map_String_opt_box_autoadd_mint_info(
-      dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Map.fromEntries(
-        dco_decode_list_record_string_opt_box_autoadd_mint_info(raw)
-            .map((e) => MapEntry(e.$1, e.$2)));
-  }
-
-  @protected
   MultiMintWallet
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet(
           dynamic raw) {
@@ -1668,6 +1659,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Mint> dco_decode_list_mint(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_mint).toList();
+  }
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as List<int>;
@@ -1677,15 +1674,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
-  }
-
-  @protected
-  List<(String, MintInfo?)>
-      dco_decode_list_record_string_opt_box_autoadd_mint_info(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>)
-        .map(dco_decode_record_string_opt_box_autoadd_mint_info)
-        .toList();
   }
 
   @protected
@@ -1700,6 +1688,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       amount: dco_decode_u_64(arr[2]),
       feeReserve: dco_decode_u_64(arr[3]),
       expiry: dco_decode_u_64(arr[4]),
+    );
+  }
+
+  @protected
+  Mint dco_decode_mint(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return Mint(
+      url: dco_decode_String(arr[0]),
+      info: dco_decode_opt_box_autoadd_mint_info(arr[1]),
+      balance: dco_decode_u_64(arr[2]),
     );
   }
 
@@ -1814,20 +1815,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<ContactInfo>? dco_decode_opt_list_contact_info(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_list_contact_info(raw);
-  }
-
-  @protected
-  (String, MintInfo?) dco_decode_record_string_opt_box_autoadd_mint_info(
-      dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2) {
-      throw Exception('Expected 2 elements, got ${arr.length}');
-    }
-    return (
-      dco_decode_String(arr[0]),
-      dco_decode_opt_box_autoadd_mint_info(arr[1]),
-    );
   }
 
   @protected
@@ -1962,15 +1949,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return WalletImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
-  }
-
-  @protected
-  Map<String, MintInfo?> sse_decode_Map_String_opt_box_autoadd_mint_info(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner =
-        sse_decode_list_record_string_opt_box_autoadd_mint_info(deserializer);
-    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
   }
 
   @protected
@@ -2163,6 +2141,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Mint> sse_decode_list_mint(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Mint>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_mint(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -2174,21 +2164,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
-  }
-
-  @protected
-  List<(String, MintInfo?)>
-      sse_decode_list_record_string_opt_box_autoadd_mint_info(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <(String, MintInfo?)>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(
-          sse_decode_record_string_opt_box_autoadd_mint_info(deserializer));
-    }
-    return ans_;
   }
 
   @protected
@@ -2205,6 +2180,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         amount: var_amount,
         feeReserve: var_feeReserve,
         expiry: var_expiry);
+  }
+
+  @protected
+  Mint sse_decode_mint(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_url = sse_decode_String(deserializer);
+    var var_info = sse_decode_opt_box_autoadd_mint_info(deserializer);
+    var var_balance = sse_decode_u_64(deserializer);
+    return Mint(url: var_url, info: var_info, balance: var_balance);
   }
 
   @protected
@@ -2371,15 +2355,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  (String, MintInfo?) sse_decode_record_string_opt_box_autoadd_mint_info(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_field0 = sse_decode_String(deserializer);
-    var var_field1 = sse_decode_opt_box_autoadd_mint_info(deserializer);
-    return (var_field0, var_field1);
-  }
-
-  @protected
   Token sse_decode_token(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_encoded = sse_decode_String(deserializer);
@@ -2514,14 +2489,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
         (self as WalletImpl).frbInternalSseEncode(move: false), serializer);
-  }
-
-  @protected
-  void sse_encode_Map_String_opt_box_autoadd_mint_info(
-      Map<String, MintInfo?> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_record_string_opt_box_autoadd_mint_info(
-        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
   }
 
   @protected
@@ -2716,6 +2683,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_mint(List<Mint> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_mint(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_prim_u_8_loose(
       List<int> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -2733,16 +2709,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_record_string_opt_box_autoadd_mint_info(
-      List<(String, MintInfo?)> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_record_string_opt_box_autoadd_mint_info(item, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_melt_quote(MeltQuote self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.id, serializer);
@@ -2750,6 +2716,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_64(self.amount, serializer);
     sse_encode_u_64(self.feeReserve, serializer);
     sse_encode_u_64(self.expiry, serializer);
+  }
+
+  @protected
+  void sse_encode_mint(Mint self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.url, serializer);
+    sse_encode_opt_box_autoadd_mint_info(self.info, serializer);
+    sse_encode_u_64(self.balance, serializer);
   }
 
   @protected
@@ -2891,14 +2865,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_record_string_opt_box_autoadd_mint_info(
-      (String, MintInfo?) self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.$1, serializer);
-    sse_encode_opt_box_autoadd_mint_info(self.$2, serializer);
-  }
-
-  @protected
   void sse_encode_token(Token self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.encoded, serializer);
@@ -2966,7 +2932,7 @@ class MultiMintWalletImpl extends RustOpaque implements MultiMintWallet {
   Future<Wallet?> getWallet({required String mintUrl}) => RustLib.instance.api
       .crateApiWalletMultiMintWalletGetWallet(that: this, mintUrl: mintUrl);
 
-  Future<Map<String, MintInfo?>> listMints() =>
+  Future<List<Mint>> listMints() =>
       RustLib.instance.api.crateApiWalletMultiMintWalletListMints(
         that: this,
       );
@@ -3101,8 +3067,7 @@ class WalletImpl extends RustOpaque implements Wallet {
         that: this,
       );
 
-  Future<MintInfo?> getInfo() =>
-      RustLib.instance.api.crateApiWalletWalletGetInfo(
+  Future<Mint> getMint() => RustLib.instance.api.crateApiWalletWalletGetMint(
         that: this,
       );
 

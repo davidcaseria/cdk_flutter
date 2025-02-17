@@ -2,6 +2,32 @@ use cdk_common::{
     ContactInfo as CdkContactInfo, MintInfo as CdkMintInfo, MintVersion as CdkMintVersion,
 };
 
+pub struct Mint {
+    pub url: String,
+    pub info: Option<MintInfo>,
+    pub balance: u64,
+}
+
+impl Eq for Mint {}
+
+impl Ord for Mint {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.balance.cmp(&other.balance).reverse()
+    }
+}
+
+impl PartialEq for Mint {
+    fn eq(&self, other: &Self) -> bool {
+        self.url == other.url
+    }
+}
+
+impl PartialOrd for Mint {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.balance.cmp(&other.balance).reverse())
+    }
+}
+
 pub struct MintInfo {
     pub name: Option<String>,
     pub pubkey: Option<String>,

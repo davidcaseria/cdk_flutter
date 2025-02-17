@@ -23,7 +23,7 @@ use tokio::{
 
 use crate::frb_generated::StreamSink;
 
-use super::{error::Error, mint::MintInfo, token::Token};
+use super::{error::Error, mint::Mint, token::Token};
 
 #[derive(Clone)]
 pub struct Wallet {
@@ -92,8 +92,13 @@ impl Wallet {
         Ok(())
     }
 
-    pub async fn get_info(&self) -> Result<Option<MintInfo>, Error> {
-        Ok(self.inner.get_mint_info().await?.map(|info| info.into()))
+    pub async fn get_mint(&self) -> Result<Mint, Error> {
+        let info = self.inner.get_mint_info().await?;
+        Ok(Mint {
+            url: self.mint_url.clone(),
+            balance: self.balance().await?,
+            info: info.map(|info| info.into()),
+        })
     }
 
     pub async fn is_token_spent(&self, token: Token) -> Result<bool, Error> {
@@ -401,15 +406,16 @@ impl MultiMintWallet {
         Ok(None)
     }
 
-    pub async fn list_mints(&self) -> HashMap<String, Option<MintInfo>> {
+    pub async fn list_mints(&self) -> Result<Vec<Mint>, Error> {
         let wallets_guard = self.wallets.lock().await;
-        let wallets = wallets_guard.iter();
-        let mut mints = HashMap::new();
-        for (mint_url, wallet) in wallets {
-            let mint_info = wallet.get_info().await.unwrap_or_default();
-            mints.insert(mint_url.to_string(), mint_info);
+        let wallets = wallets_guard.values();
+        let mut mints = Vec::new();
+        for wallet in wallets {
+            let mint = wallet.get_mint().await?;
+            mints.push(mint);
         }
-        mints
+        mints.sort();
+        Ok(mints)
     }
 
     pub async fn list_wallets(&self) -> Vec<Wallet> {

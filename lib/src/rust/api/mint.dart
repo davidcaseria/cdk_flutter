@@ -6,7 +6,7 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `eq`, `from`, `from`, `from`, `partial_cmp`
 
 class ContactInfo {
   final String method;
@@ -27,6 +27,30 @@ class ContactInfo {
           runtimeType == other.runtimeType &&
           method == other.method &&
           info == other.info;
+}
+
+class Mint {
+  final String url;
+  final MintInfo? info;
+  final BigInt balance;
+
+  const Mint({
+    required this.url,
+    this.info,
+    required this.balance,
+  });
+
+  @override
+  int get hashCode => url.hashCode ^ info.hashCode ^ balance.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Mint &&
+          runtimeType == other.runtimeType &&
+          url == other.url &&
+          info == other.info &&
+          balance == other.balance;
 }
 
 class MintInfo {

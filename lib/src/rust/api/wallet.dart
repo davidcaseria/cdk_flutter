@@ -29,7 +29,7 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
 
   Future<Wallet?> getWallet({required String mintUrl});
 
-  Future<Map<String, MintInfo?>> listMints();
+  Future<List<Mint>> listMints();
 
   Future<List<Wallet>> listWallets();
 
@@ -92,7 +92,7 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<BigInt> balance();
 
-  Future<MintInfo?> getInfo();
+  Future<Mint> getMint();
 
   Future<bool> isTokenSpent({required Token token});
 
