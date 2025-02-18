@@ -4,10 +4,14 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
+import 'bitcoin.dart';
 import 'error.dart';
 import 'mint.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
+import 'payment_request.dart';
 import 'token.dart';
+part 'wallet.freezed.dart';
 
 // These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`, `from`, `from`
@@ -16,6 +20,9 @@ Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
 
 String generateHexSeed() =>
     RustLib.instance.api.crateApiWalletGenerateHexSeed();
+
+ParseInputResult parseInput({required String input}) =>
+    RustLib.instance.api.crateApiWalletParseInput(input: input);
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MultiMintWallet>>
 abstract class MultiMintWallet implements RustOpaqueInterface {
@@ -224,4 +231,19 @@ enum MintQuoteState {
   paid,
   issued,
   ;
+}
+
+@freezed
+sealed class ParseInputResult with _$ParseInputResult {
+  const ParseInputResult._();
+
+  const factory ParseInputResult.bitcoinAddress(
+    BitcoinAddress field0,
+  ) = ParseInputResult_BitcoinAddress;
+  const factory ParseInputResult.paymentRequest(
+    PaymentRequest field0,
+  ) = ParseInputResult_PaymentRequest;
+  const factory ParseInputResult.token(
+    Token field0,
+  ) = ParseInputResult_Token;
 }

@@ -7,6 +7,7 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
+bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
 # cdk = { version = "0.6.0", default-features = false, features = ["wallet"] }
 cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false, features = [
     "wallet",

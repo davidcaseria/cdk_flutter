@@ -19,6 +19,14 @@ impl Token {
     }
 }
 
+impl FromStr for Token {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Error> {
+        Token::parse(s)
+    }
+}
+
 impl TryFrom<CdkToken> for Token {
     type Error = Error;
 

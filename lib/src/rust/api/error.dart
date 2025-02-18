@@ -8,7 +8,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'error.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 @freezed
 sealed class Error with _$Error implements FrbException {
@@ -23,6 +23,7 @@ sealed class Error with _$Error implements FrbException {
   const factory Error.hex(
     String field0,
   ) = Error_Hex;
+  const factory Error.invalidInput() = Error_InvalidInput;
   const factory Error.protocol(
     String field0,
   ) = Error_Protocol;

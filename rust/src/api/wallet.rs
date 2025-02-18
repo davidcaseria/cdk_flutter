@@ -23,7 +23,10 @@ use tokio::{
 
 use crate::frb_generated::StreamSink;
 
-use super::{error::Error, mint::Mint, token::Token};
+use super::{
+    bitcoin::BitcoinAddress, error::Error, mint::Mint, payment_request::PaymentRequest,
+    token::Token,
+};
 
 #[derive(Clone)]
 pub struct Wallet {
@@ -479,4 +482,25 @@ pub fn generate_seed() -> Vec<u8> {
 #[frb(sync)]
 pub fn generate_hex_seed() -> String {
     hex::encode(rand::random::<[u8; 32]>())
+}
+
+#[frb(sync)]
+pub fn parse_input(input: String) -> Result<ParseInputResult, Error> {
+    let input = input.trim();
+    if let Ok(req) = PaymentRequest::from_str(input) {
+        return Ok(ParseInputResult::PaymentRequest(req));
+    }
+    if let Ok(token) = Token::from_str(input) {
+        return Ok(ParseInputResult::Token(token));
+    }
+    if let Ok(addr) = BitcoinAddress::from_str(input) {
+        return Ok(ParseInputResult::BitcoinAddress(addr));
+    }
+    Err(Error::InvalidInput)
+}
+
+pub enum ParseInputResult {
+    BitcoinAddress(BitcoinAddress),
+    PaymentRequest(PaymentRequest),
+    Token(Token),
 }

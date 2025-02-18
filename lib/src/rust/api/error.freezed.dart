@@ -16,12 +16,12 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Error {
-  String get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String field0) cdk,
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
   }) =>
@@ -31,6 +31,7 @@ mixin _$Error {
     TResult? Function(String field0)? cdk,
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
   }) =>
@@ -40,6 +41,7 @@ mixin _$Error {
     TResult Function(String field0)? cdk,
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
     required TResult orElse(),
@@ -50,6 +52,7 @@ mixin _$Error {
     required TResult Function(Error_Cdk value) cdk,
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
   }) =>
@@ -59,6 +62,7 @@ mixin _$Error {
     TResult? Function(Error_Cdk value)? cdk,
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
   }) =>
@@ -68,24 +72,18 @@ mixin _$Error {
     TResult Function(Error_Cdk value)? cdk,
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  /// Create a copy of Error
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ErrorCopyWith<Error> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ErrorCopyWith<$Res> {
   factory $ErrorCopyWith(Error value, $Res Function(Error) then) =
       _$ErrorCopyWithImpl<$Res, Error>;
-  @useResult
-  $Res call({String field0});
 }
 
 /// @nodoc
@@ -100,26 +98,13 @@ class _$ErrorCopyWithImpl<$Res, $Val extends Error>
 
   /// Create a copy of Error
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? field0 = null,
-  }) {
-    return _then(_value.copyWith(
-      field0: null == field0
-          ? _value.field0
-          : field0 // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$Error_CdkImplCopyWith<$Res> implements $ErrorCopyWith<$Res> {
+abstract class _$$Error_CdkImplCopyWith<$Res> {
   factory _$$Error_CdkImplCopyWith(
           _$Error_CdkImpl value, $Res Function(_$Error_CdkImpl) then) =
       __$$Error_CdkImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String field0});
 }
@@ -186,6 +171,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(String field0) cdk,
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
   }) {
@@ -198,6 +184,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(String field0)? cdk,
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
   }) {
@@ -210,6 +197,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(String field0)? cdk,
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
     required TResult orElse(),
@@ -226,6 +214,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(Error_Cdk value) cdk,
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
   }) {
@@ -238,6 +227,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(Error_Cdk value)? cdk,
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
   }) {
@@ -250,6 +240,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(Error_Cdk value)? cdk,
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
     required TResult orElse(),
@@ -265,24 +256,20 @@ abstract class Error_Cdk extends Error {
   const factory Error_Cdk(final String field0) = _$Error_CdkImpl;
   const Error_Cdk._() : super._();
 
-  @override
   String get field0;
 
   /// Create a copy of Error
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Error_CdkImplCopyWith<_$Error_CdkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Error_DatabaseImplCopyWith<$Res>
-    implements $ErrorCopyWith<$Res> {
+abstract class _$$Error_DatabaseImplCopyWith<$Res> {
   factory _$$Error_DatabaseImplCopyWith(_$Error_DatabaseImpl value,
           $Res Function(_$Error_DatabaseImpl) then) =
       __$$Error_DatabaseImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String field0});
 }
@@ -350,6 +337,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(String field0) cdk,
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
   }) {
@@ -362,6 +350,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(String field0)? cdk,
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
   }) {
@@ -374,6 +363,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(String field0)? cdk,
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
     required TResult orElse(),
@@ -390,6 +380,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(Error_Cdk value) cdk,
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
   }) {
@@ -402,6 +393,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(Error_Cdk value)? cdk,
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
   }) {
@@ -414,6 +406,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(Error_Cdk value)? cdk,
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
     required TResult orElse(),
@@ -429,23 +422,20 @@ abstract class Error_Database extends Error {
   const factory Error_Database(final String field0) = _$Error_DatabaseImpl;
   const Error_Database._() : super._();
 
-  @override
   String get field0;
 
   /// Create a copy of Error
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Error_DatabaseImplCopyWith<_$Error_DatabaseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Error_HexImplCopyWith<$Res> implements $ErrorCopyWith<$Res> {
+abstract class _$$Error_HexImplCopyWith<$Res> {
   factory _$$Error_HexImplCopyWith(
           _$Error_HexImpl value, $Res Function(_$Error_HexImpl) then) =
       __$$Error_HexImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String field0});
 }
@@ -512,6 +502,7 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(String field0) cdk,
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
   }) {
@@ -524,6 +515,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(String field0)? cdk,
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
   }) {
@@ -536,6 +528,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(String field0)? cdk,
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
     required TResult orElse(),
@@ -552,6 +545,7 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(Error_Cdk value) cdk,
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
   }) {
@@ -564,6 +558,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(Error_Cdk value)? cdk,
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
   }) {
@@ -576,6 +571,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(Error_Cdk value)? cdk,
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
     required TResult orElse(),
@@ -591,24 +587,150 @@ abstract class Error_Hex extends Error {
   const factory Error_Hex(final String field0) = _$Error_HexImpl;
   const Error_Hex._() : super._();
 
-  @override
   String get field0;
 
   /// Create a copy of Error
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Error_HexImplCopyWith<_$Error_HexImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Error_ProtocolImplCopyWith<$Res>
-    implements $ErrorCopyWith<$Res> {
+abstract class _$$Error_InvalidInputImplCopyWith<$Res> {
+  factory _$$Error_InvalidInputImplCopyWith(_$Error_InvalidInputImpl value,
+          $Res Function(_$Error_InvalidInputImpl) then) =
+      __$$Error_InvalidInputImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Error_InvalidInputImplCopyWithImpl<$Res>
+    extends _$ErrorCopyWithImpl<$Res, _$Error_InvalidInputImpl>
+    implements _$$Error_InvalidInputImplCopyWith<$Res> {
+  __$$Error_InvalidInputImplCopyWithImpl(_$Error_InvalidInputImpl _value,
+      $Res Function(_$Error_InvalidInputImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Error_InvalidInputImpl extends Error_InvalidInput {
+  const _$Error_InvalidInputImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Error.invalidInput()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$Error_InvalidInputImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) cdk,
+    required TResult Function(String field0) database,
+    required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
+    required TResult Function(String field0) protocol,
+    required TResult Function(String field0) url,
+  }) {
+    return invalidInput();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? cdk,
+    TResult? Function(String field0)? database,
+    TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
+    TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? url,
+  }) {
+    return invalidInput?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? cdk,
+    TResult Function(String field0)? database,
+    TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
+    TResult Function(String field0)? protocol,
+    TResult Function(String field0)? url,
+    required TResult orElse(),
+  }) {
+    if (invalidInput != null) {
+      return invalidInput();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Error_Cdk value) cdk,
+    required TResult Function(Error_Database value) database,
+    required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Url value) url,
+  }) {
+    return invalidInput(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Error_Cdk value)? cdk,
+    TResult? Function(Error_Database value)? database,
+    TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Url value)? url,
+  }) {
+    return invalidInput?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Error_Cdk value)? cdk,
+    TResult Function(Error_Database value)? database,
+    TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Url value)? url,
+    required TResult orElse(),
+  }) {
+    if (invalidInput != null) {
+      return invalidInput(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Error_InvalidInput extends Error {
+  const factory Error_InvalidInput() = _$Error_InvalidInputImpl;
+  const Error_InvalidInput._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Error_ProtocolImplCopyWith<$Res> {
   factory _$$Error_ProtocolImplCopyWith(_$Error_ProtocolImpl value,
           $Res Function(_$Error_ProtocolImpl) then) =
       __$$Error_ProtocolImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String field0});
 }
@@ -676,6 +798,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(String field0) cdk,
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
   }) {
@@ -688,6 +811,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(String field0)? cdk,
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
   }) {
@@ -700,6 +824,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(String field0)? cdk,
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
     required TResult orElse(),
@@ -716,6 +841,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(Error_Cdk value) cdk,
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
   }) {
@@ -728,6 +854,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(Error_Cdk value)? cdk,
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
   }) {
@@ -740,6 +867,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(Error_Cdk value)? cdk,
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
     required TResult orElse(),
@@ -755,23 +883,20 @@ abstract class Error_Protocol extends Error {
   const factory Error_Protocol(final String field0) = _$Error_ProtocolImpl;
   const Error_Protocol._() : super._();
 
-  @override
   String get field0;
 
   /// Create a copy of Error
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Error_ProtocolImplCopyWith<_$Error_ProtocolImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Error_UrlImplCopyWith<$Res> implements $ErrorCopyWith<$Res> {
+abstract class _$$Error_UrlImplCopyWith<$Res> {
   factory _$$Error_UrlImplCopyWith(
           _$Error_UrlImpl value, $Res Function(_$Error_UrlImpl) then) =
       __$$Error_UrlImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String field0});
 }
@@ -838,6 +963,7 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(String field0) cdk,
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
   }) {
@@ -850,6 +976,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(String field0)? cdk,
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
   }) {
@@ -862,6 +989,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(String field0)? cdk,
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
     required TResult orElse(),
@@ -878,6 +1006,7 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(Error_Cdk value) cdk,
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
   }) {
@@ -890,6 +1019,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(Error_Cdk value)? cdk,
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
   }) {
@@ -902,6 +1032,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(Error_Cdk value)? cdk,
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
     required TResult orElse(),
@@ -917,12 +1048,10 @@ abstract class Error_Url extends Error {
   const factory Error_Url(final String field0) = _$Error_UrlImpl;
   const Error_Url._() : super._();
 
-  @override
   String get field0;
 
   /// Create a copy of Error
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Error_UrlImplCopyWith<_$Error_UrlImpl> get copyWith =>
       throw _privateConstructorUsedError;

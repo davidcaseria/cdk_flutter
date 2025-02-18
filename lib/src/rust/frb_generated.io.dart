@@ -3,8 +3,10 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api/bitcoin.dart';
 import 'api/error.dart';
 import 'api/mint.dart';
+import 'api/payment_request.dart';
 import 'api/token.dart';
 import 'api/wallet.dart';
 import 'dart:async';
@@ -119,12 +121,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  BitcoinAddress dco_decode_bitcoin_address(dynamic raw);
+
+  @protected
   bool dco_decode_bool(dynamic raw);
 
   @protected
   Wallet
       dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
           dynamic raw);
+
+  @protected
+  BitcoinAddress dco_decode_box_autoadd_bitcoin_address(dynamic raw);
+
+  @protected
+  bool dco_decode_box_autoadd_bool(dynamic raw);
 
   @protected
   MeltQuote dco_decode_box_autoadd_melt_quote(dynamic raw);
@@ -134,6 +145,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MintVersion dco_decode_box_autoadd_mint_version(dynamic raw);
+
+  @protected
+  PaymentRequest dco_decode_box_autoadd_payment_request(dynamic raw);
 
   @protected
   Token dco_decode_box_autoadd_token(dynamic raw);
@@ -165,6 +179,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<ContactInfo> dco_decode_list_contact_info(dynamic raw);
 
   @protected
+  List<List<String>> dco_decode_list_list_String(dynamic raw);
+
+  @protected
   List<Mint> dco_decode_list_mint(dynamic raw);
 
   @protected
@@ -172,6 +189,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<Transport> dco_decode_list_transport(dynamic raw);
 
   @protected
   MeltQuote dco_decode_melt_quote(dynamic raw);
@@ -200,10 +220,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
+
+  @protected
   MintInfo? dco_decode_opt_box_autoadd_mint_info(dynamic raw);
 
   @protected
   MintVersion? dco_decode_opt_box_autoadd_mint_version(dynamic raw);
+
+  @protected
+  PaymentRequest? dco_decode_opt_box_autoadd_payment_request(dynamic raw);
 
   @protected
   Token? dco_decode_opt_box_autoadd_token(dynamic raw);
@@ -221,7 +247,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<ContactInfo>? dco_decode_opt_list_contact_info(dynamic raw);
 
   @protected
+  List<List<String>>? dco_decode_opt_list_list_String(dynamic raw);
+
+  @protected
+  ParseInputResult dco_decode_parse_input_result(dynamic raw);
+
+  @protected
+  PaymentRequest dco_decode_payment_request(dynamic raw);
+
+  @protected
   Token dco_decode_token(dynamic raw);
+
+  @protected
+  Transport dco_decode_transport(dynamic raw);
+
+  @protected
+  TransportType dco_decode_transport_type(dynamic raw);
 
   @protected
   BigInt dco_decode_u_64(dynamic raw);
@@ -320,12 +361,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  BitcoinAddress sse_decode_bitcoin_address(SseDeserializer deserializer);
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
   Wallet
       sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
           SseDeserializer deserializer);
+
+  @protected
+  BitcoinAddress sse_decode_box_autoadd_bitcoin_address(
+      SseDeserializer deserializer);
+
+  @protected
+  bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
   MeltQuote sse_decode_box_autoadd_melt_quote(SseDeserializer deserializer);
@@ -335,6 +386,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MintVersion sse_decode_box_autoadd_mint_version(SseDeserializer deserializer);
+
+  @protected
+  PaymentRequest sse_decode_box_autoadd_payment_request(
+      SseDeserializer deserializer);
 
   @protected
   Token sse_decode_box_autoadd_token(SseDeserializer deserializer);
@@ -366,6 +421,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<ContactInfo> sse_decode_list_contact_info(SseDeserializer deserializer);
 
   @protected
+  List<List<String>> sse_decode_list_list_String(SseDeserializer deserializer);
+
+  @protected
   List<Mint> sse_decode_list_mint(SseDeserializer deserializer);
 
   @protected
@@ -373,6 +431,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<Transport> sse_decode_list_transport(SseDeserializer deserializer);
 
   @protected
   MeltQuote sse_decode_melt_quote(SseDeserializer deserializer);
@@ -401,10 +462,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
   MintInfo? sse_decode_opt_box_autoadd_mint_info(SseDeserializer deserializer);
 
   @protected
   MintVersion? sse_decode_opt_box_autoadd_mint_version(
+      SseDeserializer deserializer);
+
+  @protected
+  PaymentRequest? sse_decode_opt_box_autoadd_payment_request(
       SseDeserializer deserializer);
 
   @protected
@@ -424,7 +492,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<List<String>>? sse_decode_opt_list_list_String(
+      SseDeserializer deserializer);
+
+  @protected
+  ParseInputResult sse_decode_parse_input_result(SseDeserializer deserializer);
+
+  @protected
+  PaymentRequest sse_decode_payment_request(SseDeserializer deserializer);
+
+  @protected
   Token sse_decode_token(SseDeserializer deserializer);
+
+  @protected
+  Transport sse_decode_transport(SseDeserializer deserializer);
+
+  @protected
+  TransportType sse_decode_transport_type(SseDeserializer deserializer);
 
   @protected
   BigInt sse_decode_u_64(SseDeserializer deserializer);
@@ -524,12 +608,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_bitcoin_address(
+      BitcoinAddress self, SseSerializer serializer);
+
+  @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
   void
       sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
           Wallet self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_bitcoin_address(
+      BitcoinAddress self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_melt_quote(
@@ -542,6 +637,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_mint_version(
       MintVersion self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_payment_request(
+      PaymentRequest self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_token(Token self, SseSerializer serializer);
@@ -574,6 +673,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<ContactInfo> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_list_String(
+      List<List<String>> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_mint(List<Mint> self, SseSerializer serializer);
 
   @protected
@@ -582,6 +685,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_transport(
+      List<Transport> self, SseSerializer serializer);
 
   @protected
   void sse_encode_melt_quote(MeltQuote self, SseSerializer serializer);
@@ -611,12 +718,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           Wallet? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_mint_info(
       MintInfo? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_mint_version(
       MintVersion? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_payment_request(
+      PaymentRequest? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_token(Token? self, SseSerializer serializer);
@@ -635,7 +749,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<ContactInfo>? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_list_list_String(
+      List<List<String>>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_parse_input_result(
+      ParseInputResult self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_payment_request(
+      PaymentRequest self, SseSerializer serializer);
+
+  @protected
   void sse_encode_token(Token self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_transport(Transport self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_transport_type(TransportType self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_64(BigInt self, SseSerializer serializer);
