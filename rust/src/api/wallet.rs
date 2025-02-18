@@ -400,6 +400,20 @@ impl MultiMintWallet {
         Ok(())
     }
 
+    pub async fn find_wallet(&self, amount: Option<u64>, mint_urls: Vec<String>) -> Option<Wallet> {
+        let wallets = self.wallets.lock().await;
+        for mint_url in mint_urls {
+            if let Some(mint_url) = MintUrl::from_str(&mint_url).ok() {
+                if let Some(wallet) = wallets.get(&mint_url) {
+                    if amount.is_none() || wallet.balance().await.ok()? >= amount.unwrap() {
+                        return Some(wallet.clone());
+                    }
+                }
+            }
+        }
+        None
+    }
+
     pub async fn get_wallet(&self, mint_url: &str) -> Result<Option<Wallet>, Error> {
         let mint_url = MintUrl::from_str(mint_url)?;
         let wallets = self.wallets.lock().await;
