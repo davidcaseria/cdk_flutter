@@ -381,6 +381,11 @@ impl MultiMintWallet {
 
     pub async fn add_mint(&self, mint_url: String) -> Result<(), Error> {
         let mint_url = MintUrl::from_str(&mint_url)?;
+        let mut wallets = self.wallets.lock().await;
+        if wallets.contains_key(&mint_url) {
+            return Ok(());
+        }
+
         let wallet = Wallet::new(
             mint_url.to_string(),
             self.unit.clone(),
@@ -388,7 +393,7 @@ impl MultiMintWallet {
             self.target_proof_count,
             self.localstore.clone(),
         )?;
-        self.wallets.lock().await.insert(mint_url, wallet);
+        wallets.insert(mint_url, wallet);
         Ok(())
     }
 
@@ -398,6 +403,23 @@ impl MultiMintWallet {
             .await
             .insert(MintUrl::from_str(&wallet.mint_url)?, wallet);
         Ok(())
+    }
+
+    pub async fn create_or_get_wallet(&self, mint_url: String) -> Result<Wallet, Error> {
+        let mint_url = MintUrl::from_str(&mint_url)?;
+        let mut wallets = self.wallets.lock().await;
+        if let Some(wallet) = wallets.get(&mint_url) {
+            return Ok(wallet.clone());
+        }
+        let wallet = Wallet::new(
+            mint_url.to_string(),
+            self.unit.clone(),
+            self.seed.clone(),
+            self.target_proof_count,
+            self.localstore.clone(),
+        )?;
+        wallets.insert(mint_url, wallet.clone());
+        Ok(wallet)
     }
 
     pub async fn find_wallet(&self, amount: Option<u64>, mint_urls: Vec<String>) -> Option<Wallet> {
