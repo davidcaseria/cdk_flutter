@@ -290,6 +290,21 @@ class WalletBalanceBuilder extends StatelessWidget {
   }
 }
 
+class WalletProvider extends StatelessWidget {
+  final Wallet wallet;
+  final Widget child;
+
+  const WalletProvider({super.key, required this.wallet, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Provider<Wallet>.value(
+      value: wallet,
+      child: child,
+    );
+  }
+}
+
 class WalletConsumer extends StatelessWidget {
   final String? mintUrl;
   final Widget Function(BuildContext context, Wallet wallet) builder;
@@ -319,21 +334,6 @@ class WalletConsumer extends StatelessWidget {
   }
 }
 
-class WalletProvider extends StatelessWidget {
-  final Wallet wallet;
-  final Widget child;
-
-  const WalletProvider({super.key, required this.wallet, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Provider<Wallet>.value(
-      value: wallet,
-      child: child,
-    );
-  }
-}
-
 class MultiMintWalletProvider extends StatelessWidget {
   final MultiMintWallet wallet;
   final Widget child;
@@ -346,5 +346,17 @@ class MultiMintWalletProvider extends StatelessWidget {
       value: wallet,
       child: child,
     );
+  }
+}
+
+class MultiMintWalletConsumer extends StatelessWidget {
+  final Widget Function(BuildContext context, MultiMintWallet wallet) builder;
+
+  const MultiMintWalletConsumer({super.key, required this.builder});
+
+  @override
+  Widget build(BuildContext context) {
+    final wallet = context.read<MultiMintWallet>();
+    return builder(context, wallet);
   }
 }
