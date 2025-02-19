@@ -216,26 +216,30 @@ class ReceiveResult {
 class SendBuilder extends StatelessWidget {
   final String? mintUrl;
   final BigInt amount;
-  final String? memo;
   final String? pubkey;
-  final Function(String) onSuccess;
+  final String? memo;
+  final bool? includeMemo;
+  final Function(String error)? onError;
+  final Function(String token) onSuccess;
   final AsyncWidgetBuilder<PreparedSendResult> builder;
 
-  const SendBuilder({super.key, required this.amount, this.mintUrl, this.memo, this.pubkey, required this.onSuccess, required this.builder});
+  const SendBuilder(
+      {super.key, required this.amount, this.mintUrl, this.pubkey, this.memo, this.includeMemo, this.onError, required this.onSuccess, required this.builder});
 
   Widget _buildWithWallet(Wallet wallet) {
     return FutureBuilder<PreparedSend>(
-      future: wallet.prepareSend(amount: amount, memo: memo, pubkey: pubkey),
+      future: wallet.prepareSend(amount: amount, pubkey: pubkey, memo: memo, includeMemo: includeMemo),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final preparedSend = snapshot.data!;
-          send() async {
+          send({String? memo, bool? includeMemo}) async {
             try {
-              final token = await wallet.send(send: preparedSend);
+              final token = await wallet.send(send: preparedSend, memo: memo, includeMemo: includeMemo);
               onSuccess(token);
             } catch (e) {
-              // TODO: handle error
-              print(e);
+              if (onError != null) {
+                onError!(e.toString());
+              }
             }
           }
 
@@ -271,7 +275,7 @@ class SendBuilder extends StatelessWidget {
 
 class PreparedSendResult {
   final PreparedSend preparedSend;
-  final VoidCallback send;
+  final Function({String? memo, bool? includeMemo}) send;
   const PreparedSendResult(this.preparedSend, this.send);
 }
 
