@@ -11,7 +11,7 @@ use cdk::{
     util::hex,
     wallet::{
         MeltQuote as CdkMeltQuote, MintQuote as CdkMintQuote, PreparedSend as CdkPreparedSend,
-        SendOptions, Wallet as CdkWallet,
+        SendMemo, SendOptions, Wallet as CdkWallet,
     },
 };
 use cdk_redb::WalletRedbDatabase;
@@ -210,12 +210,17 @@ impl Wallet {
     pub async fn prepare_send(
         &self,
         amount: u64,
-        memo: Option<String>,
         pubkey: Option<String>,
+        memo: Option<String>,
+        include_memo: Option<bool>,
     ) -> Result<PreparedSend, Error> {
         let pubkey = pubkey.map(|s| PublicKey::from_str(&s)).transpose()?;
+        let send_memo = memo.map(|m| SendMemo {
+            memo: m,
+            include_memo: include_memo.unwrap_or_default(),
+        });
         let opts = SendOptions {
-            memo,
+            memo: send_memo,
             conditions: pubkey.map(|pubkey| SpendingConditions::new_p2pk(pubkey, None)),
             ..Default::default()
         };
@@ -223,10 +228,24 @@ impl Wallet {
         Ok(prepared_send.into())
     }
 
-    pub async fn send(&self, send: PreparedSend) -> Result<String, Error> {
-        let token = self.inner.send(send.inner).await?.to_string();
+    pub async fn send(
+        &self,
+        send: PreparedSend,
+        memo: Option<String>,
+        include_memo: Option<bool>,
+    ) -> Result<String, Error> {
+        let send_memo = memo.map(|m| SendMemo {
+            memo: m,
+            include_memo: include_memo.unwrap_or_default(),
+        });
+        let token = self.inner.send(send.inner, send_memo).await?.to_string();
         self.update_balance_streams().await;
         Ok(token)
+    }
+
+    pub async fn cancel_send(&self, send: PreparedSend) -> Result<(), Error> {
+        self.inner.cancel_send(send.inner).await?;
+        Ok(())
     }
 
     fn mint_url(&self) -> Result<MintUrl, Error> {

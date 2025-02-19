@@ -104,6 +104,8 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<BigInt> balance();
 
+  Future<void> cancelSend({required PreparedSend send});
+
   Future<Mint> getMint();
 
   Future<bool> isTokenSpent({required Token token});
@@ -141,12 +143,16 @@ abstract class Wallet implements RustOpaqueInterface {
           localstore: localstore);
 
   Future<PreparedSend> prepareSend(
-      {required BigInt amount, String? memo, String? pubkey});
+      {required BigInt amount,
+      String? pubkey,
+      String? memo,
+      bool? includeMemo});
 
   Future<BigInt> receive(
       {required Token token, String? signingKey, String? preimage});
 
-  Future<String> send({required PreparedSend send});
+  Future<String> send(
+      {required PreparedSend send, String? memo, bool? includeMemo});
 
   Stream<BigInt> streamBalance();
 }

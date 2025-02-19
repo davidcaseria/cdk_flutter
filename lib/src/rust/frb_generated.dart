@@ -73,7 +73,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.8.0';
 
   @override
-  int get rustContentHash => 1469545613;
+  int get rustContentHash => -989256214;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -169,6 +169,9 @@ abstract class RustLibApi extends BaseApi {
 
   Future<BigInt> crateApiWalletWalletBalance({required Wallet that});
 
+  Future<void> crateApiWalletWalletCancelSend(
+      {required Wallet that, required PreparedSend send});
+
   Future<Mint> crateApiWalletWalletGetMint({required Wallet that});
 
   Future<bool> crateApiWalletWalletIsTokenSpent(
@@ -200,8 +203,9 @@ abstract class RustLibApi extends BaseApi {
   Future<PreparedSend> crateApiWalletWalletPrepareSend(
       {required Wallet that,
       required BigInt amount,
+      String? pubkey,
       String? memo,
-      String? pubkey});
+      bool? includeMemo});
 
   Future<BigInt> crateApiWalletWalletReceive(
       {required Wallet that,
@@ -210,7 +214,10 @@ abstract class RustLibApi extends BaseApi {
       String? preimage});
 
   Future<String> crateApiWalletWalletSend(
-      {required Wallet that, required PreparedSend send});
+      {required Wallet that,
+      required PreparedSend send,
+      String? memo,
+      bool? includeMemo});
 
   Stream<BigInt> crateApiWalletWalletStreamBalance({required Wallet that});
 
@@ -1018,6 +1025,35 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<void> crateApiWalletWalletCancelSend(
+      {required Wallet that, required PreparedSend send}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
+            that, serializer);
+        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
+            send, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 28, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: sse_decode_error,
+      ),
+      constMeta: kCrateApiWalletWalletCancelSendConstMeta,
+      argValues: [that, send],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletWalletCancelSendConstMeta =>
+      const TaskConstMeta(
+        debugName: "Wallet_cancel_send",
+        argNames: ["that", "send"],
+      );
+
+  @override
   Future<Mint> crateApiWalletWalletGetMint({required Wallet that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1025,7 +1061,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
             that, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 28, port: port_);
+            funcId: 29, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_mint,
@@ -1053,7 +1089,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_box_autoadd_token(token, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 29, port: port_);
+            funcId: 30, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_bool,
@@ -1081,7 +1117,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_box_autoadd_melt_quote(quote, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 30, port: port_);
+            funcId: 31, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_u_64,
@@ -1108,7 +1144,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_String(request, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 31, port: port_);
+            funcId: 32, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_melt_quote,
@@ -1139,7 +1175,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_String(description, serializer);
         sse_encode_StreamSink_mint_quote_Sse(sink, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 32, port: port_);
+            funcId: 33, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1173,7 +1209,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_usize(targetProofCount, serializer);
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
             localstore, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 33)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 34)!;
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1207,7 +1243,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_usize(targetProofCount, serializer);
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
             localstore, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 34)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 35)!;
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1230,18 +1266,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Future<PreparedSend> crateApiWalletWalletPrepareSend(
       {required Wallet that,
       required BigInt amount,
+      String? pubkey,
       String? memo,
-      String? pubkey}) {
+      bool? includeMemo}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
             that, serializer);
         sse_encode_u_64(amount, serializer);
-        sse_encode_opt_String(memo, serializer);
         sse_encode_opt_String(pubkey, serializer);
+        sse_encode_opt_String(memo, serializer);
+        sse_encode_opt_box_autoadd_bool(includeMemo, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 35, port: port_);
+            funcId: 36, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1249,7 +1287,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletPrepareSendConstMeta,
-      argValues: [that, amount, memo, pubkey],
+      argValues: [that, amount, pubkey, memo, includeMemo],
       apiImpl: this,
     ));
   }
@@ -1257,7 +1295,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletWalletPrepareSendConstMeta =>
       const TaskConstMeta(
         debugName: "Wallet_prepare_send",
-        argNames: ["that", "amount", "memo", "pubkey"],
+        argNames: ["that", "amount", "pubkey", "memo", "includeMemo"],
       );
 
   @override
@@ -1275,7 +1313,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_String(signingKey, serializer);
         sse_encode_opt_String(preimage, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 36, port: port_);
+            funcId: 37, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_u_64,
@@ -1295,7 +1333,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<String> crateApiWalletWalletSend(
-      {required Wallet that, required PreparedSend send}) {
+      {required Wallet that,
+      required PreparedSend send,
+      String? memo,
+      bool? includeMemo}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -1303,22 +1344,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
             send, serializer);
+        sse_encode_opt_String(memo, serializer);
+        sse_encode_opt_box_autoadd_bool(includeMemo, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 37, port: port_);
+            funcId: 38, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletSendConstMeta,
-      argValues: [that, send],
+      argValues: [that, send, memo, includeMemo],
       apiImpl: this,
     ));
   }
 
   TaskConstMeta get kCrateApiWalletWalletSendConstMeta => const TaskConstMeta(
         debugName: "Wallet_send",
-        argNames: ["that", "send"],
+        argNames: ["that", "send", "memo", "includeMemo"],
       );
 
   @override
@@ -1331,7 +1374,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_StreamSink_u_64_Sse(sink, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 38, port: port_);
+            funcId: 39, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1355,7 +1398,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1378,7 +1421,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 41)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_prim_u_8_strict,
@@ -1401,7 +1444,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 41, port: port_);
+            funcId: 42, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1424,7 +1467,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(input, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 42)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_parse_input_result,
@@ -1447,7 +1490,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(encoded, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_token,
@@ -3571,6 +3614,9 @@ class WalletImpl extends RustOpaque implements Wallet {
         that: this,
       );
 
+  Future<void> cancelSend({required PreparedSend send}) => RustLib.instance.api
+      .crateApiWalletWalletCancelSend(that: this, send: send);
+
   Future<Mint> getMint() => RustLib.instance.api.crateApiWalletWalletGetMint(
         that: this,
       );
@@ -3589,17 +3635,26 @@ class WalletImpl extends RustOpaque implements Wallet {
           that: this, amount: amount, description: description);
 
   Future<PreparedSend> prepareSend(
-          {required BigInt amount, String? memo, String? pubkey}) =>
+          {required BigInt amount,
+          String? pubkey,
+          String? memo,
+          bool? includeMemo}) =>
       RustLib.instance.api.crateApiWalletWalletPrepareSend(
-          that: this, amount: amount, memo: memo, pubkey: pubkey);
+          that: this,
+          amount: amount,
+          pubkey: pubkey,
+          memo: memo,
+          includeMemo: includeMemo);
 
   Future<BigInt> receive(
           {required Token token, String? signingKey, String? preimage}) =>
       RustLib.instance.api.crateApiWalletWalletReceive(
           that: this, token: token, signingKey: signingKey, preimage: preimage);
 
-  Future<String> send({required PreparedSend send}) =>
-      RustLib.instance.api.crateApiWalletWalletSend(that: this, send: send);
+  Future<String> send(
+          {required PreparedSend send, String? memo, bool? includeMemo}) =>
+      RustLib.instance.api.crateApiWalletWalletSend(
+          that: this, send: send, memo: memo, includeMemo: includeMemo);
 
   Stream<BigInt> streamBalance() =>
       RustLib.instance.api.crateApiWalletWalletStreamBalance(
