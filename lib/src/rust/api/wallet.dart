@@ -34,9 +34,10 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
 
   set unit(String unit);
 
-  Future<Wallet> createOrGetWallet({required String mintUrl});
+  Future<List<Mint>> availableMints(
+      {BigInt? amount, required List<String> mintUrls});
 
-  Future<Wallet?> findWallet({BigInt? amount, required List<String> mintUrls});
+  Future<Wallet> createOrGetWallet({required String mintUrl});
 
   Future<Wallet?> getWallet({required String mintUrl});
 

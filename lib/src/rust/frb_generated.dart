@@ -73,7 +73,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.8.0';
 
   @override
-  int get rustContentHash => 537153656;
+  int get rustContentHash => 1469545613;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -96,13 +96,13 @@ abstract class RustLibApi extends BaseApi {
   void crateApiWalletMultiMintWalletAutoAccessorSetUnit(
       {required MultiMintWallet that, required String unit});
 
-  Future<Wallet> crateApiWalletMultiMintWalletCreateOrGetWallet(
-      {required MultiMintWallet that, required String mintUrl});
-
-  Future<Wallet?> crateApiWalletMultiMintWalletFindWallet(
+  Future<List<Mint>> crateApiWalletMultiMintWalletAvailableMints(
       {required MultiMintWallet that,
       BigInt? amount,
       required List<String> mintUrls});
+
+  Future<Wallet> crateApiWalletMultiMintWalletCreateOrGetWallet(
+      {required MultiMintWallet that, required String mintUrl});
 
   Future<Wallet?> crateApiWalletMultiMintWalletGetWallet(
       {required MultiMintWallet that, required String mintUrl});
@@ -378,6 +378,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
 
   @override
+  Future<List<Mint>> crateApiWalletMultiMintWalletAvailableMints(
+      {required MultiMintWallet that,
+      BigInt? amount,
+      required List<String> mintUrls}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet(
+            that, serializer);
+        sse_encode_opt_box_autoadd_u_64(amount, serializer);
+        sse_encode_list_String(mintUrls, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 5, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_list_mint,
+        decodeErrorData: sse_decode_error,
+      ),
+      constMeta: kCrateApiWalletMultiMintWalletAvailableMintsConstMeta,
+      argValues: [that, amount, mintUrls],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletMultiMintWalletAvailableMintsConstMeta =>
+      const TaskConstMeta(
+        debugName: "MultiMintWallet_available_mints",
+        argNames: ["that", "amount", "mintUrls"],
+      );
+
+  @override
   Future<Wallet> crateApiWalletMultiMintWalletCreateOrGetWallet(
       {required MultiMintWallet that, required String mintUrl}) {
     return handler.executeNormal(NormalTask(
@@ -387,7 +418,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_String(mintUrl, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 5, port: port_);
+            funcId: 6, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -404,38 +435,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "MultiMintWallet_create_or_get_wallet",
         argNames: ["that", "mintUrl"],
-      );
-
-  @override
-  Future<Wallet?> crateApiWalletMultiMintWalletFindWallet(
-      {required MultiMintWallet that,
-      BigInt? amount,
-      required List<String> mintUrls}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet(
-            that, serializer);
-        sse_encode_opt_box_autoadd_u_64(amount, serializer);
-        sse_encode_list_String(mintUrls, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 6, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData:
-            sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet,
-        decodeErrorData: null,
-      ),
-      constMeta: kCrateApiWalletMultiMintWalletFindWalletConstMeta,
-      argValues: [that, amount, mintUrls],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiWalletMultiMintWalletFindWalletConstMeta =>
-      const TaskConstMeta(
-        debugName: "MultiMintWallet_find_wallet",
-        argNames: ["that", "amount", "mintUrls"],
       );
 
   @override
@@ -3425,14 +3424,14 @@ class MultiMintWalletImpl extends RustOpaque implements MultiMintWallet {
   set unit(String unit) => RustLib.instance.api
       .crateApiWalletMultiMintWalletAutoAccessorSetUnit(that: this, unit: unit);
 
+  Future<List<Mint>> availableMints(
+          {BigInt? amount, required List<String> mintUrls}) =>
+      RustLib.instance.api.crateApiWalletMultiMintWalletAvailableMints(
+          that: this, amount: amount, mintUrls: mintUrls);
+
   Future<Wallet> createOrGetWallet({required String mintUrl}) =>
       RustLib.instance.api.crateApiWalletMultiMintWalletCreateOrGetWallet(
           that: this, mintUrl: mintUrl);
-
-  Future<Wallet?> findWallet(
-          {BigInt? amount, required List<String> mintUrls}) =>
-      RustLib.instance.api.crateApiWalletMultiMintWalletFindWallet(
-          that: this, amount: amount, mintUrls: mintUrls);
 
   Future<Wallet?> getWallet({required String mintUrl}) => RustLib.instance.api
       .crateApiWalletMultiMintWalletGetWallet(that: this, mintUrl: mintUrl);

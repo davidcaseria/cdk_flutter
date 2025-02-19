@@ -405,6 +405,26 @@ impl MultiMintWallet {
         Ok(())
     }
 
+    pub async fn available_mints(
+        &self,
+        amount: Option<u64>,
+        mint_urls: Vec<String>,
+    ) -> Result<Vec<Mint>, Error> {
+        let wallets = self.wallets.lock().await;
+        let mut mints = Vec::new();
+        for mint_url in mint_urls {
+            let mint_url = MintUrl::from_str(&mint_url)?;
+            if let Some(wallet) = wallets.get(&mint_url) {
+                let mint = wallet.get_mint().await?;
+                if mint.balance >= amount.unwrap_or_default() {
+                    mints.push(mint);
+                }
+            }
+        }
+        mints.sort();
+        Ok(mints)
+    }
+
     pub async fn create_or_get_wallet(&self, mint_url: String) -> Result<Wallet, Error> {
         let mint_url = MintUrl::from_str(&mint_url)?;
         let mut wallets = self.wallets.lock().await;
@@ -420,20 +440,6 @@ impl MultiMintWallet {
         )?;
         wallets.insert(mint_url, wallet.clone());
         Ok(wallet)
-    }
-
-    pub async fn find_wallet(&self, amount: Option<u64>, mint_urls: Vec<String>) -> Option<Wallet> {
-        let wallets = self.wallets.lock().await;
-        for mint_url in mint_urls {
-            if let Some(mint_url) = MintUrl::from_str(&mint_url).ok() {
-                if let Some(wallet) = wallets.get(&mint_url) {
-                    if amount.is_none() || wallet.balance().await.ok()? >= amount.unwrap() {
-                        return Some(wallet.clone());
-                    }
-                }
-            }
-        }
-        None
     }
 
     pub async fn get_wallet(&self, mint_url: &str) -> Result<Option<Wallet>, Error> {
