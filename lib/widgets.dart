@@ -66,13 +66,21 @@ class MeltQuoteResult {
 }
 
 class MintListBuilder extends StatelessWidget {
+  final BigInt? amount;
+  final List<String>? availableMintUrls;
   final AsyncWidgetBuilder<List<Mint>> builder;
 
-  const MintListBuilder({super.key, required this.builder});
+  const MintListBuilder({super.key, this.amount, this.availableMintUrls, required this.builder});
 
   @override
   Widget build(BuildContext context) {
     final wallet = context.read<MultiMintWallet>();
+    if (availableMintUrls != null) {
+      return FutureBuilder<List<Mint>>(
+        future: wallet.availableMints(amount: amount, mintUrls: availableMintUrls!),
+        builder: builder,
+      );
+    }
     return FutureBuilder<List<Mint>>(
       future: wallet.listMints(),
       builder: builder,
