@@ -486,6 +486,18 @@ impl MultiMintWallet {
         self.wallets.lock().await.values().cloned().collect()
     }
 
+    pub async fn remove_mint(&self, mint_url: String) -> Result<(), Error> {
+        let mint_url = MintUrl::from_str(&mint_url)?;
+        let mut wallets = self.wallets.lock().await;
+        if let Some(wallet) = wallets.get(&mint_url) {
+            if wallet.balance().await? > 0 {
+                return Err(Error::WalletNotEmpty);
+            }
+        }
+        wallets.remove(&mint_url);
+        Ok(())
+    }
+
     pub async fn total_balance(&self) -> Result<u64, Error> {
         let wallets = self.wallets.lock().await;
         let mut total = 0;

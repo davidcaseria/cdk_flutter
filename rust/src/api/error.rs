@@ -5,6 +5,7 @@ pub enum Error {
     InvalidInput,
     Protocol(String),
     Url(String),
+    WalletNotEmpty,
 }
 
 impl From<cdk::amount::Error> for Error {

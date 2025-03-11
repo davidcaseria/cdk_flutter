@@ -24,6 +24,7 @@ mixin _$Error {
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -34,6 +35,7 @@ mixin _$Error {
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -44,6 +46,7 @@ mixin _$Error {
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -55,6 +58,7 @@ mixin _$Error {
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -65,6 +69,7 @@ mixin _$Error {
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -75,6 +80,7 @@ mixin _$Error {
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -174,6 +180,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
   }) {
     return cdk(field0);
   }
@@ -187,6 +194,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
   }) {
     return cdk?.call(field0);
   }
@@ -200,6 +208,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (cdk != null) {
@@ -217,6 +226,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
     return cdk(this);
   }
@@ -230,6 +240,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
     return cdk?.call(this);
   }
@@ -243,6 +254,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (cdk != null) {
@@ -340,6 +352,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
   }) {
     return database(field0);
   }
@@ -353,6 +366,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
   }) {
     return database?.call(field0);
   }
@@ -366,6 +380,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (database != null) {
@@ -383,6 +398,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
     return database(this);
   }
@@ -396,6 +412,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
     return database?.call(this);
   }
@@ -409,6 +426,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (database != null) {
@@ -505,6 +523,7 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
   }) {
     return hex(field0);
   }
@@ -518,6 +537,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
   }) {
     return hex?.call(field0);
   }
@@ -531,6 +551,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (hex != null) {
@@ -548,6 +569,7 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
     return hex(this);
   }
@@ -561,6 +583,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
     return hex?.call(this);
   }
@@ -574,6 +597,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (hex != null) {
@@ -643,6 +667,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
   }) {
     return invalidInput();
   }
@@ -656,6 +681,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
   }) {
     return invalidInput?.call();
   }
@@ -669,6 +695,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (invalidInput != null) {
@@ -686,6 +713,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
     return invalidInput(this);
   }
@@ -699,6 +727,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
     return invalidInput?.call(this);
   }
@@ -712,6 +741,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (invalidInput != null) {
@@ -801,6 +831,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
   }) {
     return protocol(field0);
   }
@@ -814,6 +845,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
   }) {
     return protocol?.call(field0);
   }
@@ -827,6 +859,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (protocol != null) {
@@ -844,6 +877,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
     return protocol(this);
   }
@@ -857,6 +891,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
     return protocol?.call(this);
   }
@@ -870,6 +905,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (protocol != null) {
@@ -966,6 +1002,7 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
   }) {
     return url(field0);
   }
@@ -979,6 +1016,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
   }) {
     return url?.call(field0);
   }
@@ -992,6 +1030,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (url != null) {
@@ -1009,6 +1048,7 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
     return url(this);
   }
@@ -1022,6 +1062,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
     return url?.call(this);
   }
@@ -1035,6 +1076,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
   }) {
     if (url != null) {
@@ -1055,4 +1097,141 @@ abstract class Error_Url extends Error {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Error_UrlImplCopyWith<_$Error_UrlImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Error_WalletNotEmptyImplCopyWith<$Res> {
+  factory _$$Error_WalletNotEmptyImplCopyWith(_$Error_WalletNotEmptyImpl value,
+          $Res Function(_$Error_WalletNotEmptyImpl) then) =
+      __$$Error_WalletNotEmptyImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Error_WalletNotEmptyImplCopyWithImpl<$Res>
+    extends _$ErrorCopyWithImpl<$Res, _$Error_WalletNotEmptyImpl>
+    implements _$$Error_WalletNotEmptyImplCopyWith<$Res> {
+  __$$Error_WalletNotEmptyImplCopyWithImpl(_$Error_WalletNotEmptyImpl _value,
+      $Res Function(_$Error_WalletNotEmptyImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
+  const _$Error_WalletNotEmptyImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Error.walletNotEmpty()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Error_WalletNotEmptyImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) cdk,
+    required TResult Function(String field0) database,
+    required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
+    required TResult Function(String field0) protocol,
+    required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
+  }) {
+    return walletNotEmpty();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? cdk,
+    TResult? Function(String field0)? database,
+    TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
+    TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
+  }) {
+    return walletNotEmpty?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? cdk,
+    TResult Function(String field0)? database,
+    TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
+    TResult Function(String field0)? protocol,
+    TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
+    required TResult orElse(),
+  }) {
+    if (walletNotEmpty != null) {
+      return walletNotEmpty();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Error_Cdk value) cdk,
+    required TResult Function(Error_Database value) database,
+    required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+  }) {
+    return walletNotEmpty(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Error_Cdk value)? cdk,
+    TResult? Function(Error_Database value)? database,
+    TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+  }) {
+    return walletNotEmpty?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Error_Cdk value)? cdk,
+    TResult Function(Error_Database value)? database,
+    TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    required TResult orElse(),
+  }) {
+    if (walletNotEmpty != null) {
+      return walletNotEmpty(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Error_WalletNotEmpty extends Error {
+  const factory Error_WalletNotEmpty() = _$Error_WalletNotEmptyImpl;
+  const Error_WalletNotEmpty._() : super._();
 }

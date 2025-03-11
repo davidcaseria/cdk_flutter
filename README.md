@@ -1,92 +1,91 @@
 # cdk_flutter
 
-A new Flutter FFI plugin project.
+`cdk_flutter` is a Flutter library that provides a bridge to the Rust [CDK](https://github.com/cashubtc/cdk) [cashu](https://cashu.space) library using the `flutter_rust_bridge` package.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter
-[FFI plugin](https://flutter.dev/to/ffi-package),
-a specialized package that includes native code directly invoked with Dart FFI.
+- Generate cryptographic seeds
+- Manage wallets and mints
+- Handle transactions and balances
+- Flutter builder widgets
 
-## Project structure
+## Installation
 
-This template uses the following structure:
-
-* `src`: Contains the native source code, and a CmakeFile.txt file for building
-  that source code into a dynamic library.
-
-* `lib`: Contains the Dart code that defines the API of the plugin, and which
-  calls into the native code using `dart:ffi`.
-
-* platform folders (`android`, `ios`, `windows`, etc.): Contains the build files
-  for building and bundling the native code library with the platform application.
-
-## Building and bundling native code
-
-The `pubspec.yaml` specifies FFI plugins as follows:
+Add the following dependency to your `pubspec.yaml` file:
 
 ```yaml
-  plugin:
-    platforms:
-      some_platform:
-        ffiPlugin: true
+dependencies:
+  cdk_flutter:
+    git:
+      url: https://github.com/davidcaseria/cdk_flutter.git
 ```
 
-This configuration invokes the native build for the various target platforms
-and bundles the binaries in Flutter applications using these FFI plugins.
+Then, run `flutter pub get` to install the package.
 
-This can be combined with dartPluginClass, such as when FFI is used for the
-implementation of one platform in a federated plugin:
+## Usage
 
-```yaml
-  plugin:
-    implements: some_other_plugin
-    platforms:
-      some_platform:
-        dartPluginClass: SomeClass
-        ffiPlugin: true
+### Generating a Seed
+
+To generate a cryptographic seed, use the `generateSeed` or `generateHexSeed` functions:
+
+```dart
+import 'package:cdk_flutter/cdk_flutter.dart';
+
+Uint8List seed = generateSeed();
+String hexSeed = generateHexSeed();
 ```
 
-A plugin can have both FFI and method channels:
+### Managing Wallets
 
-```yaml
-  plugin:
-    platforms:
-      some_platform:
-        pluginClass: SomeName
-        ffiPlugin: true
+You can create and manage wallets using the `Wallet` class:
+
+```dart
+import 'package:cdk_flutter/cdk_flutter.dart';
+
+final db = WalletDatabase(path: 'path_to_db');
+final wallet = Wallet.newFromHexSeed(
+  mintUrl: 'http://testnut.cashu.space/',
+  unit: 'sat',
+  seed: 'your_hex_seed',
+  localstore: db,
+);
 ```
 
-The native build systems that are invoked by FFI (and method channel) plugins are:
+### Handling Transactions
 
-* For Android: Gradle, which invokes the Android NDK for native builds.
-  * See the documentation in android/build.gradle.
-* For iOS and MacOS: Xcode, via CocoaPods.
-  * See the documentation in ios/cdk_flutter.podspec.
-  * See the documentation in macos/cdk_flutter.podspec.
-* For Linux and Windows: CMake.
-  * See the documentation in linux/CMakeLists.txt.
-  * See the documentation in windows/CMakeLists.txt.
+To handle transactions, you can use methods like `prepareSend`, `receive`, and `send`:
 
-## Binding to native code
+```dart
+PreparedSend send = await wallet.prepareSend(amount: BigInt.from(100));
+await wallet.send(send: send);
+```
 
-To use the native code, bindings in Dart are needed.
-To avoid writing these by hand, they are generated from the header file
-(`src/cdk_flutter.h`) by `package:ffigen`.
-Regenerate the bindings by running `dart run ffigen --config ffigen.yaml`.
+### Display Balance
 
-## Invoking native code
+To display balance updates, use the `WalletBalanceBuilder` widget:
 
-Very short-running native functions can be directly invoked from any isolate.
-For example, see `sum` in `lib/cdk_flutter.dart`.
+```dart
+WalletBalanceBuilder(builder: (context, snapshot) {
+  if (snapshot.hasData) {
+    return Text('Balance: ${snapshot.data}');
+  } else if (snapshot.hasError) {
+    return Text('Error: ${snapshot.error}');
+  } else {
+    return const CircularProgressIndicator();
+  }
+});
+```
 
-Longer-running functions should be invoked on a helper isolate to avoid
-dropping frames in Flutter applications.
-For example, see `sumAsync` in `lib/cdk_flutter.dart`.
+## License
 
-## Flutter help
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-For help getting started with Flutter, view our
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+
+## Acknowledgements
+
+This library uses the `flutter_rust_bridge` package to facilitate communication between Flutter and Rust.
+
 
