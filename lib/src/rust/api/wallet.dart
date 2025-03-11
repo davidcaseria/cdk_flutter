@@ -153,7 +153,9 @@ abstract class Wallet implements RustOpaqueInterface {
   Future<BigInt> receive(
       {required Token token, String? signingKey, String? preimage});
 
-  Future<String> send(
+  Future<void> reclaimSend({required Token token});
+
+  Future<Token> send(
       {required PreparedSend send, String? memo, bool? includeMemo});
 
   Stream<BigInt> streamBalance();

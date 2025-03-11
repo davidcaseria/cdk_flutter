@@ -12,7 +12,7 @@ class SendScreen extends StatefulWidget {
 class SendScreenState extends State<SendScreen> {
   final TextEditingController _amountController = TextEditingController();
   bool _isSubmitted = false;
-  String? _token;
+  Token? _token;
 
   void _submitAmount() {
     setState(() {
@@ -69,10 +69,10 @@ class SendScreenState extends State<SendScreen> {
   Widget _buildSuccessScreen() {
     return Column(
       children: [
-        Text(_token!),
+        Text(_token!.encoded),
         ElevatedButton(
           onPressed: () {
-            Clipboard.setData(ClipboardData(text: _token!));
+            Clipboard.setData(ClipboardData(text: _token!.encoded));
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Token copied to clipboard')),
             );

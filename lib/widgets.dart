@@ -220,7 +220,7 @@ class SendBuilder extends StatelessWidget {
   final String? memo;
   final bool? includeMemo;
   final Function(String error)? onError;
-  final Function(String token) onSuccess;
+  final Function(Token token) onSuccess;
   final AsyncWidgetBuilder<PreparedSendResult> builder;
 
   const SendBuilder(

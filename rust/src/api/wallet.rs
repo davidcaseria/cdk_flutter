@@ -233,18 +233,24 @@ impl Wallet {
         send: PreparedSend,
         memo: Option<String>,
         include_memo: Option<bool>,
-    ) -> Result<String, Error> {
+    ) -> Result<Token, Error> {
         let send_memo = memo.map(|m| SendMemo {
             memo: m,
             include_memo: include_memo.unwrap_or_default(),
         });
         let token = self.inner.send(send.inner, send_memo).await?.to_string();
         self.update_balance_streams().await;
-        Ok(token)
+        Ok(Token::from_str(&token)?)
     }
 
     pub async fn cancel_send(&self, send: PreparedSend) -> Result<(), Error> {
         self.inner.cancel_send(send.inner).await?;
+        Ok(())
+    }
+
+    pub async fn reclaim_send(&self, token: Token) -> Result<(), Error> {
+        self.inner.reclaim_unspent(token.proofs()?).await?;
+        self.update_balance_streams().await;
         Ok(())
     }
 

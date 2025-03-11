@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use cdk::nuts::Token as CdkToken;
+use cdk_common::Proofs;
 use flutter_rust_bridge::frb;
 
 use super::error::Error;
@@ -16,6 +17,11 @@ impl Token {
     pub fn parse(encoded: &str) -> Result<Self, Error> {
         let token = CdkToken::from_str(encoded)?;
         Token::try_from(token)
+    }
+
+    pub(crate) fn proofs(&self) -> Result<Proofs, Error> {
+        let token: CdkToken = self.try_into()?;
+        Ok(token.proofs())
     }
 }
 
@@ -47,6 +53,14 @@ impl TryFrom<CdkToken> for Token {
 }
 
 impl TryInto<CdkToken> for Token {
+    type Error = Error;
+
+    fn try_into(self) -> Result<CdkToken, Error> {
+        Ok(CdkToken::from_str(&self.encoded)?)
+    }
+}
+
+impl TryInto<CdkToken> for &Token {
     type Error = Error;
 
     fn try_into(self) -> Result<CdkToken, Error> {
