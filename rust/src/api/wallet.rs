@@ -250,6 +250,7 @@ impl Wallet {
 
     pub async fn reclaim_send(&self, token: Token) -> Result<(), Error> {
         self.inner.reclaim_unspent(token.proofs()?).await?;
+        self.inner.check_all_pending_proofs().await?;
         self.update_balance_streams().await;
         Ok(())
     }
