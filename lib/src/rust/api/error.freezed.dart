@@ -23,6 +23,7 @@ mixin _$Error {
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
     required TResult Function() walletNotEmpty,
   }) =>
@@ -34,6 +35,7 @@ mixin _$Error {
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
     TResult? Function()? walletNotEmpty,
   }) =>
@@ -45,6 +47,7 @@ mixin _$Error {
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
     TResult Function()? walletNotEmpty,
     required TResult orElse(),
@@ -57,6 +60,7 @@ mixin _$Error {
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) =>
@@ -68,6 +72,7 @@ mixin _$Error {
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) =>
@@ -79,6 +84,7 @@ mixin _$Error {
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
@@ -179,6 +185,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
     required TResult Function() walletNotEmpty,
   }) {
@@ -193,6 +200,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
     TResult? Function()? walletNotEmpty,
   }) {
@@ -207,6 +215,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
     TResult Function()? walletNotEmpty,
     required TResult orElse(),
@@ -225,6 +234,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
@@ -239,6 +249,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
@@ -253,6 +264,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
@@ -351,6 +363,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
     required TResult Function() walletNotEmpty,
   }) {
@@ -365,6 +378,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
     TResult? Function()? walletNotEmpty,
   }) {
@@ -379,6 +393,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
     TResult Function()? walletNotEmpty,
     required TResult orElse(),
@@ -397,6 +412,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
@@ -411,6 +427,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
@@ -425,6 +442,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
@@ -522,6 +540,7 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
     required TResult Function() walletNotEmpty,
   }) {
@@ -536,6 +555,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
     TResult? Function()? walletNotEmpty,
   }) {
@@ -550,6 +570,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
     TResult Function()? walletNotEmpty,
     required TResult orElse(),
@@ -568,6 +589,7 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
@@ -582,6 +604,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
@@ -596,6 +619,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
@@ -666,6 +690,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
     required TResult Function() walletNotEmpty,
   }) {
@@ -680,6 +705,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
     TResult? Function()? walletNotEmpty,
   }) {
@@ -694,6 +720,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
     TResult Function()? walletNotEmpty,
     required TResult orElse(),
@@ -712,6 +739,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
@@ -726,6 +754,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
@@ -740,6 +769,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
@@ -830,6 +860,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
     required TResult Function() walletNotEmpty,
   }) {
@@ -844,6 +875,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
     TResult? Function()? walletNotEmpty,
   }) {
@@ -858,6 +890,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
     TResult Function()? walletNotEmpty,
     required TResult orElse(),
@@ -876,6 +909,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
@@ -890,6 +924,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
@@ -904,6 +939,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
@@ -925,6 +961,183 @@ abstract class Error_Protocol extends Error {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Error_ProtocolImplCopyWith<_$Error_ProtocolImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Error_ReqwestImplCopyWith<$Res> {
+  factory _$$Error_ReqwestImplCopyWith(
+          _$Error_ReqwestImpl value, $Res Function(_$Error_ReqwestImpl) then) =
+      __$$Error_ReqwestImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class __$$Error_ReqwestImplCopyWithImpl<$Res>
+    extends _$ErrorCopyWithImpl<$Res, _$Error_ReqwestImpl>
+    implements _$$Error_ReqwestImplCopyWith<$Res> {
+  __$$Error_ReqwestImplCopyWithImpl(
+      _$Error_ReqwestImpl _value, $Res Function(_$Error_ReqwestImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$Error_ReqwestImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Error_ReqwestImpl extends Error_Reqwest {
+  const _$Error_ReqwestImpl(this.field0) : super._();
+
+  @override
+  final String field0;
+
+  @override
+  String toString() {
+    return 'Error.reqwest(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Error_ReqwestImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Error_ReqwestImplCopyWith<_$Error_ReqwestImpl> get copyWith =>
+      __$$Error_ReqwestImplCopyWithImpl<_$Error_ReqwestImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) cdk,
+    required TResult Function(String field0) database,
+    required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
+    required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
+    required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
+  }) {
+    return reqwest(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? cdk,
+    TResult? Function(String field0)? database,
+    TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
+    TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
+    TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
+  }) {
+    return reqwest?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? cdk,
+    TResult Function(String field0)? database,
+    TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
+    TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
+    TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
+    required TResult orElse(),
+  }) {
+    if (reqwest != null) {
+      return reqwest(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Error_Cdk value) cdk,
+    required TResult Function(Error_Database value) database,
+    required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
+    required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+  }) {
+    return reqwest(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Error_Cdk value)? cdk,
+    TResult? Function(Error_Database value)? database,
+    TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
+    TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+  }) {
+    return reqwest?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Error_Cdk value)? cdk,
+    TResult Function(Error_Database value)? database,
+    TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
+    TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    required TResult orElse(),
+  }) {
+    if (reqwest != null) {
+      return reqwest(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Error_Reqwest extends Error {
+  const factory Error_Reqwest(final String field0) = _$Error_ReqwestImpl;
+  const Error_Reqwest._() : super._();
+
+  String get field0;
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Error_ReqwestImplCopyWith<_$Error_ReqwestImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1001,6 +1214,7 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
     required TResult Function() walletNotEmpty,
   }) {
@@ -1015,6 +1229,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
     TResult? Function()? walletNotEmpty,
   }) {
@@ -1029,6 +1244,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
     TResult Function()? walletNotEmpty,
     required TResult orElse(),
@@ -1047,6 +1263,7 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
@@ -1061,6 +1278,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
@@ -1075,6 +1293,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),
@@ -1146,6 +1365,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
     required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
     required TResult Function() walletNotEmpty,
   }) {
@@ -1160,6 +1380,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
     TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
     TResult? Function()? walletNotEmpty,
   }) {
@@ -1174,6 +1395,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
     TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
     TResult Function()? walletNotEmpty,
     required TResult orElse(),
@@ -1192,6 +1414,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
     required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
   }) {
@@ -1206,6 +1429,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
     TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
   }) {
@@ -1220,6 +1444,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
     TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
     required TResult orElse(),

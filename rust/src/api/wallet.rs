@@ -14,6 +14,7 @@ use cdk::{
         SendMemo, SendOptions, Wallet as CdkWallet,
     },
 };
+use cdk_common::PaymentRequestPayload;
 use cdk_redb::WalletRedbDatabase;
 use flutter_rust_bridge::frb;
 use tokio::{
@@ -24,7 +25,10 @@ use tokio::{
 use crate::frb_generated::StreamSink;
 
 use super::{
-    bitcoin::BitcoinAddress, error::Error, mint::Mint, payment_request::PaymentRequest,
+    bitcoin::BitcoinAddress,
+    error::Error,
+    mint::Mint,
+    payment_request::{PaymentRequest, TransportType},
     token::Token,
 };
 
@@ -176,6 +180,59 @@ impl Wallet {
             }
         });
         Ok(())
+    }
+
+    pub async fn prepare_pay_request(
+        &self,
+        request: PaymentRequest,
+    ) -> Result<PreparedSend, Error> {
+        if !request.validate(self.mint_url()?, self.unit()) {
+            return Err(Error::InvalidInput);
+        }
+        self.prepare_send(
+            request.amount.ok_or(Error::InvalidInput)?,
+            None,
+            None,
+            Some(false),
+        )
+        .await
+    }
+
+    pub async fn pay_request(
+        &self,
+        request: PaymentRequest,
+        send: PreparedSend,
+        memo: Option<String>,
+        include_memo: Option<bool>,
+    ) -> Result<(), Error> {
+        if !request.validate(self.mint_url()?, self.unit()) {
+            return Err(Error::InvalidInput);
+        }
+        let token = self.send(send, memo.clone(), include_memo).await?;
+
+        let transport = request
+            .transports
+            .iter()
+            .find(|t| t._type == TransportType::HttpPost)
+            .ok_or(Error::InvalidInput)?;
+
+        let payload = PaymentRequestPayload {
+            id: request.payment_id,
+            memo,
+            mint: self.mint_url()?,
+            unit: self.unit(),
+            proofs: token.proofs()?,
+        };
+
+        let client = reqwest::Client::new();
+        let res = client.post(&transport.target).json(&payload).send().await?;
+
+        let status = res.status();
+        if status.is_success() {
+            Ok(())
+        } else {
+            Err(Error::Reqwest(format!("HTTP error: {}", status)))
+        }
     }
 
     pub async fn receive(
@@ -503,6 +560,18 @@ impl MultiMintWallet {
         }
         wallets.remove(&mint_url);
         Ok(())
+    }
+
+    pub async fn select_wallet(
+        &self,
+        amount: Option<u64>,
+        mint_urls: Vec<String>,
+    ) -> Result<Option<Wallet>, Error> {
+        let mints = self.available_mints(amount, mint_urls).await?;
+        if let Some(mint) = mints.first() {
+            return self.get_wallet(&mint.url).await;
+        }
+        Ok(None)
     }
 
     pub async fn total_balance(&self) -> Result<u64, Error> {

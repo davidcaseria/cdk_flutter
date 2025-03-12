@@ -453,6 +453,7 @@ dependencies = [
  "flutter_rust_bridge",
  "futures",
  "rand 0.9.0",
+ "reqwest",
  "tokio",
 ]
 

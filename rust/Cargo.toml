@@ -23,6 +23,7 @@ futures = "0.3.31"
 rand = { version = "0.9.0", default-features = false, features = [
     "thread_rng",
 ] }
+reqwest = { version = "0.12.14", default-features = false, features = ["deflate", "gzip", "json", "rustls-tls", "rustls-tls-native-roots"] }
 tokio = { version = "1.43.0", default-features = false }
 
 [lints.rust]

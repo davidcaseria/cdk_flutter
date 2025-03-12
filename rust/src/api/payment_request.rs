@@ -4,8 +4,8 @@ use std::{
 };
 
 use cdk_common::{
-    nut18::TransportType as CdkTransportType, PaymentRequest as CdkPaymentRequest,
-    Transport as CdkTransport,
+    mint_url::MintUrl, nut18::TransportType as CdkTransportType, CurrencyUnit,
+    PaymentRequest as CdkPaymentRequest, Transport as CdkTransport,
 };
 use flutter_rust_bridge::frb;
 
@@ -25,6 +25,28 @@ impl PaymentRequest {
     #[frb(sync)]
     pub fn encode(&self) -> String {
         self.to_string()
+    }
+
+    pub(crate) fn validate(&self, mint_url: MintUrl, unit: CurrencyUnit) -> bool {
+        if let Some(pr_unit) = &self.unit {
+            if pr_unit != &unit.to_string() {
+                return false;
+            }
+        }
+
+        if let Some(mints) = &self.mints {
+            if mints.iter().all(|m| m != &mint_url.to_string()) {
+                return false;
+            }
+        }
+
+        self.transports.iter().any(|t| {
+            if let TransportType::HttpPost = t._type {
+                t.tags.is_some()
+            } else {
+                false
+            }
+        })
     }
 }
 
