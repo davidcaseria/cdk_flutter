@@ -42,7 +42,7 @@ impl PaymentRequest {
 
         self.transports.iter().any(|t| {
             if let TransportType::HttpPost = t._type {
-                t.tags.is_some()
+                true
             } else {
                 false
             }
