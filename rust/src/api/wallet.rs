@@ -491,8 +491,9 @@ impl MultiMintWallet {
     pub async fn available_mints(
         &self,
         amount: Option<u64>,
-        mint_urls: Vec<String>,
+        mint_urls: Option<Vec<String>>,
     ) -> Result<Vec<Mint>, Error> {
+        let mint_urls = mint_urls.unwrap_or_default();
         let wallets = self.wallets.lock().await;
         let mut mints = Vec::new();
         for mint_url in mint_urls {
@@ -565,7 +566,7 @@ impl MultiMintWallet {
     pub async fn select_wallet(
         &self,
         amount: Option<u64>,
-        mint_urls: Vec<String>,
+        mint_urls: Option<Vec<String>>,
     ) -> Result<Option<Wallet>, Error> {
         let mints = self.available_mints(amount, mint_urls).await?;
         if let Some(mint) = mints.first() {

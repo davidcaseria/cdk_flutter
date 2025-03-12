@@ -34,8 +34,7 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
 
   set unit(String unit);
 
-  Future<List<Mint>> availableMints(
-      {BigInt? amount, required List<String> mintUrls});
+  Future<List<Mint>> availableMints({BigInt? amount, List<String>? mintUrls});
 
   Future<Wallet> createOrGetWallet({required String mintUrl});
 
@@ -70,8 +69,7 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
 
   Future<void> removeMint({required String mintUrl});
 
-  Future<Wallet?> selectWallet(
-      {BigInt? amount, required List<String> mintUrls});
+  Future<Wallet?> selectWallet({BigInt? amount, List<String>? mintUrls});
 
   Stream<BigInt> streamBalance();
 

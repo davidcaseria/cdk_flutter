@@ -289,7 +289,7 @@ fn wire__crate__api__wallet__MultiMintWallet_available_mints_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MultiMintWallet>,
             >>::sse_decode(&mut deserializer);
             let api_amount = <Option<u64>>::sse_decode(&mut deserializer);
-            let api_mint_urls = <Vec<String>>::sse_decode(&mut deserializer);
+            let api_mint_urls = <Option<Vec<String>>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::error::Error>(
@@ -736,7 +736,7 @@ fn wire__crate__api__wallet__MultiMintWallet_select_wallet_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MultiMintWallet>,
             >>::sse_decode(&mut deserializer);
             let api_amount = <Option<u64>>::sse_decode(&mut deserializer);
-            let api_mint_urls = <Vec<String>>::sse_decode(&mut deserializer);
+            let api_mint_urls = <Option<Vec<String>>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::error::Error>(
