@@ -493,7 +493,13 @@ impl MultiMintWallet {
         amount: Option<u64>,
         mint_urls: Option<Vec<String>>,
     ) -> Result<Vec<Mint>, Error> {
-        let mint_urls = mint_urls.unwrap_or_default();
+        let all_mint_urls = self
+            .list_mints()
+            .await?
+            .into_iter()
+            .map(|m| m.url)
+            .collect();
+        let mint_urls = mint_urls.unwrap_or(all_mint_urls);
         let wallets = self.wallets.lock().await;
         let mut mints = Vec::new();
         for mint_url in mint_urls {
