@@ -329,7 +329,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cashu"
 version = "0.7.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#4efb65766e67790d55721ecfacb4fd2957ee89cf"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#b0101dd137c13c7f026445276ee51ed48810e4ff"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -379,7 +379,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.7.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#4efb65766e67790d55721ecfacb4fd2957ee89cf"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#b0101dd137c13c7f026445276ee51ed48810e4ff"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -407,7 +407,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.7.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#4efb65766e67790d55721ecfacb4fd2957ee89cf"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#b0101dd137c13c7f026445276ee51ed48810e4ff"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -429,7 +429,7 @@ dependencies = [
 [[package]]
 name = "cdk-redb"
 version = "0.7.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#4efb65766e67790d55721ecfacb4fd2957ee89cf"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=prepared-send#b0101dd137c13c7f026445276ee51ed48810e4ff"
 dependencies = [
  "async-trait",
  "cdk-common",
@@ -1574,9 +1574,9 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.39"
+version = "1.0.40"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1f1914ce909e1658d9907913b4b91947430c7d9be598b15a1912935b8c04801"
+checksum = "1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d"
 dependencies = [
  "proc-macro2",
 ]
