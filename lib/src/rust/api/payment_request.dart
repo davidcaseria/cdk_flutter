@@ -6,7 +6,7 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `from_str`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `eq`, `fmt`, `fmt`, `from_str`, `from`, `from`, `from`, `into`, `into`, `into`, `try_into`, `try_into`
 
 class PaymentRequest {
   final String? paymentId;
@@ -26,6 +26,11 @@ class PaymentRequest {
     this.description,
     required this.transports,
   });
+
+  String encode() =>
+      RustLib.instance.api.crateApiPaymentRequestPaymentRequestEncode(
+        that: this,
+      );
 
   @override
   int get hashCode =>

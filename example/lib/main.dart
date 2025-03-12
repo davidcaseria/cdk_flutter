@@ -2,6 +2,7 @@ import 'package:cdk_flutter_example/home.dart';
 import 'package:cdk_flutter_example/melt.dart';
 import 'package:cdk_flutter_example/mint.dart';
 import 'package:cdk_flutter_example/receive.dart';
+import 'package:cdk_flutter_example/request.dart';
 import 'package:cdk_flutter_example/send.dart';
 import 'package:flutter/material.dart';
 import 'package:cdk_flutter/cdk_flutter.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/mint': (context) => const MintScreen(),
         '/receive': (context) => const ReceiveScreen(),
         '/send': (context) => const SendScreen(),
+        '/request': (context) => const RequestScreen(),
       },
     );
   }

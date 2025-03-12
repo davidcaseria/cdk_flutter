@@ -73,7 +73,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.9.0';
 
   @override
-  int get rustContentHash => 548410392;
+  int get rustContentHash => 1000162522;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -234,6 +234,9 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiInitInitApp();
 
   ParseInputResult crateApiWalletParseInput({required String input});
+
+  String crateApiPaymentRequestPaymentRequestEncode(
+      {required PaymentRequest that});
 
   Token crateApiTokenTokenParse({required String encoded});
 
@@ -1547,12 +1550,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  String crateApiPaymentRequestPaymentRequestEncode(
+      {required PaymentRequest that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_box_autoadd_payment_request(that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_String,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiPaymentRequestPaymentRequestEncodeConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiPaymentRequestPaymentRequestEncodeConstMeta =>
+      const TaskConstMeta(
+        debugName: "payment_request_encode",
+        argNames: ["that"],
+      );
+
+  @override
   Token crateApiTokenTokenParse({required String encoded}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(encoded, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_token,

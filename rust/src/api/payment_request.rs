@@ -1,9 +1,13 @@
-use std::str::FromStr;
+use std::{
+    fmt::{self, Display},
+    str::FromStr,
+};
 
 use cdk_common::{
     nut18::TransportType as CdkTransportType, PaymentRequest as CdkPaymentRequest,
     Transport as CdkTransport,
 };
+use flutter_rust_bridge::frb;
 
 use super::error::Error;
 
@@ -15,6 +19,20 @@ pub struct PaymentRequest {
     pub mints: Option<Vec<String>>,
     pub description: Option<String>,
     pub transports: Vec<Transport>,
+}
+
+impl PaymentRequest {
+    #[frb(sync)]
+    pub fn encode(&self) -> String {
+        self.to_string()
+    }
+}
+
+impl Display for PaymentRequest {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let cdk_payment_request: CdkPaymentRequest = self.try_into().map_err(|_| fmt::Error)?;
+        write!(f, "{}", cdk_payment_request)
+    }
 }
 
 impl FromStr for PaymentRequest {
@@ -46,6 +64,60 @@ impl From<CdkPaymentRequest> for PaymentRequest {
     }
 }
 
+impl TryInto<CdkPaymentRequest> for PaymentRequest {
+    type Error = Error;
+
+    fn try_into(self) -> Result<CdkPaymentRequest, Self::Error> {
+        Ok(CdkPaymentRequest {
+            payment_id: self.payment_id,
+            amount: self.amount.map(|a| a.into()),
+            unit: self
+                .unit
+                .map(|u| u.parse().map_err(|_| Error::InvalidInput))
+                .transpose()?,
+            single_use: self.single_use.map(|su| su.into()),
+            mints: self
+                .mints
+                .map(|m| {
+                    m.into_iter()
+                        .map(|m| m.parse().map_err(|_| Error::InvalidInput))
+                        .collect()
+                })
+                .transpose()?,
+            description: self.description,
+            transports: self.transports.into_iter().map(|t| t.into()).collect(),
+        })
+    }
+}
+
+impl TryInto<CdkPaymentRequest> for &PaymentRequest {
+    type Error = Error;
+
+    fn try_into(self) -> Result<CdkPaymentRequest, Self::Error> {
+        Ok(CdkPaymentRequest {
+            payment_id: self.payment_id.clone(),
+            amount: self.amount.map(|a| a.into()),
+            unit: self
+                .unit
+                .as_ref()
+                .map(|u| u.parse().map_err(|_| Error::InvalidInput))
+                .transpose()?,
+            single_use: self.single_use,
+            mints: self
+                .mints
+                .as_ref()
+                .map(|m| {
+                    m.iter()
+                        .map(|m| m.parse().map_err(|_| Error::InvalidInput))
+                        .collect()
+                })
+                .transpose()?,
+            description: self.description.clone(),
+            transports: self.transports.iter().map(|t| t.into()).collect(),
+        })
+    }
+}
+
 pub struct Transport {
     pub _type: TransportType,
     pub target: String,
@@ -62,6 +134,27 @@ impl From<CdkTransport> for Transport {
     }
 }
 
+impl Into<CdkTransport> for Transport {
+    fn into(self) -> CdkTransport {
+        CdkTransport {
+            _type: self._type.clone().into(),
+            target: self.target,
+            tags: self.tags,
+        }
+    }
+}
+
+impl Into<CdkTransport> for &Transport {
+    fn into(self) -> CdkTransport {
+        CdkTransport {
+            _type: self._type.into(),
+            target: self.target.clone(),
+            tags: self.tags.clone(),
+        }
+    }
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum TransportType {
     Nostr,
     HttpPost,
@@ -72,6 +165,15 @@ impl From<CdkTransportType> for TransportType {
         match cdk_transport_type {
             CdkTransportType::Nostr => TransportType::Nostr,
             CdkTransportType::HttpPost => TransportType::HttpPost,
+        }
+    }
+}
+
+impl Into<CdkTransportType> for TransportType {
+    fn into(self) -> CdkTransportType {
+        match self {
+            TransportType::Nostr => CdkTransportType::Nostr,
+            TransportType::HttpPost => CdkTransportType::HttpPost,
         }
     }
 }
