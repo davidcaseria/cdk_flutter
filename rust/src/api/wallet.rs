@@ -264,6 +264,12 @@ impl Wallet {
         Ok(amount)
     }
 
+    pub async fn restore(&self) -> Result<(), Error> {
+        self.inner.restore().await?;
+        self.update_balance_streams().await;
+        Ok(())
+    }
+
     pub async fn prepare_send(
         &self,
         amount: u64,
