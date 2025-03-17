@@ -18,7 +18,7 @@ use cdk_common::PaymentRequestPayload;
 use cdk_redb::WalletRedbDatabase;
 use flutter_rust_bridge::frb;
 use tokio::{
-    sync::{broadcast, Mutex},
+    sync::{broadcast, mpsc, Mutex},
     time::sleep,
 };
 
@@ -426,6 +426,7 @@ pub struct MultiMintWallet {
     localstore: WalletDatabase,
 
     wallets: Arc<Mutex<HashMap<MintUrl, Wallet>>>,
+    added_wallets: Arc<Mutex<Vec<mpsc::Sender<MintUrl>>>>,
 }
 
 impl MultiMintWallet {
@@ -455,6 +456,7 @@ impl MultiMintWallet {
             target_proof_count,
             localstore,
             wallets: Arc::new(Mutex::new(wallets)),
+            added_wallets: Arc::new(Mutex::new(Vec::new())),
         })
     }
 
@@ -482,7 +484,17 @@ impl MultiMintWallet {
             self.target_proof_count,
             self.localstore.clone(),
         )?;
-        wallets.insert(mint_url, wallet);
+        wallets.insert(mint_url.clone(), wallet);
+        let mut added_wallets = self.added_wallets.lock().await;
+        let mut failed_senders = Vec::new();
+        for (idx, sender) in added_wallets.iter().enumerate() {
+            if sender.send(mint_url.clone()).await.is_err() {
+                failed_senders.push(idx);
+            }
+        }
+        for sender in failed_senders {
+            added_wallets.remove(sender);
+        }
         Ok(())
     }
 
@@ -618,6 +630,38 @@ impl MultiMintWallet {
                 }
             });
         }
+        let (tx, mut rx) = mpsc::channel(1);
+        self.added_wallets.lock().await.push(tx);
+        let _self = self.clone();
+        flutter_rust_bridge::spawn(async move {
+            loop {
+                match rx.recv().await {
+                    Some(mint_url) => {
+                        let wallet = match _self.create_or_get_wallet(mint_url.to_string()).await {
+                            Ok(wallet) => wallet,
+                            Err(_) => continue,
+                        };
+                        let sink = sink.clone();
+                        let _self = _self.clone();
+                        flutter_rust_bridge::spawn(async move {
+                            let mut rx = wallet.balance_broadcast.subscribe();
+                            loop {
+                                match rx.recv().await {
+                                    Ok(_) => {
+                                        let total = _self.total_balance().await.unwrap_or_default();
+                                        if sink.add(total).is_err() {
+                                            break;
+                                        }
+                                    }
+                                    Err(_) => break,
+                                }
+                            }
+                        });
+                    }
+                    None => break,
+                }
+            }
+        });
         Ok(())
     }
 }
