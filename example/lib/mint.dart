@@ -46,10 +46,10 @@ class MintScreenState extends State<MintScreen> {
         }
       },
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data?.error == null) {
           return Text('${snapshot.data!.request} (${snapshot.data!.state})');
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasError || snapshot.data?.error != null) {
+          return Text('Error: ${snapshot.error ?? snapshot.data!.error}');
         } else {
           return const CircularProgressIndicator();
         }

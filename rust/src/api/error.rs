@@ -57,8 +57,8 @@ impl From<cdk::util::hex::Error> for Error {
     }
 }
 
-impl From<cdk_redb::error::Error> for Error {
-    fn from(e: cdk_redb::error::Error) -> Self {
+impl From<cdk_sqlite::wallet::error::Error> for Error {
+    fn from(e: cdk_sqlite::wallet::error::Error) -> Self {
         Self::Database(e.to_string())
     }
 }

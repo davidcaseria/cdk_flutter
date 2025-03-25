@@ -174,7 +174,8 @@ abstract class Wallet implements RustOpaqueInterface {
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>>
 abstract class WalletDatabase implements RustOpaqueInterface {
-  factory WalletDatabase({required String path}) =>
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<WalletDatabase> newInstance({required String path}) =>
       RustLib.instance.api.crateApiWalletWalletDatabaseNew(path: path);
 }
 
@@ -220,6 +221,7 @@ class MintQuote {
   final BigInt? expiry;
   final MintQuoteState state;
   final Token? token;
+  final String? error;
 
   const MintQuote({
     required this.id,
@@ -228,6 +230,7 @@ class MintQuote {
     this.expiry,
     required this.state,
     this.token,
+    this.error,
   });
 
   @override
@@ -237,7 +240,8 @@ class MintQuote {
       amount.hashCode ^
       expiry.hashCode ^
       state.hashCode ^
-      token.hashCode;
+      token.hashCode ^
+      error.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -249,13 +253,15 @@ class MintQuote {
           amount == other.amount &&
           expiry == other.expiry &&
           state == other.state &&
-          token == other.token;
+          token == other.token &&
+          error == other.error;
 }
 
 enum MintQuoteState {
   unpaid,
   paid,
   issued,
+  error,
   ;
 }
 

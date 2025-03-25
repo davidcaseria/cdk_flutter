@@ -9,13 +9,13 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
 # cdk = { version = "0.6.0", default-features = false, features = ["wallet"] }
-cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false, features = [
+cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
     "wallet",
 ] }
 # cdk-common = { version = "0.6.0", default-features = false }
-cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false }
-# cdk-redb = { version = "0.6.0", default-features = false, features = ["wallet"] }
-cdk-redb = { git = "https://github.com/davidcaseria/cdk.git", branch = "prepared-send", default-features = false, features = [
+cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false }
+# cdk-sqlite = { version = "0.6.0", default-features = false, features = ["wallet"] }
+cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
     "wallet",
 ] }
 flutter_rust_bridge = { version = "=2.9.0", features = ["log"] }
@@ -23,7 +23,13 @@ futures = "0.3.31"
 rand = { version = "0.9.0", default-features = false, features = [
     "thread_rng",
 ] }
-reqwest = { version = "0.12.14", default-features = false, features = ["deflate", "gzip", "json", "rustls-tls", "rustls-tls-native-roots"] }
+reqwest = { version = "0.12.14", default-features = false, features = [
+    "deflate",
+    "gzip",
+    "json",
+    "rustls-tls",
+    "rustls-tls-native-roots",
+] }
 tokio = { version = "1.43.0", default-features = false }
 
 [lints.rust]

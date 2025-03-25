@@ -8,7 +8,7 @@ void main() {
   setUpAll(() async => await CdkFlutter.init());
   test('Create a wallet', () async {
     final path = await getTemporaryDirectory();
-    final db = WalletDatabase(path: '${path.path}/wallet.db');
+    final db = await WalletDatabase.newInstance(path: '${path.path}/wallet.db');
     final wallet = Wallet(mintUrl: 'http://localhost:8085', unit: 'sat', seed: [0], localstore: db);
     expect(wallet, isNotNull);
   });

@@ -15,7 +15,7 @@ use cdk::{
     },
 };
 use cdk_common::PaymentRequestPayload;
-use cdk_redb::WalletRedbDatabase;
+use cdk_sqlite::WalletSqliteDatabase;
 use flutter_rust_bridge::frb;
 use tokio::{
     sync::{broadcast, mpsc, Mutex},
@@ -150,30 +150,44 @@ impl Wallet {
                             expiry: state_res.expiry,
                             state: state_res.state.into(),
                             token: None,
+                            error: None,
                         });
                         if state_res.state == CdkMintQuoteState::Paid {
-                            if let Ok(mint_proofs) =
-                                _self.inner.mint(&quote.id, SplitTarget::None, None).await
-                            {
-                                let mint_amount = mint_proofs.total_amount().unwrap_or_default();
-                                let _ = sink.add(MintQuote {
-                                    id: quote.id,
-                                    request: quote.request,
-                                    amount: mint_amount.into(),
-                                    expiry: Some(quote.expiry),
-                                    state: CdkMintQuoteState::Issued.into(),
-                                    token: Token::try_from(CdkToken::new(
-                                        mint_url,
-                                        mint_proofs,
-                                        None,
-                                        unit,
-                                    ))
-                                    .ok(),
-                                });
+                            match _self.inner.mint(&quote.id, SplitTarget::None, None).await {
+                                Ok(mint_proofs) => {
+                                    let mint_amount =
+                                        mint_proofs.total_amount().unwrap_or_default();
+                                    let _ = sink.add(MintQuote {
+                                        id: quote.id,
+                                        request: quote.request,
+                                        amount: mint_amount.into(),
+                                        expiry: Some(quote.expiry),
+                                        state: CdkMintQuoteState::Issued.into(),
+                                        token: Token::try_from(CdkToken::new(
+                                            mint_url,
+                                            mint_proofs,
+                                            None,
+                                            unit,
+                                        ))
+                                        .ok(),
+                                        error: None,
+                                    });
+                                }
+                                Err(e) => {
+                                    let _ = sink.add(MintQuote {
+                                        id: quote.id,
+                                        request: quote.request,
+                                        amount: quote.amount.into(),
+                                        expiry: Some(quote.expiry),
+                                        state: MintQuoteState::Error,
+                                        token: None,
+                                        error: Some(e.to_string()),
+                                    });
+                                }
                             }
+                            _self.update_balance_streams().await;
+                            break;
                         }
-                        _self.update_balance_streams().await;
-                        break;
                     }
                 }
                 sleep(Duration::from_secs(3)).await;
@@ -364,6 +378,7 @@ pub struct MintQuote {
     pub expiry: Option<u64>,
     pub state: MintQuoteState,
     pub token: Option<Token>,
+    pub error: Option<String>,
 }
 
 impl From<CdkMintQuote> for MintQuote {
@@ -375,6 +390,7 @@ impl From<CdkMintQuote> for MintQuote {
             expiry: Some(quote.expiry),
             state: quote.state.into(),
             token: None,
+            error: None,
         }
     }
 }
@@ -383,6 +399,7 @@ pub enum MintQuoteState {
     Unpaid,
     Paid,
     Issued,
+    Error,
 }
 
 impl From<CdkMintQuoteState> for MintQuoteState {
@@ -668,14 +685,14 @@ impl MultiMintWallet {
 
 #[derive(Clone)]
 pub struct WalletDatabase {
-    inner: WalletRedbDatabase,
+    inner: WalletSqliteDatabase,
 }
 
 impl WalletDatabase {
-    #[frb(sync)]
-    pub fn new(path: &str) -> Result<Self, Error> {
+    pub async fn new(path: &str) -> Result<Self, Error> {
         let path = Path::new(path);
-        let inner = WalletRedbDatabase::new(path)?;
+        let inner = WalletSqliteDatabase::new(path).await?;
+        inner.migrate().await;
         Ok(Self { inner })
     }
 }
