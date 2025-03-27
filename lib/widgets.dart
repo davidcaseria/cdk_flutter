@@ -279,6 +279,31 @@ class PreparedSendResult {
   const PreparedSendResult(this.preparedSend, this.send);
 }
 
+class TransactionListBuilder extends StatelessWidget {
+  final String? mintUrl;
+  final TransactionDirection? direction;
+  final AsyncWidgetBuilder<List<Transaction>> builder;
+
+  const TransactionListBuilder({super.key, this.mintUrl, this.direction, required this.builder});
+
+  @override
+  Widget build(BuildContext context) {
+    final wallet = context.read<Wallet?>();
+    if (wallet != null) {
+      return FutureBuilder<List<Transaction>>(
+        future: wallet.listTransactions(direction: direction),
+        builder: builder,
+      );
+    } else {
+      final multiMintWallet = context.read<MultiMintWallet>();
+      return FutureBuilder<List<Transaction>>(
+        future: multiMintWallet.listTransactions(direction: direction, mintUrl: mintUrl),
+        builder: builder,
+      );
+    }
+  }
+}
+
 class WalletBalanceBuilder extends StatelessWidget {
   final AsyncWidgetBuilder<BigInt> builder;
 

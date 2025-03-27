@@ -11,10 +11,14 @@ use cdk::{
     util::hex,
     wallet::{
         MeltQuote as CdkMeltQuote, MintQuote as CdkMintQuote, PreparedSend as CdkPreparedSend,
-        SendMemo, SendOptions, Wallet as CdkWallet,
+        ReceiveOptions, SendMemo, SendOptions, Wallet as CdkWallet,
     },
 };
-use cdk_common::PaymentRequestPayload;
+use cdk_common::{
+    mint_url,
+    wallet::{Transaction as CdkTransaction, TransactionDirection as CdkTransactionDirection},
+    PaymentRequestPayload,
+};
 use cdk_sqlite::WalletSqliteDatabase;
 use flutter_rust_bridge::frb;
 use tokio::{
@@ -114,6 +118,19 @@ impl Wallet {
         Ok(proof_states
             .iter()
             .any(|state| state.state == ProofState::Spent))
+    }
+
+    pub async fn list_transactions(
+        &self,
+        direction: Option<TransactionDirection>,
+    ) -> Result<Vec<Transaction>, Error> {
+        Ok(self
+            .inner
+            .list_transactions(direction.map(|d| d.into()))
+            .await?
+            .into_iter()
+            .map(|tx| tx.into())
+            .collect())
     }
 
     pub async fn melt_quote(&self, request: String) -> Result<MeltQuote, Error> {
@@ -268,9 +285,11 @@ impl Wallet {
             .inner
             .receive(
                 &token.encoded,
-                SplitTarget::None,
-                &p2pk_signing_keys,
-                &preimages,
+                ReceiveOptions {
+                    p2pk_signing_keys,
+                    preimages,
+                    ..Default::default()
+                },
             )
             .await?
             .into();
@@ -434,6 +453,69 @@ impl From<CdkPreparedSend> for PreparedSend {
     }
 }
 
+#[derive(PartialEq, Eq)]
+pub struct Transaction {
+    pub mint_url: String,
+    pub direction: TransactionDirection,
+    pub amount: u64,
+    pub fee: u64,
+    pub unit: String,
+    pub ys: Vec<String>,
+    pub timestamp: u64,
+    pub metadata: HashMap<String, String>,
+}
+
+impl From<CdkTransaction> for Transaction {
+    fn from(tx: CdkTransaction) -> Self {
+        Self {
+            mint_url: tx.mint_url.to_string(),
+            direction: tx.direction.into(),
+            amount: tx.amount.into(),
+            fee: tx.fee.into(),
+            unit: tx.unit.to_string(),
+            ys: tx.ys.iter().map(|y| y.to_string()).collect(),
+            timestamp: tx.timestamp,
+            metadata: tx.metadata,
+        }
+    }
+}
+
+impl PartialOrd for Transaction {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Transaction {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.timestamp.cmp(&other.timestamp)
+    }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum TransactionDirection {
+    Incoming,
+    Outgoing,
+}
+
+impl From<CdkTransactionDirection> for TransactionDirection {
+    fn from(direction: CdkTransactionDirection) -> Self {
+        match direction {
+            CdkTransactionDirection::Incoming => Self::Incoming,
+            CdkTransactionDirection::Outgoing => Self::Outgoing,
+        }
+    }
+}
+
+impl Into<CdkTransactionDirection> for TransactionDirection {
+    fn into(self) -> CdkTransactionDirection {
+        match self {
+            Self::Incoming => CdkTransactionDirection::Incoming,
+            Self::Outgoing => CdkTransactionDirection::Outgoing,
+        }
+    }
+}
+
 #[derive(Clone)]
 pub struct MultiMintWallet {
     pub unit: String,
@@ -586,6 +668,32 @@ impl MultiMintWallet {
         }
         mints.sort();
         Ok(mints)
+    }
+
+    pub async fn list_transactions(
+        &self,
+        direction: Option<TransactionDirection>,
+        mint_url: Option<String>,
+    ) -> Result<Vec<Transaction>, Error> {
+        let wallets = self.wallets.lock().await;
+        let mut transactions = Vec::new();
+
+        if let Some(mint_url) = mint_url {
+            let mint_url = MintUrl::from_str(&mint_url)?;
+            if let Some(wallet) = wallets.get(&mint_url) {
+                let wallet_transactions = wallet.list_transactions(direction).await?;
+                transactions.extend(wallet_transactions);
+            }
+            transactions.sort();
+            return Ok(transactions);
+        }
+
+        for wallet in wallets.values() {
+            let wallet_transactions = wallet.list_transactions(direction).await?;
+            transactions.extend(wallet_transactions);
+        }
+        transactions.sort();
+        Ok(transactions)
     }
 
     pub async fn list_wallets(&self) -> Vec<Wallet> {

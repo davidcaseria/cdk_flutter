@@ -14,7 +14,7 @@ import 'token.dart';
 part 'wallet.freezed.dart';
 
 // These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`
 
 Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
 
@@ -41,6 +41,9 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
   Future<Wallet?> getWallet({required String mintUrl});
 
   Future<List<Mint>> listMints();
+
+  Future<List<Transaction>> listTransactions(
+      {TransactionDirection? direction, String? mintUrl});
 
   Future<List<Wallet>> listWallets();
 
@@ -112,6 +115,8 @@ abstract class Wallet implements RustOpaqueInterface {
   Future<Mint> getMint();
 
   Future<bool> isTokenSpent({required Token token});
+
+  Future<List<Transaction>> listTransactions({TransactionDirection? direction});
 
   Future<BigInt> melt({required MeltQuote quote});
 
@@ -278,4 +283,57 @@ sealed class ParseInputResult with _$ParseInputResult {
   const factory ParseInputResult.token(
     Token field0,
   ) = ParseInputResult_Token;
+}
+
+class Transaction {
+  final String mintUrl;
+  final TransactionDirection direction;
+  final BigInt amount;
+  final BigInt fee;
+  final String unit;
+  final List<String> ys;
+  final BigInt timestamp;
+  final Map<String, String> metadata;
+
+  const Transaction({
+    required this.mintUrl,
+    required this.direction,
+    required this.amount,
+    required this.fee,
+    required this.unit,
+    required this.ys,
+    required this.timestamp,
+    required this.metadata,
+  });
+
+  @override
+  int get hashCode =>
+      mintUrl.hashCode ^
+      direction.hashCode ^
+      amount.hashCode ^
+      fee.hashCode ^
+      unit.hashCode ^
+      ys.hashCode ^
+      timestamp.hashCode ^
+      metadata.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Transaction &&
+          runtimeType == other.runtimeType &&
+          mintUrl == other.mintUrl &&
+          direction == other.direction &&
+          amount == other.amount &&
+          fee == other.fee &&
+          unit == other.unit &&
+          ys == other.ys &&
+          timestamp == other.timestamp &&
+          metadata == other.metadata;
+}
+
+enum TransactionDirection {
+  incoming,
+  outgoing,
+  ;
 }

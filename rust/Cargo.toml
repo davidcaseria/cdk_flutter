@@ -8,14 +8,11 @@ crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
 bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
-# cdk = { version = "0.6.0", default-features = false, features = ["wallet"] }
-cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
+cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "wallet-transactions", default-features = false, features = [
     "wallet",
 ] }
-# cdk-common = { version = "0.6.0", default-features = false }
-cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false }
-# cdk-sqlite = { version = "0.6.0", default-features = false, features = ["wallet"] }
-cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
+cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "wallet-transactions", default-features = false }
+cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "wallet-transactions", default-features = false, features = [
     "wallet",
 ] }
 flutter_rust_bridge = { version = "=2.9.0", features = ["log"] }
