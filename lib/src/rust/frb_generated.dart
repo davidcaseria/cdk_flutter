@@ -2421,8 +2421,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Transaction dco_decode_transaction(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 8)
-      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
     return Transaction(
       mintUrl: dco_decode_String(arr[0]),
       direction: dco_decode_transaction_direction(arr[1]),
@@ -2431,7 +2431,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       unit: dco_decode_String(arr[4]),
       ys: dco_decode_list_String(arr[5]),
       timestamp: dco_decode_u_64(arr[6]),
-      metadata: dco_decode_Map_String_String_None(arr[7]),
+      memo: dco_decode_opt_String(arr[7]),
+      metadata: dco_decode_Map_String_String_None(arr[8]),
     );
   }
 
@@ -3207,6 +3208,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_unit = sse_decode_String(deserializer);
     var var_ys = sse_decode_list_String(deserializer);
     var var_timestamp = sse_decode_u_64(deserializer);
+    var var_memo = sse_decode_opt_String(deserializer);
     var var_metadata = sse_decode_Map_String_String_None(deserializer);
     return Transaction(
         mintUrl: var_mintUrl,
@@ -3216,6 +3218,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         unit: var_unit,
         ys: var_ys,
         timestamp: var_timestamp,
+        memo: var_memo,
         metadata: var_metadata);
   }
 
@@ -3935,6 +3938,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.unit, serializer);
     sse_encode_list_String(self.ys, serializer);
     sse_encode_u_64(self.timestamp, serializer);
+    sse_encode_opt_String(self.memo, serializer);
     sse_encode_Map_String_String_None(self.metadata, serializer);
   }
 

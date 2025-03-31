@@ -461,6 +461,7 @@ pub struct Transaction {
     pub unit: String,
     pub ys: Vec<String>,
     pub timestamp: u64,
+    pub memo: Option<String>,
     pub metadata: HashMap<String, String>,
 }
 
@@ -474,6 +475,7 @@ impl From<CdkTransaction> for Transaction {
             unit: tx.unit.to_string(),
             ys: tx.ys.iter().map(|y| y.to_string()).collect(),
             timestamp: tx.timestamp,
+            memo: tx.memo,
             metadata: tx.metadata,
         }
     }

@@ -293,6 +293,7 @@ class Transaction {
   final String unit;
   final List<String> ys;
   final BigInt timestamp;
+  final String? memo;
   final Map<String, String> metadata;
 
   const Transaction({
@@ -303,6 +304,7 @@ class Transaction {
     required this.unit,
     required this.ys,
     required this.timestamp,
+    this.memo,
     required this.metadata,
   });
 
@@ -315,6 +317,7 @@ class Transaction {
       unit.hashCode ^
       ys.hashCode ^
       timestamp.hashCode ^
+      memo.hashCode ^
       metadata.hashCode;
 
   @override
@@ -329,6 +332,7 @@ class Transaction {
           unit == other.unit &&
           ys == other.ys &&
           timestamp == other.timestamp &&
+          memo == other.memo &&
           metadata == other.metadata;
 }
 

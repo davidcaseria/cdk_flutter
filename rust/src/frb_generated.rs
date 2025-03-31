@@ -3480,6 +3480,7 @@ impl SseDecode for crate::api::wallet::Transaction {
         let mut var_unit = <String>::sse_decode(deserializer);
         let mut var_ys = <Vec<String>>::sse_decode(deserializer);
         let mut var_timestamp = <u64>::sse_decode(deserializer);
+        let mut var_memo = <Option<String>>::sse_decode(deserializer);
         let mut var_metadata =
             <std::collections::HashMap<String, String>>::sse_decode(deserializer);
         return crate::api::wallet::Transaction {
@@ -3490,6 +3491,7 @@ impl SseDecode for crate::api::wallet::Transaction {
             unit: var_unit,
             ys: var_ys,
             timestamp: var_timestamp,
+            memo: var_memo,
             metadata: var_metadata,
         };
     }
@@ -4125,6 +4127,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::wallet::Transaction {
             self.unit.into_into_dart().into_dart(),
             self.ys.into_into_dart().into_dart(),
             self.timestamp.into_into_dart().into_dart(),
+            self.memo.into_into_dart().into_dart(),
             self.metadata.into_into_dart().into_dart(),
         ]
         .into_dart()
@@ -4744,6 +4747,7 @@ impl SseEncode for crate::api::wallet::Transaction {
         <String>::sse_encode(self.unit, serializer);
         <Vec<String>>::sse_encode(self.ys, serializer);
         <u64>::sse_encode(self.timestamp, serializer);
+        <Option<String>>::sse_encode(self.memo, serializer);
         <std::collections::HashMap<String, String>>::sse_encode(self.metadata, serializer);
     }
 }
