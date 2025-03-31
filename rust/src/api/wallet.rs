@@ -15,7 +15,6 @@ use cdk::{
     },
 };
 use cdk_common::{
-    mint_url,
     wallet::{Transaction as CdkTransaction, TransactionDirection as CdkTransactionDirection},
     PaymentRequestPayload,
 };

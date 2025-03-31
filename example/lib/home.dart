@@ -87,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                           '${isOutgoing ? '-' : ''}${transaction.amount}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text('${transaction.direction} Transaction'),
+                        subtitle: Text('${(transaction.direction == TransactionDirection.incoming) ? 'Incoming' : 'Outgoing'} Transaction'),
                       );
                     },
                   );

@@ -288,19 +288,21 @@ class TransactionListBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wallet = context.read<Wallet?>();
-    if (wallet != null) {
-      return FutureBuilder<List<Transaction>>(
-        future: wallet.listTransactions(direction: direction),
-        builder: builder,
-      );
-    } else {
-      final multiMintWallet = context.read<MultiMintWallet>();
-      return FutureBuilder<List<Transaction>>(
-        future: multiMintWallet.listTransactions(direction: direction, mintUrl: mintUrl),
-        builder: builder,
-      );
-    }
+    return WalletBalanceBuilder(builder: (context, snapshot) {
+      final wallet = context.read<Wallet?>();
+      if (wallet != null) {
+        return FutureBuilder<List<Transaction>>(
+          future: wallet.listTransactions(direction: direction),
+          builder: builder,
+        );
+      } else {
+        final multiMintWallet = context.read<MultiMintWallet>();
+        return FutureBuilder<List<Transaction>>(
+          future: multiMintWallet.listTransactions(direction: direction, mintUrl: mintUrl),
+          builder: builder,
+        );
+      }
+    });
   }
 }
 
