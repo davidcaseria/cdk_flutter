@@ -11,7 +11,8 @@ use cdk::{
     util::hex,
     wallet::{
         MeltQuote as CdkMeltQuote, MintQuote as CdkMintQuote, PreparedSend as CdkPreparedSend,
-        ReceiveOptions, SendMemo, SendOptions, Wallet as CdkWallet,
+        ReceiveOptions as CdkReceiveOptions, SendMemo, SendOptions as CdkSendOptions,
+        Wallet as CdkWallet,
     },
 };
 use cdk_common::{
@@ -219,13 +220,8 @@ impl Wallet {
         if !request.validate(self.mint_url()?, self.unit()) {
             return Err(Error::InvalidInput);
         }
-        self.prepare_send(
-            request.amount.ok_or(Error::InvalidInput)?,
-            None,
-            None,
-            Some(false),
-        )
-        .await
+        self.prepare_send(request.amount.ok_or(Error::InvalidInput)?, None)
+            .await
     }
 
     pub async fn pay_request(
@@ -265,31 +261,10 @@ impl Wallet {
         }
     }
 
-    pub async fn receive(
-        &self,
-        token: Token,
-        signing_key: Option<String>,
-        preimage: Option<String>,
-    ) -> Result<u64, Error> {
-        let p2pk_signing_key = signing_key.map(|s| SecretKey::from_str(&s)).transpose()?;
-        let p2pk_signing_keys = match p2pk_signing_key {
-            Some(p2pk_signing_key) => vec![p2pk_signing_key],
-            None => vec![],
-        };
-        let preimages = match preimage {
-            Some(preimage) => vec![preimage],
-            None => vec![],
-        };
+    pub async fn receive(&self, token: Token, opts: Option<ReceiveOptions>) -> Result<u64, Error> {
         let amount = self
             .inner
-            .receive(
-                &token.encoded,
-                ReceiveOptions {
-                    p2pk_signing_keys,
-                    preimages,
-                    ..Default::default()
-                },
-            )
+            .receive(&token.encoded, opts.unwrap_or_default().try_into()?)
             .await?
             .into();
         self.update_balance_streams().await;
@@ -305,21 +280,12 @@ impl Wallet {
     pub async fn prepare_send(
         &self,
         amount: u64,
-        pubkey: Option<String>,
-        memo: Option<String>,
-        include_memo: Option<bool>,
+        opts: Option<SendOptions>,
     ) -> Result<PreparedSend, Error> {
-        let pubkey = pubkey.map(|s| PublicKey::from_str(&s)).transpose()?;
-        let send_memo = memo.map(|m| SendMemo {
-            memo: m,
-            include_memo: include_memo.unwrap_or_default(),
-        });
-        let opts = SendOptions {
-            memo: send_memo,
-            conditions: pubkey.map(|pubkey| SpendingConditions::new_p2pk(pubkey, None)),
-            ..Default::default()
-        };
-        let prepared_send = self.inner.prepare_send(amount.into(), opts).await?;
+        let prepared_send = self
+            .inner
+            .prepare_send(amount.into(), opts.unwrap_or_default().try_into()?)
+            .await?;
         Ok(prepared_send.into())
     }
 
@@ -449,6 +415,54 @@ impl From<CdkPreparedSend> for PreparedSend {
             fee: prepared_send.fee().into(),
             inner: prepared_send,
         }
+    }
+}
+
+#[derive(Default)]
+pub struct ReceiveOptions {
+    pub signing_keys: Option<Vec<String>>,
+    pub preimages: Option<Vec<String>>,
+}
+
+impl TryInto<CdkReceiveOptions> for ReceiveOptions {
+    type Error = Error;
+
+    fn try_into(self) -> Result<CdkReceiveOptions, Self::Error> {
+        let p2pk_signing_keys = self
+            .signing_keys
+            .unwrap_or_default()
+            .into_iter()
+            .map(|s| SecretKey::from_str(&s))
+            .collect::<Result<Vec<_>, _>>()?;
+        Ok(CdkReceiveOptions {
+            p2pk_signing_keys,
+            preimages: self.preimages.unwrap_or_default(),
+            ..Default::default()
+        })
+    }
+}
+
+#[derive(Default)]
+pub struct SendOptions {
+    pub memo: Option<String>,
+    pub include_memo: Option<bool>,
+    pub pubkey: Option<String>,
+}
+
+impl TryInto<CdkSendOptions> for SendOptions {
+    type Error = Error;
+
+    fn try_into(self) -> Result<CdkSendOptions, Self::Error> {
+        let pubkey = self.pubkey.map(|s| PublicKey::from_str(&s)).transpose()?;
+        let send_memo = self.memo.map(|m| SendMemo {
+            memo: m,
+            include_memo: self.include_memo.unwrap_or_default(),
+        });
+        Ok(CdkSendOptions {
+            memo: send_memo,
+            conditions: pubkey.map(|pubkey| SpendingConditions::new_p2pk(pubkey, None)),
+            ..Default::default()
+        })
     }
 }
 

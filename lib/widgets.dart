@@ -161,17 +161,17 @@ class MintQuoteBuilderState extends State<MintQuoteBuilder> {
 
 class ReceiveBuilder extends StatelessWidget {
   final String? mintUrl;
-  final String? signingKey;
-  final String? preimage;
+  final List<String>? signingKeys;
+  final List<String>? preimages;
   final String token;
   final AsyncWidgetBuilder<ReceiveResult> builder;
 
-  const ReceiveBuilder({super.key, this.mintUrl, this.signingKey, this.preimage, required this.token, required this.builder});
+  const ReceiveBuilder({super.key, this.mintUrl, this.signingKeys, this.preimages, required this.token, required this.builder});
 
   Widget _buildWithWallet(Wallet wallet) {
     final token = Token.parse(encoded: this.token);
     return FutureBuilder<BigInt?>(
-      future: wallet.receive(token: token),
+      future: wallet.receive(token: token, opts: ReceiveOptions(signingKeys: signingKeys, preimages: preimages)),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return builder(context, AsyncSnapshot<ReceiveResult>.nothing());
@@ -228,7 +228,7 @@ class SendBuilder extends StatelessWidget {
 
   Widget _buildWithWallet(Wallet wallet) {
     return FutureBuilder<PreparedSend>(
-      future: wallet.prepareSend(amount: amount, pubkey: pubkey, memo: memo, includeMemo: includeMemo),
+      future: wallet.prepareSend(amount: amount, opts: SendOptions(pubkey: pubkey, memo: memo, includeMemo: includeMemo)),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final preparedSend = snapshot.data!;

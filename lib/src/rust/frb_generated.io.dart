@@ -153,6 +153,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PaymentRequest dco_decode_box_autoadd_payment_request(dynamic raw);
 
   @protected
+  ReceiveOptions dco_decode_box_autoadd_receive_options(dynamic raw);
+
+  @protected
+  SendOptions dco_decode_box_autoadd_send_options(dynamic raw);
+
+  @protected
   Token dco_decode_box_autoadd_token(dynamic raw);
 
   @protected
@@ -245,6 +251,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PaymentRequest? dco_decode_opt_box_autoadd_payment_request(dynamic raw);
 
   @protected
+  ReceiveOptions? dco_decode_opt_box_autoadd_receive_options(dynamic raw);
+
+  @protected
+  SendOptions? dco_decode_opt_box_autoadd_send_options(dynamic raw);
+
+  @protected
   Token? dco_decode_opt_box_autoadd_token(dynamic raw);
 
   @protected
@@ -273,7 +285,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PaymentRequest dco_decode_payment_request(dynamic raw);
 
   @protected
+  ReceiveOptions dco_decode_receive_options(dynamic raw);
+
+  @protected
   (String, String) dco_decode_record_string_string(dynamic raw);
+
+  @protected
+  SendOptions dco_decode_send_options(dynamic raw);
 
   @protected
   Token dco_decode_token(dynamic raw);
@@ -422,6 +440,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  ReceiveOptions sse_decode_box_autoadd_receive_options(
+      SseDeserializer deserializer);
+
+  @protected
+  SendOptions sse_decode_box_autoadd_send_options(SseDeserializer deserializer);
+
+  @protected
   Token sse_decode_box_autoadd_token(SseDeserializer deserializer);
 
   @protected
@@ -517,6 +542,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  ReceiveOptions? sse_decode_opt_box_autoadd_receive_options(
+      SseDeserializer deserializer);
+
+  @protected
+  SendOptions? sse_decode_opt_box_autoadd_send_options(
+      SseDeserializer deserializer);
+
+  @protected
   Token? sse_decode_opt_box_autoadd_token(SseDeserializer deserializer);
 
   @protected
@@ -547,8 +580,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PaymentRequest sse_decode_payment_request(SseDeserializer deserializer);
 
   @protected
+  ReceiveOptions sse_decode_receive_options(SseDeserializer deserializer);
+
+  @protected
   (String, String) sse_decode_record_string_string(
       SseDeserializer deserializer);
+
+  @protected
+  SendOptions sse_decode_send_options(SseDeserializer deserializer);
 
   @protected
   Token sse_decode_token(SseDeserializer deserializer);
@@ -703,6 +742,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PaymentRequest self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_receive_options(
+      ReceiveOptions self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_send_options(
+      SendOptions self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_token(Token self, SseSerializer serializer);
 
   @protected
@@ -805,6 +852,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PaymentRequest? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_receive_options(
+      ReceiveOptions? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_send_options(
+      SendOptions? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_token(Token? self, SseSerializer serializer);
 
   @protected
@@ -837,8 +892,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PaymentRequest self, SseSerializer serializer);
 
   @protected
+  void sse_encode_receive_options(
+      ReceiveOptions self, SseSerializer serializer);
+
+  @protected
   void sse_encode_record_string_string(
       (String, String) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_send_options(SendOptions self, SseSerializer serializer);
 
   @protected
   void sse_encode_token(Token self, SseSerializer serializer);

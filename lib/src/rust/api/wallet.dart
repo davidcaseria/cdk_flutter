@@ -14,7 +14,7 @@ import 'token.dart';
 part 'wallet.freezed.dart';
 
 // These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`, `try_into`, `try_into`
 
 Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
 
@@ -161,14 +161,9 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<PreparedSend> preparePayRequest({required PaymentRequest request});
 
-  Future<PreparedSend> prepareSend(
-      {required BigInt amount,
-      String? pubkey,
-      String? memo,
-      bool? includeMemo});
+  Future<PreparedSend> prepareSend({required BigInt amount, SendOptions? opts});
 
-  Future<BigInt> receive(
-      {required Token token, String? signingKey, String? preimage});
+  Future<BigInt> receive({required Token token, ReceiveOptions? opts});
 
   Future<void> reclaimSend({required Token token});
 
@@ -286,6 +281,57 @@ sealed class ParseInputResult with _$ParseInputResult {
   const factory ParseInputResult.token(
     Token field0,
   ) = ParseInputResult_Token;
+}
+
+class ReceiveOptions {
+  final List<String>? signingKeys;
+  final List<String>? preimages;
+
+  const ReceiveOptions({
+    this.signingKeys,
+    this.preimages,
+  });
+
+  static Future<ReceiveOptions> default_() =>
+      RustLib.instance.api.crateApiWalletReceiveOptionsDefault();
+
+  @override
+  int get hashCode => signingKeys.hashCode ^ preimages.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReceiveOptions &&
+          runtimeType == other.runtimeType &&
+          signingKeys == other.signingKeys &&
+          preimages == other.preimages;
+}
+
+class SendOptions {
+  final String? memo;
+  final bool? includeMemo;
+  final String? pubkey;
+
+  const SendOptions({
+    this.memo,
+    this.includeMemo,
+    this.pubkey,
+  });
+
+  static Future<SendOptions> default_() =>
+      RustLib.instance.api.crateApiWalletSendOptionsDefault();
+
+  @override
+  int get hashCode => memo.hashCode ^ includeMemo.hashCode ^ pubkey.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SendOptions &&
+          runtimeType == other.runtimeType &&
+          memo == other.memo &&
+          includeMemo == other.includeMemo &&
+          pubkey == other.pubkey;
 }
 
 class Transaction {

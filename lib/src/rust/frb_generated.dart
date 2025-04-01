@@ -73,7 +73,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.9.0';
 
   @override
-  int get rustContentHash => -336774765;
+  int get rustContentHash => 1397803780;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -224,17 +224,10 @@ abstract class RustLibApi extends BaseApi {
       {required Wallet that, required PaymentRequest request});
 
   Future<PreparedSend> crateApiWalletWalletPrepareSend(
-      {required Wallet that,
-      required BigInt amount,
-      String? pubkey,
-      String? memo,
-      bool? includeMemo});
+      {required Wallet that, required BigInt amount, SendOptions? opts});
 
   Future<BigInt> crateApiWalletWalletReceive(
-      {required Wallet that,
-      required Token token,
-      String? signingKey,
-      String? preimage});
+      {required Wallet that, required Token token, ReceiveOptions? opts});
 
   Future<void> crateApiWalletWalletReclaimSend(
       {required Wallet that, required Token token});
@@ -261,6 +254,10 @@ abstract class RustLibApi extends BaseApi {
 
   String crateApiPaymentRequestPaymentRequestEncode(
       {required PaymentRequest that});
+
+  Future<ReceiveOptions> crateApiWalletReceiveOptionsDefault();
+
+  Future<SendOptions> crateApiWalletSendOptionsDefault();
 
   Token crateApiTokenTokenParse({required String encoded});
 
@@ -1479,20 +1476,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<PreparedSend> crateApiWalletWalletPrepareSend(
-      {required Wallet that,
-      required BigInt amount,
-      String? pubkey,
-      String? memo,
-      bool? includeMemo}) {
+      {required Wallet that, required BigInt amount, SendOptions? opts}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
             that, serializer);
         sse_encode_u_64(amount, serializer);
-        sse_encode_opt_String(pubkey, serializer);
-        sse_encode_opt_String(memo, serializer);
-        sse_encode_opt_box_autoadd_bool(includeMemo, serializer);
+        sse_encode_opt_box_autoadd_send_options(opts, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 42, port: port_);
       },
@@ -1502,7 +1493,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletPrepareSendConstMeta,
-      argValues: [that, amount, pubkey, memo, includeMemo],
+      argValues: [that, amount, opts],
       apiImpl: this,
     ));
   }
@@ -1510,23 +1501,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletWalletPrepareSendConstMeta =>
       const TaskConstMeta(
         debugName: "Wallet_prepare_send",
-        argNames: ["that", "amount", "pubkey", "memo", "includeMemo"],
+        argNames: ["that", "amount", "opts"],
       );
 
   @override
   Future<BigInt> crateApiWalletWalletReceive(
-      {required Wallet that,
-      required Token token,
-      String? signingKey,
-      String? preimage}) {
+      {required Wallet that, required Token token, ReceiveOptions? opts}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
             that, serializer);
         sse_encode_box_autoadd_token(token, serializer);
-        sse_encode_opt_String(signingKey, serializer);
-        sse_encode_opt_String(preimage, serializer);
+        sse_encode_opt_box_autoadd_receive_options(opts, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 43, port: port_);
       },
@@ -1535,7 +1522,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletReceiveConstMeta,
-      argValues: [that, token, signingKey, preimage],
+      argValues: [that, token, opts],
       apiImpl: this,
     ));
   }
@@ -1543,7 +1530,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletWalletReceiveConstMeta =>
       const TaskConstMeta(
         debugName: "Wallet_receive",
-        argNames: ["that", "token", "signingKey", "preimage"],
+        argNames: ["that", "token", "opts"],
       );
 
   @override
@@ -1802,12 +1789,60 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<ReceiveOptions> crateApiWalletReceiveOptionsDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 54, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_receive_options,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiWalletReceiveOptionsDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletReceiveOptionsDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "receive_options_default",
+        argNames: [],
+      );
+
+  @override
+  Future<SendOptions> crateApiWalletSendOptionsDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 55, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_send_options,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiWalletSendOptionsDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiWalletSendOptionsDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "send_options_default",
+        argNames: [],
+      );
+
+  @override
   Token crateApiTokenTokenParse({required String encoded}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(encoded, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 54)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 56)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_token,
@@ -2062,6 +2097,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   PaymentRequest dco_decode_box_autoadd_payment_request(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_payment_request(raw);
+  }
+
+  @protected
+  ReceiveOptions dco_decode_box_autoadd_receive_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_receive_options(raw);
+  }
+
+  @protected
+  SendOptions dco_decode_box_autoadd_send_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_send_options(raw);
   }
 
   @protected
@@ -2334,6 +2381,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ReceiveOptions? dco_decode_opt_box_autoadd_receive_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_receive_options(raw);
+  }
+
+  @protected
+  SendOptions? dco_decode_opt_box_autoadd_send_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_send_options(raw);
+  }
+
+  @protected
   Token? dco_decode_opt_box_autoadd_token(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_token(raw);
@@ -2417,6 +2476,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ReceiveOptions dco_decode_receive_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return ReceiveOptions(
+      signingKeys: dco_decode_opt_list_String(arr[0]),
+      preimages: dco_decode_opt_list_String(arr[1]),
+    );
+  }
+
+  @protected
   (String, String) dco_decode_record_string_string(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2426,6 +2497,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return (
       dco_decode_String(arr[0]),
       dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  SendOptions dco_decode_send_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return SendOptions(
+      memo: dco_decode_opt_String(arr[0]),
+      includeMemo: dco_decode_opt_box_autoadd_bool(arr[1]),
+      pubkey: dco_decode_opt_String(arr[2]),
     );
   }
 
@@ -2738,6 +2822,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_payment_request(deserializer));
+  }
+
+  @protected
+  ReceiveOptions sse_decode_box_autoadd_receive_options(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_receive_options(deserializer));
+  }
+
+  @protected
+  SendOptions sse_decode_box_autoadd_send_options(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_send_options(deserializer));
   }
 
   @protected
@@ -3085,6 +3183,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ReceiveOptions? sse_decode_opt_box_autoadd_receive_options(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_receive_options(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  SendOptions? sse_decode_opt_box_autoadd_send_options(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_send_options(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   Token? sse_decode_opt_box_autoadd_token(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -3205,12 +3327,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ReceiveOptions sse_decode_receive_options(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_signingKeys = sse_decode_opt_list_String(deserializer);
+    var var_preimages = sse_decode_opt_list_String(deserializer);
+    return ReceiveOptions(
+        signingKeys: var_signingKeys, preimages: var_preimages);
+  }
+
+  @protected
   (String, String) sse_decode_record_string_string(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_field0 = sse_decode_String(deserializer);
     var var_field1 = sse_decode_String(deserializer);
     return (var_field0, var_field1);
+  }
+
+  @protected
+  SendOptions sse_decode_send_options(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_memo = sse_decode_opt_String(deserializer);
+    var var_includeMemo = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_pubkey = sse_decode_opt_String(deserializer);
+    return SendOptions(
+        memo: var_memo, includeMemo: var_includeMemo, pubkey: var_pubkey);
   }
 
   @protected
@@ -3544,6 +3685,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_receive_options(
+      ReceiveOptions self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_receive_options(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_send_options(
+      SendOptions self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_send_options(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_token(Token self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_token(self, serializer);
@@ -3833,6 +3988,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_receive_options(
+      ReceiveOptions? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_receive_options(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_send_options(
+      SendOptions? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_send_options(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_token(Token? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -3938,11 +4115,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_receive_options(
+      ReceiveOptions self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_list_String(self.signingKeys, serializer);
+    sse_encode_opt_list_String(self.preimages, serializer);
+  }
+
+  @protected
   void sse_encode_record_string_string(
       (String, String) self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.$1, serializer);
     sse_encode_String(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_send_options(SendOptions self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_String(self.memo, serializer);
+    sse_encode_opt_box_autoadd_bool(self.includeMemo, serializer);
+    sse_encode_opt_String(self.pubkey, serializer);
   }
 
   @protected
@@ -4245,21 +4438,13 @@ class WalletImpl extends RustOpaque implements Wallet {
           .crateApiWalletWalletPreparePayRequest(that: this, request: request);
 
   Future<PreparedSend> prepareSend(
-          {required BigInt amount,
-          String? pubkey,
-          String? memo,
-          bool? includeMemo}) =>
+          {required BigInt amount, SendOptions? opts}) =>
       RustLib.instance.api.crateApiWalletWalletPrepareSend(
-          that: this,
-          amount: amount,
-          pubkey: pubkey,
-          memo: memo,
-          includeMemo: includeMemo);
+          that: this, amount: amount, opts: opts);
 
-  Future<BigInt> receive(
-          {required Token token, String? signingKey, String? preimage}) =>
-      RustLib.instance.api.crateApiWalletWalletReceive(
-          that: this, token: token, signingKey: signingKey, preimage: preimage);
+  Future<BigInt> receive({required Token token, ReceiveOptions? opts}) =>
+      RustLib.instance.api
+          .crateApiWalletWalletReceive(that: this, token: token, opts: opts);
 
   Future<void> reclaimSend({required Token token}) => RustLib.instance.api
       .crateApiWalletWalletReclaimSend(that: this, token: token);
