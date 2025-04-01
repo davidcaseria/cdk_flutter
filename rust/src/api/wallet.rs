@@ -817,6 +817,13 @@ pub fn generate_hex_seed() -> String {
 }
 
 #[frb(sync)]
+pub fn get_pub_key(secret: String) -> Result<String, Error> {
+    let secret = SecretKey::from_str(&secret)?;
+    let pub_key = secret.public_key();
+    Ok(pub_key.to_string())
+}
+
+#[frb(sync)]
 pub fn parse_input(input: String) -> Result<ParseInputResult, Error> {
     let input = input.trim();
     if let Ok(req) = PaymentRequest::from_str(input) {

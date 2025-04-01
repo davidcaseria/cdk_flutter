@@ -21,6 +21,9 @@ Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
 String generateHexSeed() =>
     RustLib.instance.api.crateApiWalletGenerateHexSeed();
 
+String getPubKey({required String secret}) =>
+    RustLib.instance.api.crateApiWalletGetPubKey(secret: secret);
+
 ParseInputResult parseInput({required String input}) =>
     RustLib.instance.api.crateApiWalletParseInput(input: input);
 
