@@ -2340,6 +2340,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, String>? dco_decode_opt_Map_String_String_None(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_Map_String_String_None(raw);
+  }
+
+  @protected
   String? dco_decode_opt_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_String(raw);
@@ -2479,11 +2485,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ReceiveOptions dco_decode_receive_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
     return ReceiveOptions(
       signingKeys: dco_decode_opt_list_String(arr[0]),
       preimages: dco_decode_opt_list_String(arr[1]),
+      metdata: dco_decode_opt_Map_String_String_None(arr[2]),
     );
   }
 
@@ -2504,12 +2511,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SendOptions dco_decode_send_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return SendOptions(
       memo: dco_decode_opt_String(arr[0]),
       includeMemo: dco_decode_opt_box_autoadd_bool(arr[1]),
       pubkey: dco_decode_opt_String(arr[2]),
+      metadata: dco_decode_opt_Map_String_String_None(arr[3]),
     );
   }
 
@@ -3112,6 +3120,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, String>? sse_decode_opt_Map_String_String_None(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_Map_String_String_None(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   String? sse_decode_opt_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -3331,8 +3351,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_signingKeys = sse_decode_opt_list_String(deserializer);
     var var_preimages = sse_decode_opt_list_String(deserializer);
+    var var_metdata = sse_decode_opt_Map_String_String_None(deserializer);
     return ReceiveOptions(
-        signingKeys: var_signingKeys, preimages: var_preimages);
+        signingKeys: var_signingKeys,
+        preimages: var_preimages,
+        metdata: var_metdata);
   }
 
   @protected
@@ -3350,8 +3373,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_memo = sse_decode_opt_String(deserializer);
     var var_includeMemo = sse_decode_opt_box_autoadd_bool(deserializer);
     var var_pubkey = sse_decode_opt_String(deserializer);
+    var var_metadata = sse_decode_opt_Map_String_String_None(deserializer);
     return SendOptions(
-        memo: var_memo, includeMemo: var_includeMemo, pubkey: var_pubkey);
+        memo: var_memo,
+        includeMemo: var_includeMemo,
+        pubkey: var_pubkey,
+        metadata: var_metadata);
   }
 
   @protected
@@ -3922,6 +3949,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_Map_String_String_None(
+      Map<String, String>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_Map_String_String_None(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -4120,6 +4158,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_opt_list_String(self.signingKeys, serializer);
     sse_encode_opt_list_String(self.preimages, serializer);
+    sse_encode_opt_Map_String_String_None(self.metdata, serializer);
   }
 
   @protected
@@ -4136,6 +4175,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.memo, serializer);
     sse_encode_opt_box_autoadd_bool(self.includeMemo, serializer);
     sse_encode_opt_String(self.pubkey, serializer);
+    sse_encode_opt_Map_String_String_None(self.metadata, serializer);
   }
 
   @protected

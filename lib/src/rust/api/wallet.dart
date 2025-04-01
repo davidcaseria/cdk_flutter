@@ -286,17 +286,20 @@ sealed class ParseInputResult with _$ParseInputResult {
 class ReceiveOptions {
   final List<String>? signingKeys;
   final List<String>? preimages;
+  final Map<String, String>? metdata;
 
   const ReceiveOptions({
     this.signingKeys,
     this.preimages,
+    this.metdata,
   });
 
   static Future<ReceiveOptions> default_() =>
       RustLib.instance.api.crateApiWalletReceiveOptionsDefault();
 
   @override
-  int get hashCode => signingKeys.hashCode ^ preimages.hashCode;
+  int get hashCode =>
+      signingKeys.hashCode ^ preimages.hashCode ^ metdata.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -304,25 +307,32 @@ class ReceiveOptions {
       other is ReceiveOptions &&
           runtimeType == other.runtimeType &&
           signingKeys == other.signingKeys &&
-          preimages == other.preimages;
+          preimages == other.preimages &&
+          metdata == other.metdata;
 }
 
 class SendOptions {
   final String? memo;
   final bool? includeMemo;
   final String? pubkey;
+  final Map<String, String>? metadata;
 
   const SendOptions({
     this.memo,
     this.includeMemo,
     this.pubkey,
+    this.metadata,
   });
 
   static Future<SendOptions> default_() =>
       RustLib.instance.api.crateApiWalletSendOptionsDefault();
 
   @override
-  int get hashCode => memo.hashCode ^ includeMemo.hashCode ^ pubkey.hashCode;
+  int get hashCode =>
+      memo.hashCode ^
+      includeMemo.hashCode ^
+      pubkey.hashCode ^
+      metadata.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -331,7 +341,8 @@ class SendOptions {
           runtimeType == other.runtimeType &&
           memo == other.memo &&
           includeMemo == other.includeMemo &&
-          pubkey == other.pubkey;
+          pubkey == other.pubkey &&
+          metadata == other.metadata;
 }
 
 class Transaction {

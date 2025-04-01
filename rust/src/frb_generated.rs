@@ -3339,6 +3339,19 @@ impl SseDecode for crate::api::mint::MintVersion {
     }
 }
 
+impl SseDecode for Option<std::collections::HashMap<String, String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<std::collections::HashMap<String, String>>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3566,9 +3579,12 @@ impl SseDecode for crate::api::wallet::ReceiveOptions {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_signingKeys = <Option<Vec<String>>>::sse_decode(deserializer);
         let mut var_preimages = <Option<Vec<String>>>::sse_decode(deserializer);
+        let mut var_metdata =
+            <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
         return crate::api::wallet::ReceiveOptions {
             signing_keys: var_signingKeys,
             preimages: var_preimages,
+            metdata: var_metdata,
         };
     }
 }
@@ -3588,10 +3604,13 @@ impl SseDecode for crate::api::wallet::SendOptions {
         let mut var_memo = <Option<String>>::sse_decode(deserializer);
         let mut var_includeMemo = <Option<bool>>::sse_decode(deserializer);
         let mut var_pubkey = <Option<String>>::sse_decode(deserializer);
+        let mut var_metadata =
+            <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
         return crate::api::wallet::SendOptions {
             memo: var_memo,
             include_memo: var_includeMemo,
             pubkey: var_pubkey,
+            metadata: var_metadata,
         };
     }
 }
@@ -4256,6 +4275,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::wallet::ReceiveOptions {
         [
             self.signing_keys.into_into_dart().into_dart(),
             self.preimages.into_into_dart().into_dart(),
+            self.metdata.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -4278,6 +4298,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::wallet::SendOptions {
             self.memo.into_into_dart().into_dart(),
             self.include_memo.into_into_dart().into_dart(),
             self.pubkey.into_into_dart().into_dart(),
+            self.metadata.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -4748,6 +4769,16 @@ impl SseEncode for crate::api::mint::MintVersion {
     }
 }
 
+impl SseEncode for Option<std::collections::HashMap<String, String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <std::collections::HashMap<String, String>>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -4939,6 +4970,7 @@ impl SseEncode for crate::api::wallet::ReceiveOptions {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<Vec<String>>>::sse_encode(self.signing_keys, serializer);
         <Option<Vec<String>>>::sse_encode(self.preimages, serializer);
+        <Option<std::collections::HashMap<String, String>>>::sse_encode(self.metdata, serializer);
     }
 }
 
@@ -4956,6 +4988,7 @@ impl SseEncode for crate::api::wallet::SendOptions {
         <Option<String>>::sse_encode(self.memo, serializer);
         <Option<bool>>::sse_encode(self.include_memo, serializer);
         <Option<String>>::sse_encode(self.pubkey, serializer);
+        <Option<std::collections::HashMap<String, String>>>::sse_encode(self.metadata, serializer);
     }
 }
 

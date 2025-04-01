@@ -422,6 +422,7 @@ impl From<CdkPreparedSend> for PreparedSend {
 pub struct ReceiveOptions {
     pub signing_keys: Option<Vec<String>>,
     pub preimages: Option<Vec<String>>,
+    pub metdata: Option<HashMap<String, String>>,
 }
 
 impl TryInto<CdkReceiveOptions> for ReceiveOptions {
@@ -437,6 +438,7 @@ impl TryInto<CdkReceiveOptions> for ReceiveOptions {
         Ok(CdkReceiveOptions {
             p2pk_signing_keys,
             preimages: self.preimages.unwrap_or_default(),
+            metadata: self.metdata.unwrap_or_default(),
             ..Default::default()
         })
     }
@@ -447,6 +449,7 @@ pub struct SendOptions {
     pub memo: Option<String>,
     pub include_memo: Option<bool>,
     pub pubkey: Option<String>,
+    pub metadata: Option<HashMap<String, String>>,
 }
 
 impl TryInto<CdkSendOptions> for SendOptions {
@@ -461,6 +464,7 @@ impl TryInto<CdkSendOptions> for SendOptions {
         Ok(CdkSendOptions {
             memo: send_memo,
             conditions: pubkey.map(|pubkey| SpendingConditions::new_p2pk(pubkey, None)),
+            metadata: self.metadata.unwrap_or_default(),
             ..Default::default()
         })
     }
