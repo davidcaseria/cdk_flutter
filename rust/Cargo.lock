@@ -366,7 +366,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cashu"
 version = "0.8.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#cd462e1ee0fd797bc719e5c29d566373db69c2e9"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#2ff2658a4c12bf5a29fe0ba039d48c76897eeaf6"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -419,7 +419,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.8.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#cd462e1ee0fd797bc719e5c29d566373db69c2e9"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#2ff2658a4c12bf5a29fe0ba039d48c76897eeaf6"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -447,7 +447,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.8.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#cd462e1ee0fd797bc719e5c29d566373db69c2e9"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#2ff2658a4c12bf5a29fe0ba039d48c76897eeaf6"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -469,7 +469,7 @@ dependencies = [
 [[package]]
 name = "cdk-sqlite"
 version = "0.8.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#cd462e1ee0fd797bc719e5c29d566373db69c2e9"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#2ff2658a4c12bf5a29fe0ba039d48c76897eeaf6"
 dependencies = [
  "async-trait",
  "bitcoin",
@@ -827,9 +827,9 @@ checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
 
 [[package]]
 name = "flate2"
-version = "1.1.0"
+version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "11faaf5a5236997af9848be0bef4db95824b1d534ebc64d0f0c6cf3e67bd38dc"
+checksum = "7ced92e76e966ca2fd84c8f7aa01a4aea65b0eb6648d72f7c8f3e2764a67fece"
 dependencies = [
  "crc32fast",
  "miniz_oxide",
