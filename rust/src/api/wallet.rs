@@ -311,6 +311,9 @@ impl Wallet {
 
     pub async fn reclaim_reserved(&self) -> Result<(), Error> {
         let proofs = self.inner.get_reserved_proofs().await?;
+        if (proofs.is_empty()) {
+            return Ok(());
+        }
         self.inner.reclaim_unspent(proofs).await?;
         self.inner.check_all_pending_proofs().await?;
         self.update_balance_streams().await;
