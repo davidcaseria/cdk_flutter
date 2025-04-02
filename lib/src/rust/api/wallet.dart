@@ -73,6 +73,8 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
           targetProofCount: targetProofCount,
           localstore: localstore);
 
+  Future<void> reclaimReserved();
+
   Future<void> removeMint({required String mintUrl});
 
   Future<Wallet?> selectWallet({BigInt? amount, List<String>? mintUrls});
@@ -164,6 +166,8 @@ abstract class Wallet implements RustOpaqueInterface {
   Future<PreparedSend> prepareSend({required BigInt amount, SendOptions? opts});
 
   Future<BigInt> receive({required Token token, ReceiveOptions? opts});
+
+  Future<void> reclaimReserved();
 
   Future<void> reclaimSend({required Token token});
 

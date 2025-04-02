@@ -309,6 +309,14 @@ impl Wallet {
         Ok(())
     }
 
+    pub async fn reclaim_reserved(&self) -> Result<(), Error> {
+        let proofs = self.inner.get_reserved_proofs().await?;
+        self.inner.reclaim_unspent(proofs).await?;
+        self.inner.check_all_pending_proofs().await?;
+        self.update_balance_streams().await;
+        Ok(())
+    }
+
     pub async fn reclaim_send(&self, token: Token) -> Result<(), Error> {
         self.inner.reclaim_unspent(token.proofs()?).await?;
         self.inner.check_all_pending_proofs().await?;
@@ -717,6 +725,14 @@ impl MultiMintWallet {
 
     pub async fn list_wallets(&self) -> Vec<Wallet> {
         self.wallets.lock().await.values().cloned().collect()
+    }
+
+    pub async fn reclaim_reserved(&self) -> Result<(), Error> {
+        let wallets = self.wallets.lock().await;
+        for wallet in wallets.values() {
+            wallet.reclaim_reserved().await?;
+        }
+        Ok(())
     }
 
     pub async fn remove_mint(&self, mint_url: String) -> Result<(), Error> {
