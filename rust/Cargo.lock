@@ -366,7 +366,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cashu"
 version = "0.8.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#2ff2658a4c12bf5a29fe0ba039d48c76897eeaf6"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#09f339e6c64443b8c1f0363c3156f653471be3f3"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -419,7 +419,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.8.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#2ff2658a4c12bf5a29fe0ba039d48c76897eeaf6"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#09f339e6c64443b8c1f0363c3156f653471be3f3"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -447,7 +447,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.8.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#2ff2658a4c12bf5a29fe0ba039d48c76897eeaf6"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#09f339e6c64443b8c1f0363c3156f653471be3f3"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -469,7 +469,7 @@ dependencies = [
 [[package]]
 name = "cdk-sqlite"
 version = "0.8.1"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=wallet-transactions#2ff2658a4c12bf5a29fe0ba039d48c76897eeaf6"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#09f339e6c64443b8c1f0363c3156f653471be3f3"
 dependencies = [
  "async-trait",
  "bitcoin",
