@@ -18,7 +18,7 @@ pub struct PaymentRequest {
     pub single_use: Option<bool>,
     pub mints: Option<Vec<String>>,
     pub description: Option<String>,
-    pub transports: Vec<Transport>,
+    pub transports: Option<Vec<Transport>>,
 }
 
 impl PaymentRequest {
@@ -40,13 +40,16 @@ impl PaymentRequest {
             }
         }
 
-        self.transports.iter().any(|t| {
-            if let TransportType::HttpPost = t._type {
-                true
-            } else {
-                false
-            }
-        })
+        if let Some(transports) = &self.transports {
+            return transports.iter().any(|t| {
+                if let TransportType::HttpPost = t._type {
+                    true
+                } else {
+                    false
+                }
+            });
+        }
+        false
     }
 }
 
@@ -79,9 +82,7 @@ impl From<CdkPaymentRequest> for PaymentRequest {
             description: cdk_payment_request.description,
             transports: cdk_payment_request
                 .transports
-                .into_iter()
-                .map(|t| t.into())
-                .collect(),
+                .map(|transports| transports.into_iter().map(|t| t.into()).collect()),
         }
     }
 }
@@ -107,7 +108,10 @@ impl TryInto<CdkPaymentRequest> for PaymentRequest {
                 })
                 .transpose()?,
             description: self.description,
-            transports: self.transports.into_iter().map(|t| t.into()).collect(),
+            transports: self
+                .transports
+                .map(|transports| transports.into_iter().map(|t| t.into()).collect()),
+            nut10: None,
         })
     }
 }
@@ -135,7 +139,11 @@ impl TryInto<CdkPaymentRequest> for &PaymentRequest {
                 })
                 .transpose()?,
             description: self.description.clone(),
-            transports: self.transports.iter().map(|t| t.into()).collect(),
+            transports: self
+                .transports
+                .as_ref()
+                .map(|transports| transports.iter().map(|t| t.into()).collect()),
+            nut10: None,
         })
     }
 }

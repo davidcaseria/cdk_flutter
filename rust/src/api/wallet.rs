@@ -236,8 +236,8 @@ impl Wallet {
         }
         let token = self.send(send, memo.clone(), include_memo).await?;
 
-        let transport = request
-            .transports
+        let transports = request.transports.ok_or(Error::InvalidInput)?;
+        let transport = transports
             .iter()
             .find(|t| t._type == TransportType::HttpPost)
             .ok_or(Error::InvalidInput)?;
@@ -838,7 +838,6 @@ impl WalletDatabase {
     pub async fn new(path: &str) -> Result<Self, Error> {
         let path = Path::new(path);
         let inner = WalletSqliteDatabase::new(path).await?;
-        inner.migrate().await;
         Ok(Self { inner })
     }
 }
