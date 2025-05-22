@@ -1,6 +1,12 @@
+use std::str::FromStr;
+
+use cdk::wallet::{HttpClient, MintConnector};
 use cdk_common::{
-    ContactInfo as CdkContactInfo, MintInfo as CdkMintInfo, MintVersion as CdkMintVersion,
+    mint_url::MintUrl, ContactInfo as CdkContactInfo, MintInfo as CdkMintInfo,
+    MintVersion as CdkMintVersion,
 };
+
+use super::error::Error;
 
 pub struct Mint {
     pub url: String,
@@ -86,4 +92,9 @@ impl From<CdkContactInfo> for ContactInfo {
             info: c.info,
         }
     }
+}
+
+pub async fn get_mint_info(mint_url: &str) -> Result<MintInfo, Error> {
+    let client = HttpClient::new(MintUrl::from_str(mint_url)?);
+    Ok(client.get_mint_info().await?.into())
 }
