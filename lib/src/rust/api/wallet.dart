@@ -181,6 +181,8 @@ abstract class Wallet implements RustOpaqueInterface {
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>>
 abstract class WalletDatabase implements RustOpaqueInterface {
+  Future<List<Mint>> listMints();
+
   // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
   static Future<WalletDatabase> newInstance({required String path}) =>
       RustLib.instance.api.crateApiWalletWalletDatabaseNew(path: path);

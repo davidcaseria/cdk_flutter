@@ -840,6 +840,20 @@ impl WalletDatabase {
         let inner = WalletSqliteDatabase::new(path).await?;
         Ok(Self { inner })
     }
+
+    pub async fn list_mints(&self) -> Result<Vec<Mint>, Error> {
+        let mut mints = Vec::new();
+        let mint_infos = self.inner.get_mints().await?;
+        for (mint_url, mint_info) in mint_infos {
+            let mint = Mint {
+                url: mint_url.to_string(),
+                balance: 0,
+                info: mint_info.map(|info| info.into()),
+            };
+            mints.push(mint);
+        }
+        Ok(mints)
+    }
 }
 
 #[frb(sync)]
