@@ -132,6 +132,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BitcoinAddress dco_decode_bitcoin_address(dynamic raw);
 
   @protected
+  BlindAuthSettings dco_decode_blind_auth_settings(dynamic raw);
+
+  @protected
   bool dco_decode_bool(dynamic raw);
 
   @protected
@@ -143,7 +146,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BitcoinAddress dco_decode_box_autoadd_bitcoin_address(dynamic raw);
 
   @protected
+  BlindAuthSettings dco_decode_box_autoadd_blind_auth_settings(dynamic raw);
+
+  @protected
   bool dco_decode_box_autoadd_bool(dynamic raw);
+
+  @protected
+  ClearAuthSettings dco_decode_box_autoadd_clear_auth_settings(dynamic raw);
 
   @protected
   MeltQuote dco_decode_box_autoadd_melt_quote(dynamic raw);
@@ -177,10 +186,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BigInt dco_decode_box_autoadd_usize(dynamic raw);
 
   @protected
+  ClearAuthSettings dco_decode_clear_auth_settings(dynamic raw);
+
+  @protected
   ContactInfo dco_decode_contact_info(dynamic raw);
 
   @protected
   Error dco_decode_error(dynamic raw);
+
+  @protected
+  HttpMethod dco_decode_http_method(dynamic raw);
+
+  @protected
+  HttpRoutePath dco_decode_http_route_path(dynamic raw);
 
   @protected
   int dco_decode_i_32(dynamic raw);
@@ -200,13 +218,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<List<String>> dco_decode_list_list_String(dynamic raw);
 
   @protected
+  List<MeltMethodSettings> dco_decode_list_melt_method_settings(dynamic raw);
+
+  @protected
   List<Mint> dco_decode_list_mint(dynamic raw);
+
+  @protected
+  List<MintMethodSettings> dco_decode_list_mint_method_settings(dynamic raw);
 
   @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw);
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<ProtectedEndpoint> dco_decode_list_protected_endpoint(dynamic raw);
 
   @protected
   List<(String, String)> dco_decode_list_record_string_string(dynamic raw);
@@ -218,6 +245,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Transport> dco_decode_list_transport(dynamic raw);
 
   @protected
+  MeltMethodSettings dco_decode_melt_method_settings(dynamic raw);
+
+  @protected
   MeltQuote dco_decode_melt_quote(dynamic raw);
 
   @protected
@@ -227,6 +257,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MintInfo dco_decode_mint_info(dynamic raw);
 
   @protected
+  MintMethodSettings dco_decode_mint_method_settings(dynamic raw);
+
+  @protected
   MintQuote dco_decode_mint_quote(dynamic raw);
 
   @protected
@@ -234,6 +267,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MintVersion dco_decode_mint_version(dynamic raw);
+
+  @protected
+  Nut04Settings dco_decode_nut_04_settings(dynamic raw);
+
+  @protected
+  Nut05Settings dco_decode_nut_05_settings(dynamic raw);
+
+  @protected
+  Nuts dco_decode_nuts(dynamic raw);
 
   @protected
   Map<String, String>? dco_decode_opt_Map_String_String_None(dynamic raw);
@@ -247,7 +289,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  BlindAuthSettings? dco_decode_opt_box_autoadd_blind_auth_settings(
+      dynamic raw);
+
+  @protected
   bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
+
+  @protected
+  ClearAuthSettings? dco_decode_opt_box_autoadd_clear_auth_settings(
+      dynamic raw);
 
   @protected
   MintInfo? dco_decode_opt_box_autoadd_mint_info(dynamic raw);
@@ -296,6 +346,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PaymentRequest dco_decode_payment_request(dynamic raw);
 
   @protected
+  ProtectedEndpoint dco_decode_protected_endpoint(dynamic raw);
+
+  @protected
   ReceiveOptions dco_decode_receive_options(dynamic raw);
 
   @protected
@@ -303,6 +356,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SendOptions dco_decode_send_options(dynamic raw);
+
+  @protected
+  SupportedSettings dco_decode_supported_settings(dynamic raw);
 
   @protected
   Token dco_decode_token(dynamic raw);
@@ -428,6 +484,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BitcoinAddress sse_decode_bitcoin_address(SseDeserializer deserializer);
 
   @protected
+  BlindAuthSettings sse_decode_blind_auth_settings(
+      SseDeserializer deserializer);
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
@@ -440,7 +500,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  BlindAuthSettings sse_decode_box_autoadd_blind_auth_settings(
+      SseDeserializer deserializer);
+
+  @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
+  ClearAuthSettings sse_decode_box_autoadd_clear_auth_settings(
+      SseDeserializer deserializer);
 
   @protected
   MeltQuote sse_decode_box_autoadd_melt_quote(SseDeserializer deserializer);
@@ -476,10 +544,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BigInt sse_decode_box_autoadd_usize(SseDeserializer deserializer);
 
   @protected
+  ClearAuthSettings sse_decode_clear_auth_settings(
+      SseDeserializer deserializer);
+
+  @protected
   ContactInfo sse_decode_contact_info(SseDeserializer deserializer);
 
   @protected
   Error sse_decode_error(SseDeserializer deserializer);
+
+  @protected
+  HttpMethod sse_decode_http_method(SseDeserializer deserializer);
+
+  @protected
+  HttpRoutePath sse_decode_http_route_path(SseDeserializer deserializer);
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer);
@@ -499,13 +577,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<List<String>> sse_decode_list_list_String(SseDeserializer deserializer);
 
   @protected
+  List<MeltMethodSettings> sse_decode_list_melt_method_settings(
+      SseDeserializer deserializer);
+
+  @protected
   List<Mint> sse_decode_list_mint(SseDeserializer deserializer);
+
+  @protected
+  List<MintMethodSettings> sse_decode_list_mint_method_settings(
+      SseDeserializer deserializer);
 
   @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer);
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<ProtectedEndpoint> sse_decode_list_protected_endpoint(
+      SseDeserializer deserializer);
 
   @protected
   List<(String, String)> sse_decode_list_record_string_string(
@@ -518,6 +608,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Transport> sse_decode_list_transport(SseDeserializer deserializer);
 
   @protected
+  MeltMethodSettings sse_decode_melt_method_settings(
+      SseDeserializer deserializer);
+
+  @protected
   MeltQuote sse_decode_melt_quote(SseDeserializer deserializer);
 
   @protected
@@ -527,6 +621,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MintInfo sse_decode_mint_info(SseDeserializer deserializer);
 
   @protected
+  MintMethodSettings sse_decode_mint_method_settings(
+      SseDeserializer deserializer);
+
+  @protected
   MintQuote sse_decode_mint_quote(SseDeserializer deserializer);
 
   @protected
@@ -534,6 +632,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MintVersion sse_decode_mint_version(SseDeserializer deserializer);
+
+  @protected
+  Nut04Settings sse_decode_nut_04_settings(SseDeserializer deserializer);
+
+  @protected
+  Nut05Settings sse_decode_nut_05_settings(SseDeserializer deserializer);
+
+  @protected
+  Nuts sse_decode_nuts(SseDeserializer deserializer);
 
   @protected
   Map<String, String>? sse_decode_opt_Map_String_String_None(
@@ -548,7 +655,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  BlindAuthSettings? sse_decode_opt_box_autoadd_blind_auth_settings(
+      SseDeserializer deserializer);
+
+  @protected
   bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
+  ClearAuthSettings? sse_decode_opt_box_autoadd_clear_auth_settings(
+      SseDeserializer deserializer);
 
   @protected
   MintInfo? sse_decode_opt_box_autoadd_mint_info(SseDeserializer deserializer);
@@ -603,6 +718,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PaymentRequest sse_decode_payment_request(SseDeserializer deserializer);
 
   @protected
+  ProtectedEndpoint sse_decode_protected_endpoint(SseDeserializer deserializer);
+
+  @protected
   ReceiveOptions sse_decode_receive_options(SseDeserializer deserializer);
 
   @protected
@@ -611,6 +729,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SendOptions sse_decode_send_options(SseDeserializer deserializer);
+
+  @protected
+  SupportedSettings sse_decode_supported_settings(SseDeserializer deserializer);
 
   @protected
   Token sse_decode_token(SseDeserializer deserializer);
@@ -739,6 +860,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       BitcoinAddress self, SseSerializer serializer);
 
   @protected
+  void sse_encode_blind_auth_settings(
+      BlindAuthSettings self, SseSerializer serializer);
+
+  @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
@@ -751,7 +876,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       BitcoinAddress self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_blind_auth_settings(
+      BlindAuthSettings self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_clear_auth_settings(
+      ClearAuthSettings self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_melt_quote(
@@ -791,10 +924,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_usize(BigInt self, SseSerializer serializer);
 
   @protected
+  void sse_encode_clear_auth_settings(
+      ClearAuthSettings self, SseSerializer serializer);
+
+  @protected
   void sse_encode_contact_info(ContactInfo self, SseSerializer serializer);
 
   @protected
   void sse_encode_error(Error self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_http_method(HttpMethod self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_http_route_path(HttpRoutePath self, SseSerializer serializer);
 
   @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
@@ -816,7 +959,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<List<String>> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_melt_method_settings(
+      List<MeltMethodSettings> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_mint(List<Mint> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_mint_method_settings(
+      List<MintMethodSettings> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_prim_u_8_loose(List<int> self, SseSerializer serializer);
@@ -824,6 +975,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_protected_endpoint(
+      List<ProtectedEndpoint> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_record_string_string(
@@ -838,6 +993,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<Transport> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_melt_method_settings(
+      MeltMethodSettings self, SseSerializer serializer);
+
+  @protected
   void sse_encode_melt_quote(MeltQuote self, SseSerializer serializer);
 
   @protected
@@ -845,6 +1004,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_mint_info(MintInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_mint_method_settings(
+      MintMethodSettings self, SseSerializer serializer);
 
   @protected
   void sse_encode_mint_quote(MintQuote self, SseSerializer serializer);
@@ -855,6 +1018,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_mint_version(MintVersion self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_nut_04_settings(Nut04Settings self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_nut_05_settings(Nut05Settings self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_nuts(Nuts self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_Map_String_String_None(
@@ -869,7 +1041,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           Wallet? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_blind_auth_settings(
+      BlindAuthSettings? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_clear_auth_settings(
+      ClearAuthSettings? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_mint_info(
@@ -928,6 +1108,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PaymentRequest self, SseSerializer serializer);
 
   @protected
+  void sse_encode_protected_endpoint(
+      ProtectedEndpoint self, SseSerializer serializer);
+
+  @protected
   void sse_encode_receive_options(
       ReceiveOptions self, SseSerializer serializer);
 
@@ -937,6 +1121,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_send_options(SendOptions self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_supported_settings(
+      SupportedSettings self, SseSerializer serializer);
 
   @protected
   void sse_encode_token(Token self, SseSerializer serializer);

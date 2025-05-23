@@ -7,10 +7,58 @@ import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `cmp`, `eq`, `from`, `from`, `from`, `partial_cmp`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `cmp`, `eq`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `partial_cmp`
 
 Future<MintInfo> getMintInfo({required String mintUrl}) =>
     RustLib.instance.api.crateApiMintGetMintInfo(mintUrl: mintUrl);
+
+class BlindAuthSettings {
+  final BigInt batMaxMint;
+  final List<ProtectedEndpoint> protectedEndpoints;
+
+  const BlindAuthSettings({
+    required this.batMaxMint,
+    required this.protectedEndpoints,
+  });
+
+  @override
+  int get hashCode => batMaxMint.hashCode ^ protectedEndpoints.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BlindAuthSettings &&
+          runtimeType == other.runtimeType &&
+          batMaxMint == other.batMaxMint &&
+          protectedEndpoints == other.protectedEndpoints;
+}
+
+class ClearAuthSettings {
+  final String openidDiscovery;
+  final String clientId;
+  final List<ProtectedEndpoint> protectedEndpoints;
+
+  const ClearAuthSettings({
+    required this.openidDiscovery,
+    required this.clientId,
+    required this.protectedEndpoints,
+  });
+
+  @override
+  int get hashCode =>
+      openidDiscovery.hashCode ^
+      clientId.hashCode ^
+      protectedEndpoints.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ClearAuthSettings &&
+          runtimeType == other.runtimeType &&
+          openidDiscovery == other.openidDiscovery &&
+          clientId == other.clientId &&
+          protectedEndpoints == other.protectedEndpoints;
+}
 
 class ContactInfo {
   final String method;
@@ -31,6 +79,52 @@ class ContactInfo {
           runtimeType == other.runtimeType &&
           method == other.method &&
           info == other.info;
+}
+
+enum HttpMethod {
+  get_,
+  post,
+  ;
+}
+
+enum HttpRoutePath {
+  mintQuoteBolt11,
+  mintBolt11,
+  meltQuoteBolt11,
+  meltBolt11,
+  swap,
+  checkstate,
+  restore,
+  mintBlindAuth,
+  ;
+}
+
+class MeltMethodSettings {
+  final String method;
+  final String unit;
+  final BigInt? minAmount;
+  final BigInt? maxAmount;
+
+  const MeltMethodSettings({
+    required this.method,
+    required this.unit,
+    this.minAmount,
+    this.maxAmount,
+  });
+
+  @override
+  int get hashCode =>
+      method.hashCode ^ unit.hashCode ^ minAmount.hashCode ^ maxAmount.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MeltMethodSettings &&
+          runtimeType == other.runtimeType &&
+          method == other.method &&
+          unit == other.unit &&
+          minAmount == other.minAmount &&
+          maxAmount == other.maxAmount;
 }
 
 class Mint {
@@ -64,10 +158,12 @@ class MintInfo {
   final String? description;
   final String? descriptionLong;
   final List<ContactInfo>? contact;
+  final Nuts nuts;
   final String? iconUrl;
   final List<String>? urls;
   final String? motd;
   final BigInt? time;
+  final String? tosUrl;
 
   const MintInfo({
     this.name,
@@ -76,10 +172,12 @@ class MintInfo {
     this.description,
     this.descriptionLong,
     this.contact,
+    required this.nuts,
     this.iconUrl,
     this.urls,
     this.motd,
     this.time,
+    this.tosUrl,
   });
 
   @override
@@ -90,10 +188,12 @@ class MintInfo {
       description.hashCode ^
       descriptionLong.hashCode ^
       contact.hashCode ^
+      nuts.hashCode ^
       iconUrl.hashCode ^
       urls.hashCode ^
       motd.hashCode ^
-      time.hashCode;
+      time.hashCode ^
+      tosUrl.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -106,10 +206,40 @@ class MintInfo {
           description == other.description &&
           descriptionLong == other.descriptionLong &&
           contact == other.contact &&
+          nuts == other.nuts &&
           iconUrl == other.iconUrl &&
           urls == other.urls &&
           motd == other.motd &&
-          time == other.time;
+          time == other.time &&
+          tosUrl == other.tosUrl;
+}
+
+class MintMethodSettings {
+  final String method;
+  final String unit;
+  final BigInt? minAmount;
+  final BigInt? maxAmount;
+
+  const MintMethodSettings({
+    required this.method,
+    required this.unit,
+    this.minAmount,
+    this.maxAmount,
+  });
+
+  @override
+  int get hashCode =>
+      method.hashCode ^ unit.hashCode ^ minAmount.hashCode ^ maxAmount.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MintMethodSettings &&
+          runtimeType == other.runtimeType &&
+          method == other.method &&
+          unit == other.unit &&
+          minAmount == other.minAmount &&
+          maxAmount == other.maxAmount;
 }
 
 class MintVersion {
@@ -131,4 +261,148 @@ class MintVersion {
           runtimeType == other.runtimeType &&
           name == other.name &&
           version == other.version;
+}
+
+class Nut04Settings {
+  final List<MintMethodSettings> methods;
+  final bool disabled;
+
+  const Nut04Settings({
+    required this.methods,
+    required this.disabled,
+  });
+
+  @override
+  int get hashCode => methods.hashCode ^ disabled.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Nut04Settings &&
+          runtimeType == other.runtimeType &&
+          methods == other.methods &&
+          disabled == other.disabled;
+}
+
+class Nut05Settings {
+  final List<MeltMethodSettings> methods;
+  final bool disabled;
+
+  const Nut05Settings({
+    required this.methods,
+    required this.disabled,
+  });
+
+  @override
+  int get hashCode => methods.hashCode ^ disabled.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Nut05Settings &&
+          runtimeType == other.runtimeType &&
+          methods == other.methods &&
+          disabled == other.disabled;
+}
+
+class Nuts {
+  final Nut04Settings nut04;
+  final Nut05Settings nut05;
+  final SupportedSettings nut07;
+  final SupportedSettings nut08;
+  final SupportedSettings nut09;
+  final SupportedSettings nut10;
+  final SupportedSettings nut11;
+  final SupportedSettings nut12;
+  final SupportedSettings nut14;
+  final SupportedSettings nut20;
+  final ClearAuthSettings? nut21;
+  final BlindAuthSettings? nut22;
+
+  const Nuts({
+    required this.nut04,
+    required this.nut05,
+    required this.nut07,
+    required this.nut08,
+    required this.nut09,
+    required this.nut10,
+    required this.nut11,
+    required this.nut12,
+    required this.nut14,
+    required this.nut20,
+    this.nut21,
+    this.nut22,
+  });
+
+  @override
+  int get hashCode =>
+      nut04.hashCode ^
+      nut05.hashCode ^
+      nut07.hashCode ^
+      nut08.hashCode ^
+      nut09.hashCode ^
+      nut10.hashCode ^
+      nut11.hashCode ^
+      nut12.hashCode ^
+      nut14.hashCode ^
+      nut20.hashCode ^
+      nut21.hashCode ^
+      nut22.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Nuts &&
+          runtimeType == other.runtimeType &&
+          nut04 == other.nut04 &&
+          nut05 == other.nut05 &&
+          nut07 == other.nut07 &&
+          nut08 == other.nut08 &&
+          nut09 == other.nut09 &&
+          nut10 == other.nut10 &&
+          nut11 == other.nut11 &&
+          nut12 == other.nut12 &&
+          nut14 == other.nut14 &&
+          nut20 == other.nut20 &&
+          nut21 == other.nut21 &&
+          nut22 == other.nut22;
+}
+
+class ProtectedEndpoint {
+  final HttpMethod method;
+  final HttpRoutePath path;
+
+  const ProtectedEndpoint({
+    required this.method,
+    required this.path,
+  });
+
+  @override
+  int get hashCode => method.hashCode ^ path.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProtectedEndpoint &&
+          runtimeType == other.runtimeType &&
+          method == other.method &&
+          path == other.path;
+}
+
+class SupportedSettings {
+  final bool supported;
+
+  const SupportedSettings({
+    required this.supported,
+  });
+
+  @override
+  int get hashCode => supported.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SupportedSettings &&
+          runtimeType == other.runtimeType &&
+          supported == other.supported;
 }
