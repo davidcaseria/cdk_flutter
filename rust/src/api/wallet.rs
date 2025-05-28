@@ -1,4 +1,4 @@
-use std::{collections::HashMap, path::Path, str::FromStr, sync::Arc, time::Duration};
+use std::{collections::HashMap, path::Path, str::FromStr, sync::Arc, time::Duration, vec};
 
 use cdk::{
     amount::{Amount, SplitTarget},
@@ -21,6 +21,10 @@ use cdk_common::{
 };
 use cdk_sqlite::WalletSqliteDatabase;
 use flutter_rust_bridge::frb;
+use nostr::{
+    key::Keys,
+    nips::nip19::{FromBech32, Nip19Profile},
+};
 use tokio::{
     sync::{broadcast, mpsc, Mutex},
     time::sleep,
@@ -43,6 +47,7 @@ pub struct Wallet {
 
     balance_broadcast: broadcast::Sender<u64>,
     inner: CdkWallet,
+    seed: Vec<u8>,
 }
 
 impl Wallet {
@@ -66,6 +71,7 @@ impl Wallet {
                 &seed,
                 target_proof_count,
             )?,
+            seed,
         })
     }
 
@@ -237,10 +243,7 @@ impl Wallet {
         let token = self.send(send, memo.clone(), include_memo).await?;
 
         let transports = request.transports.ok_or(Error::InvalidInput)?;
-        let transport = transports
-            .iter()
-            .find(|t| t._type == TransportType::HttpPost)
-            .ok_or(Error::InvalidInput)?;
+        let transport = transports.first().ok_or(Error::InvalidInput)?;
 
         let payload = PaymentRequestPayload {
             id: request.payment_id,
@@ -250,14 +253,31 @@ impl Wallet {
             proofs: token.proofs()?,
         };
 
-        let client = reqwest::Client::new();
-        let res = client.post(&transport.target).json(&payload).send().await?;
+        match transport._type {
+            TransportType::Nostr => {
+                let profile = Nip19Profile::from_bech32(&transport.target)
+                    .map_err(|_| Error::InvalidInput)?;
+                let client =
+                    nostr_sdk::Client::new(Keys::new(nostr::SecretKey::from_slice(&self.seed)?));
+                for relay in profile.relays {
+                    client.add_relay(relay).await?;
+                }
+                client
+                    .send_private_msg(profile.public_key, serde_json::to_string(&payload)?, vec![])
+                    .await?;
+                Ok(())
+            }
+            TransportType::HttpPost => {
+                let client = reqwest::Client::new();
+                let res = client.post(&transport.target).json(&payload).send().await?;
 
-        let status = res.status();
-        if status.is_success() {
-            Ok(())
-        } else {
-            Err(Error::Reqwest(format!("HTTP error: {}", status)))
+                let status = res.status();
+                if status.is_success() {
+                    Ok(())
+                } else {
+                    Err(Error::Reqwest(format!("HTTP error: {}", status)))
+                }
+            }
         }
     }
 

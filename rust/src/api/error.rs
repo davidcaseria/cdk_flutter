@@ -3,6 +3,8 @@ pub enum Error {
     Database(String),
     Hex(String),
     InvalidInput,
+    Json(String),
+    Nostr(String),
     Protocol(String),
     Reqwest(String),
     Url(String),
@@ -63,8 +65,26 @@ impl From<cdk_sqlite::wallet::error::Error> for Error {
     }
 }
 
+impl From<nostr::key::Error> for Error {
+    fn from(e: nostr::key::Error) -> Self {
+        Self::Nostr(e.to_string())
+    }
+}
+
+impl From<nostr_sdk::client::Error> for Error {
+    fn from(e: nostr_sdk::client::Error) -> Self {
+        Self::Nostr(e.to_string())
+    }
+}
+
 impl From<reqwest::Error> for Error {
     fn from(e: reqwest::Error) -> Self {
         Self::Reqwest(e.to_string())
+    }
+}
+
+impl From<serde_json::Error> for Error {
+    fn from(e: serde_json::Error) -> Self {
+        Self::Json(e.to_string())
     }
 }

@@ -40,15 +40,6 @@ impl PaymentRequest {
             }
         }
 
-        if let Some(transports) = &self.transports {
-            return transports.iter().any(|t| {
-                if let TransportType::HttpPost = t._type {
-                    true
-                } else {
-                    false
-                }
-            });
-        }
         false
     }
 }
