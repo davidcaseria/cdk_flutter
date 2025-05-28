@@ -16,7 +16,10 @@ use cdk::{
     },
 };
 use cdk_common::{
-    wallet::{Transaction as CdkTransaction, TransactionDirection as CdkTransactionDirection},
+    wallet::{
+        Transaction as CdkTransaction, TransactionDirection as CdkTransactionDirection,
+        TransactionId,
+    },
     PaymentRequestPayload,
 };
 use cdk_sqlite::WalletSqliteDatabase;
@@ -116,6 +119,12 @@ impl Wallet {
             balance: self.balance().await?,
             info: info.map(|info| info.into()),
         })
+    }
+
+    pub async fn check_pending_transactions(&self) -> Result<(), Error> {
+        self.inner.check_all_pending_proofs().await?;
+        self.update_balance_streams().await;
+        Ok(())
     }
 
     pub async fn is_token_spent(&self, token: Token) -> Result<bool, Error> {
@@ -347,6 +356,31 @@ impl Wallet {
         Ok(())
     }
 
+    pub async fn revert_transaction(&self, transaction_id: String) -> Result<bool, Error> {
+        let id = TransactionId::from_str(&transaction_id)?;
+        let tx = self
+            .inner
+            .get_transaction(id)
+            .await?
+            .ok_or(Error::InvalidInput)?;
+        let proofs = self
+            .inner
+            .get_pending_spent_proofs()
+            .await?
+            .into_iter()
+            .filter(|p| match p.y() {
+                Ok(y) => tx.ys.contains(&y),
+                Err(_) => false,
+            })
+            .collect::<Vec<_>>();
+        if proofs.is_empty() {
+            return Ok(false);
+        }
+        self.inner.reclaim_unspent(proofs).await?;
+        self.update_balance_streams().await;
+        Ok(true)
+    }
+
     fn mint_url(&self) -> Result<MintUrl, Error> {
         Ok(MintUrl::from_str(&self.mint_url)?)
     }
@@ -505,6 +539,7 @@ impl TryInto<CdkSendOptions> for SendOptions {
 
 #[derive(PartialEq, Eq)]
 pub struct Transaction {
+    pub id: String,
     pub mint_url: String,
     pub direction: TransactionDirection,
     pub amount: u64,
@@ -519,6 +554,7 @@ pub struct Transaction {
 impl From<CdkTransaction> for Transaction {
     fn from(tx: CdkTransaction) -> Self {
         Self {
+            id: tx.id().to_string(),
             mint_url: tx.mint_url.to_string(),
             direction: tx.direction.into(),
             amount: tx.amount.into(),

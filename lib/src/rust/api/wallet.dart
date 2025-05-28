@@ -117,6 +117,8 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<void> cancelSend({required PreparedSend send});
 
+  Future<void> checkPendingTransactions();
+
   Future<Mint> getMint();
 
   Future<bool> isTokenSpent({required Token token});
@@ -169,6 +171,8 @@ abstract class Wallet implements RustOpaqueInterface {
   Future<void> reclaimSend({required Token token});
 
   Future<void> restore();
+
+  Future<bool> revertTransaction({required String transactionId});
 
   Future<Token> send(
       {required PreparedSend send, String? memo, bool? includeMemo});
@@ -349,6 +353,7 @@ class SendOptions {
 }
 
 class Transaction {
+  final String id;
   final String mintUrl;
   final TransactionDirection direction;
   final BigInt amount;
@@ -360,6 +365,7 @@ class Transaction {
   final Map<String, String> metadata;
 
   const Transaction({
+    required this.id,
     required this.mintUrl,
     required this.direction,
     required this.amount,
@@ -373,6 +379,7 @@ class Transaction {
 
   @override
   int get hashCode =>
+      id.hashCode ^
       mintUrl.hashCode ^
       direction.hashCode ^
       amount.hashCode ^
@@ -388,6 +395,7 @@ class Transaction {
       identical(this, other) ||
       other is Transaction &&
           runtimeType == other.runtimeType &&
+          id == other.id &&
           mintUrl == other.mintUrl &&
           direction == other.direction &&
           amount == other.amount &&
