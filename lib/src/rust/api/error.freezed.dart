@@ -22,6 +22,8 @@ mixin _$Error {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -34,6 +36,8 @@ mixin _$Error {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -46,6 +50,8 @@ mixin _$Error {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -59,6 +65,8 @@ mixin _$Error {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -71,6 +79,8 @@ mixin _$Error {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -83,6 +93,8 @@ mixin _$Error {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
@@ -184,6 +196,8 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -199,6 +213,8 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -214,6 +230,8 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -233,6 +251,8 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -248,6 +268,8 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -263,6 +285,8 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
@@ -362,6 +386,8 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -377,6 +403,8 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -392,6 +420,8 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -411,6 +441,8 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -426,6 +458,8 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -441,6 +475,8 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
@@ -539,6 +575,8 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -554,6 +592,8 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -569,6 +609,8 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -588,6 +630,8 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -603,6 +647,8 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -618,6 +664,8 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
@@ -689,6 +737,8 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -704,6 +754,8 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -719,6 +771,8 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -738,6 +792,8 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -753,6 +809,8 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -768,6 +826,8 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
@@ -784,6 +844,384 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
 abstract class Error_InvalidInput extends Error {
   const factory Error_InvalidInput() = _$Error_InvalidInputImpl;
   const Error_InvalidInput._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Error_JsonImplCopyWith<$Res> {
+  factory _$$Error_JsonImplCopyWith(
+          _$Error_JsonImpl value, $Res Function(_$Error_JsonImpl) then) =
+      __$$Error_JsonImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class __$$Error_JsonImplCopyWithImpl<$Res>
+    extends _$ErrorCopyWithImpl<$Res, _$Error_JsonImpl>
+    implements _$$Error_JsonImplCopyWith<$Res> {
+  __$$Error_JsonImplCopyWithImpl(
+      _$Error_JsonImpl _value, $Res Function(_$Error_JsonImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$Error_JsonImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Error_JsonImpl extends Error_Json {
+  const _$Error_JsonImpl(this.field0) : super._();
+
+  @override
+  final String field0;
+
+  @override
+  String toString() {
+    return 'Error.json(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Error_JsonImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Error_JsonImplCopyWith<_$Error_JsonImpl> get copyWith =>
+      __$$Error_JsonImplCopyWithImpl<_$Error_JsonImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) cdk,
+    required TResult Function(String field0) database,
+    required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
+    required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
+    required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
+  }) {
+    return json(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? cdk,
+    TResult? Function(String field0)? database,
+    TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
+    TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
+    TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
+  }) {
+    return json?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? cdk,
+    TResult Function(String field0)? database,
+    TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
+    TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
+    TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
+    required TResult orElse(),
+  }) {
+    if (json != null) {
+      return json(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Error_Cdk value) cdk,
+    required TResult Function(Error_Database value) database,
+    required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
+    required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
+    required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+  }) {
+    return json(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Error_Cdk value)? cdk,
+    TResult? Function(Error_Database value)? database,
+    TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
+    TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
+    TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+  }) {
+    return json?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Error_Cdk value)? cdk,
+    TResult Function(Error_Database value)? database,
+    TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
+    TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
+    TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    required TResult orElse(),
+  }) {
+    if (json != null) {
+      return json(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Error_Json extends Error {
+  const factory Error_Json(final String field0) = _$Error_JsonImpl;
+  const Error_Json._() : super._();
+
+  String get field0;
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Error_JsonImplCopyWith<_$Error_JsonImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Error_NostrImplCopyWith<$Res> {
+  factory _$$Error_NostrImplCopyWith(
+          _$Error_NostrImpl value, $Res Function(_$Error_NostrImpl) then) =
+      __$$Error_NostrImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class __$$Error_NostrImplCopyWithImpl<$Res>
+    extends _$ErrorCopyWithImpl<$Res, _$Error_NostrImpl>
+    implements _$$Error_NostrImplCopyWith<$Res> {
+  __$$Error_NostrImplCopyWithImpl(
+      _$Error_NostrImpl _value, $Res Function(_$Error_NostrImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$Error_NostrImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Error_NostrImpl extends Error_Nostr {
+  const _$Error_NostrImpl(this.field0) : super._();
+
+  @override
+  final String field0;
+
+  @override
+  String toString() {
+    return 'Error.nostr(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Error_NostrImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Error_NostrImplCopyWith<_$Error_NostrImpl> get copyWith =>
+      __$$Error_NostrImplCopyWithImpl<_$Error_NostrImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) cdk,
+    required TResult Function(String field0) database,
+    required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
+    required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
+    required TResult Function(String field0) url,
+    required TResult Function() walletNotEmpty,
+  }) {
+    return nostr(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? cdk,
+    TResult? Function(String field0)? database,
+    TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
+    TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
+    TResult? Function(String field0)? url,
+    TResult? Function()? walletNotEmpty,
+  }) {
+    return nostr?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? cdk,
+    TResult Function(String field0)? database,
+    TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
+    TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
+    TResult Function(String field0)? url,
+    TResult Function()? walletNotEmpty,
+    required TResult orElse(),
+  }) {
+    if (nostr != null) {
+      return nostr(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Error_Cdk value) cdk,
+    required TResult Function(Error_Database value) database,
+    required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
+    required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
+    required TResult Function(Error_Url value) url,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+  }) {
+    return nostr(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Error_Cdk value)? cdk,
+    TResult? Function(Error_Database value)? database,
+    TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
+    TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
+    TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+  }) {
+    return nostr?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Error_Cdk value)? cdk,
+    TResult Function(Error_Database value)? database,
+    TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
+    TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
+    TResult Function(Error_Url value)? url,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    required TResult orElse(),
+  }) {
+    if (nostr != null) {
+      return nostr(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Error_Nostr extends Error {
+  const factory Error_Nostr(final String field0) = _$Error_NostrImpl;
+  const Error_Nostr._() : super._();
+
+  String get field0;
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Error_NostrImplCopyWith<_$Error_NostrImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -859,6 +1297,8 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -874,6 +1314,8 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -889,6 +1331,8 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -908,6 +1352,8 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -923,6 +1369,8 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -938,6 +1386,8 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
@@ -1036,6 +1486,8 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -1051,6 +1503,8 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -1066,6 +1520,8 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -1085,6 +1541,8 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -1100,6 +1558,8 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -1115,6 +1575,8 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
@@ -1213,6 +1675,8 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -1228,6 +1692,8 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -1243,6 +1709,8 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -1262,6 +1730,8 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -1277,6 +1747,8 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -1292,6 +1764,8 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,
@@ -1364,6 +1838,8 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     required TResult Function(String field0) database,
     required TResult Function(String field0) hex,
     required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
     required TResult Function(String field0) protocol,
     required TResult Function(String field0) reqwest,
     required TResult Function(String field0) url,
@@ -1379,6 +1855,8 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult? Function(String field0)? database,
     TResult? Function(String field0)? hex,
     TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
     TResult? Function(String field0)? protocol,
     TResult? Function(String field0)? reqwest,
     TResult? Function(String field0)? url,
@@ -1394,6 +1872,8 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult Function(String field0)? database,
     TResult Function(String field0)? hex,
     TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
     TResult Function(String field0)? protocol,
     TResult Function(String field0)? reqwest,
     TResult Function(String field0)? url,
@@ -1413,6 +1893,8 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     required TResult Function(Error_Database value) database,
     required TResult Function(Error_Hex value) hex,
     required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
     required TResult Function(Error_Protocol value) protocol,
     required TResult Function(Error_Reqwest value) reqwest,
     required TResult Function(Error_Url value) url,
@@ -1428,6 +1910,8 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult? Function(Error_Database value)? database,
     TResult? Function(Error_Hex value)? hex,
     TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
     TResult? Function(Error_Protocol value)? protocol,
     TResult? Function(Error_Reqwest value)? reqwest,
     TResult? Function(Error_Url value)? url,
@@ -1443,6 +1927,8 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult Function(Error_Database value)? database,
     TResult Function(Error_Hex value)? hex,
     TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
     TResult Function(Error_Protocol value)? protocol,
     TResult Function(Error_Reqwest value)? reqwest,
     TResult Function(Error_Url value)? url,

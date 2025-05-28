@@ -221,7 +221,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<void> crateApiWalletWalletPayRequest(
       {required Wallet that,
-      required PaymentRequest request,
       required PreparedSend send,
       String? memo,
       bool? includeMemo});
@@ -1476,7 +1475,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @override
   Future<void> crateApiWalletWalletPayRequest(
       {required Wallet that,
-      required PaymentRequest request,
       required PreparedSend send,
       String? memo,
       bool? includeMemo}) {
@@ -1485,7 +1483,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWallet(
             that, serializer);
-        sse_encode_box_autoadd_payment_request(request, serializer);
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPreparedSend(
             send, serializer);
         sse_encode_opt_String(memo, serializer);
@@ -1498,7 +1495,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletPayRequestConstMeta,
-      argValues: [that, request, send, memo, includeMemo],
+      argValues: [that, send, memo, includeMemo],
       apiImpl: this,
     ));
   }
@@ -1506,7 +1503,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletWalletPayRequestConstMeta =>
       const TaskConstMeta(
         debugName: "Wallet_pay_request",
-        argNames: ["that", "request", "send", "memo", "includeMemo"],
+        argNames: ["that", "send", "memo", "includeMemo"],
       );
 
   @override
@@ -2326,18 +2323,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 3:
         return Error_InvalidInput();
       case 4:
-        return Error_Protocol(
+        return Error_Json(
           dco_decode_String(raw[1]),
         );
       case 5:
-        return Error_Reqwest(
+        return Error_Nostr(
           dco_decode_String(raw[1]),
         );
       case 6:
-        return Error_Url(
+        return Error_Protocol(
           dco_decode_String(raw[1]),
         );
       case 7:
+        return Error_Reqwest(
+          dco_decode_String(raw[1]),
+        );
+      case 8:
+        return Error_Url(
+          dco_decode_String(raw[1]),
+        );
+      case 9:
         return Error_WalletNotEmpty();
       default:
         throw Exception("unreachable");
@@ -3254,14 +3259,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return Error_InvalidInput();
       case 4:
         var var_field0 = sse_decode_String(deserializer);
-        return Error_Protocol(var_field0);
+        return Error_Json(var_field0);
       case 5:
         var var_field0 = sse_decode_String(deserializer);
-        return Error_Reqwest(var_field0);
+        return Error_Nostr(var_field0);
       case 6:
         var var_field0 = sse_decode_String(deserializer);
-        return Error_Url(var_field0);
+        return Error_Protocol(var_field0);
       case 7:
+        var var_field0 = sse_decode_String(deserializer);
+        return Error_Reqwest(var_field0);
+      case 8:
+        var var_field0 = sse_decode_String(deserializer);
+        return Error_Url(var_field0);
+      case 9:
         return Error_WalletNotEmpty();
       default:
         throw UnimplementedError('');
@@ -4356,17 +4367,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(field0, serializer);
       case Error_InvalidInput():
         sse_encode_i_32(3, serializer);
-      case Error_Protocol(field0: final field0):
+      case Error_Json(field0: final field0):
         sse_encode_i_32(4, serializer);
         sse_encode_String(field0, serializer);
-      case Error_Reqwest(field0: final field0):
+      case Error_Nostr(field0: final field0):
         sse_encode_i_32(5, serializer);
         sse_encode_String(field0, serializer);
-      case Error_Url(field0: final field0):
+      case Error_Protocol(field0: final field0):
         sse_encode_i_32(6, serializer);
         sse_encode_String(field0, serializer);
-      case Error_WalletNotEmpty():
+      case Error_Reqwest(field0: final field0):
         sse_encode_i_32(7, serializer);
+        sse_encode_String(field0, serializer);
+      case Error_Url(field0: final field0):
+        sse_encode_i_32(8, serializer);
+        sse_encode_String(field0, serializer);
+      case Error_WalletNotEmpty():
+        sse_encode_i_32(9, serializer);
     }
   }
 
@@ -5202,16 +5219,9 @@ class WalletImpl extends RustOpaque implements Wallet {
           that: this, amount: amount, description: description);
 
   Future<void> payRequest(
-          {required PaymentRequest request,
-          required PreparedSend send,
-          String? memo,
-          bool? includeMemo}) =>
+          {required PreparedSend send, String? memo, bool? includeMemo}) =>
       RustLib.instance.api.crateApiWalletWalletPayRequest(
-          that: this,
-          request: request,
-          send: send,
-          memo: memo,
-          includeMemo: includeMemo);
+          that: this, send: send, memo: memo, includeMemo: includeMemo);
 
   Future<PreparedSend> preparePayRequest({required PaymentRequest request}) =>
       RustLib.instance.api

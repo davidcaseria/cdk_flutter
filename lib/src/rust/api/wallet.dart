@@ -156,10 +156,7 @@ abstract class Wallet implements RustOpaqueInterface {
           localstore: localstore);
 
   Future<void> payRequest(
-      {required PaymentRequest request,
-      required PreparedSend send,
-      String? memo,
-      bool? includeMemo});
+      {required PreparedSend send, String? memo, bool? includeMemo});
 
   Future<PreparedSend> preparePayRequest({required PaymentRequest request});
 

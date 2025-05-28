@@ -232,21 +232,21 @@ impl Wallet {
 
     pub async fn pay_request(
         &self,
-        request: PaymentRequest,
         send: PreparedSend,
         memo: Option<String>,
         include_memo: Option<bool>,
     ) -> Result<(), Error> {
-        if !request.validate(self.mint_url()?, self.unit()) {
+        let pay_request = send.pay_request.clone().ok_or(Error::InvalidInput)?;
+        if !pay_request.validate(self.mint_url()?, self.unit()) {
             return Err(Error::InvalidInput);
         }
         let token = self.send(send, memo.clone(), include_memo).await?;
 
-        let transports = request.transports.ok_or(Error::InvalidInput)?;
+        let transports = pay_request.transports.ok_or(Error::InvalidInput)?;
         let transport = transports.first().ok_or(Error::InvalidInput)?;
 
         let payload = PaymentRequestPayload {
-            id: request.payment_id,
+            id: pay_request.payment_id,
             memo,
             mint: self.mint_url()?,
             unit: self.unit(),
@@ -435,6 +435,7 @@ pub struct PreparedSend {
     pub fee: u64,
 
     inner: CdkPreparedSend,
+    pay_request: Option<PaymentRequest>,
 }
 
 impl From<CdkPreparedSend> for PreparedSend {
@@ -445,6 +446,7 @@ impl From<CdkPreparedSend> for PreparedSend {
             send_fee: prepared_send.send_fee().into(),
             fee: prepared_send.fee().into(),
             inner: prepared_send,
+            pay_request: None,
         }
     }
 }

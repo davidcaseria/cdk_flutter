@@ -2263,8 +2263,6 @@ fn wire__crate__api__wallet__Wallet_pay_request_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Wallet>,
             >>::sse_decode(&mut deserializer);
-            let api_request =
-                <crate::api::payment_request::PaymentRequest>::sse_decode(&mut deserializer);
             let api_send = <PreparedSend>::sse_decode(&mut deserializer);
             let api_memo = <Option<String>>::sse_decode(&mut deserializer);
             let api_include_memo = <Option<bool>>::sse_decode(&mut deserializer);
@@ -2291,7 +2289,6 @@ fn wire__crate__api__wallet__Wallet_pay_request_impl(
                         let api_that_guard = api_that_guard.unwrap();
                         let output_ok = crate::api::wallet::Wallet::pay_request(
                             &*api_that_guard,
-                            api_request,
                             api_send,
                             api_memo,
                             api_include_memo,
@@ -3327,17 +3324,25 @@ impl SseDecode for crate::api::error::Error {
             }
             4 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::error::Error::Protocol(var_field0);
+                return crate::api::error::Error::Json(var_field0);
             }
             5 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::error::Error::Reqwest(var_field0);
+                return crate::api::error::Error::Nostr(var_field0);
             }
             6 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::error::Error::Url(var_field0);
+                return crate::api::error::Error::Protocol(var_field0);
             }
             7 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return crate::api::error::Error::Reqwest(var_field0);
+            }
+            8 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return crate::api::error::Error::Url(var_field0);
+            }
+            9 => {
                 return crate::api::error::Error::WalletNotEmpty;
             }
             _ => {
@@ -4586,16 +4591,22 @@ impl flutter_rust_bridge::IntoDart for crate::api::error::Error {
                 [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
             crate::api::error::Error::InvalidInput => [3.into_dart()].into_dart(),
-            crate::api::error::Error::Protocol(field0) => {
+            crate::api::error::Error::Json(field0) => {
                 [4.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::error::Error::Reqwest(field0) => {
+            crate::api::error::Error::Nostr(field0) => {
                 [5.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::error::Error::Url(field0) => {
+            crate::api::error::Error::Protocol(field0) => {
                 [6.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::error::Error::WalletNotEmpty => [7.into_dart()].into_dart(),
+            crate::api::error::Error::Reqwest(field0) => {
+                [7.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::error::Error::Url(field0) => {
+                [8.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::error::Error::WalletNotEmpty => [9.into_dart()].into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -5318,20 +5329,28 @@ impl SseEncode for crate::api::error::Error {
             crate::api::error::Error::InvalidInput => {
                 <i32>::sse_encode(3, serializer);
             }
-            crate::api::error::Error::Protocol(field0) => {
+            crate::api::error::Error::Json(field0) => {
                 <i32>::sse_encode(4, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::error::Error::Reqwest(field0) => {
+            crate::api::error::Error::Nostr(field0) => {
                 <i32>::sse_encode(5, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::error::Error::Url(field0) => {
+            crate::api::error::Error::Protocol(field0) => {
                 <i32>::sse_encode(6, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::error::Error::WalletNotEmpty => {
+            crate::api::error::Error::Reqwest(field0) => {
                 <i32>::sse_encode(7, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            crate::api::error::Error::Url(field0) => {
+                <i32>::sse_encode(8, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            crate::api::error::Error::WalletNotEmpty => {
+                <i32>::sse_encode(9, serializer);
             }
             _ => {
                 unimplemented!("");
