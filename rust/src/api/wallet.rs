@@ -374,27 +374,9 @@ impl Wallet {
 
     pub async fn revert_transaction(&self, transaction_id: String) -> Result<bool, Error> {
         let id = TransactionId::from_str(&transaction_id)?;
-        let tx = self
-            .inner
-            .get_transaction(id)
-            .await?
-            .ok_or(Error::InvalidInput)?;
-        let proofs = self
-            .inner
-            .get_pending_spent_proofs()
-            .await?
-            .into_iter()
-            .filter(|p| match p.y() {
-                Ok(y) => tx.ys.contains(&y),
-                Err(_) => false,
-            })
-            .collect::<Vec<_>>();
-        if proofs.is_empty() {
-            return Ok(false);
-        }
-        self.inner.reclaim_unspent(proofs).await?;
+        let is_reverted = self.inner.revert_transaction(id).await?;
         self.update_balance_streams().await;
-        Ok(true)
+        Ok(is_reverted)
     }
 
     fn mint_url(&self) -> Result<MintUrl, Error> {

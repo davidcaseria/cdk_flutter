@@ -8,29 +8,33 @@ crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
 bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
-cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "supported-settings-pub", default-features = false, features = [
+cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "revert-transaction", default-features = false, features = [
     "wallet",
 ] }
-cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "supported-settings-pub", default-features = false }
-cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "supported-settings-pub", default-features = false, features = [
+cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "revert-transaction", default-features = false }
+cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "revert-transaction", default-features = false, features = [
     "wallet",
 ] }
 flutter_rust_bridge = { version = "=2.10.0", features = ["log"] }
 futures = "0.3.31"
 nostr = { version = "0.42.1", default-features = false }
-nostr-sdk = { version = "0.42.0", default-features = false, features = ["nip59"] }
-rand = { version = "0.9.0", default-features = false, features = [
+nostr-sdk = { version = "0.42.0", default-features = false, features = [
+    "nip59",
+] }
+rand = { version = "0.9.1", default-features = false, features = [
     "thread_rng",
 ] }
-reqwest = { version = "0.12.14", default-features = false, features = [
+reqwest = { version = "0.12.18", default-features = false, features = [
     "deflate",
     "gzip",
     "json",
     "rustls-tls",
     "rustls-tls-native-roots",
 ] }
-serde_json = { version = "1.0.140", default-features = false, features = ["std"] }
-tokio = { version = "1.43.0", default-features = false }
+serde_json = { version = "1.0.140", default-features = false, features = [
+    "std",
+] }
+tokio = { version = "1.45.1", default-features = false }
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
