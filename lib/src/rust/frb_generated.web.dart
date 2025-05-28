@@ -372,6 +372,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   TransactionDirection dco_decode_transaction_direction(dynamic raw);
 
   @protected
+  TransactionStatus dco_decode_transaction_status(dynamic raw);
+
+  @protected
   Transport dco_decode_transport(dynamic raw);
 
   @protected
@@ -744,6 +747,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   TransactionDirection sse_decode_transaction_direction(
       SseDeserializer deserializer);
+
+  @protected
+  TransactionStatus sse_decode_transaction_status(SseDeserializer deserializer);
 
   @protected
   Transport sse_decode_transport(SseDeserializer deserializer);
@@ -1137,6 +1143,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_transaction_direction(
       TransactionDirection self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_transaction_status(
+      TransactionStatus self, SseSerializer serializer);
 
   @protected
   void sse_encode_transport(Transport self, SseSerializer serializer);

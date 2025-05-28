@@ -4226,6 +4226,7 @@ impl SseDecode for crate::api::wallet::Transaction {
         let mut var_memo = <Option<String>>::sse_decode(deserializer);
         let mut var_metadata =
             <std::collections::HashMap<String, String>>::sse_decode(deserializer);
+        let mut var_status = <crate::api::wallet::TransactionStatus>::sse_decode(deserializer);
         return crate::api::wallet::Transaction {
             id: var_id,
             mint_url: var_mintUrl,
@@ -4237,6 +4238,7 @@ impl SseDecode for crate::api::wallet::Transaction {
             timestamp: var_timestamp,
             memo: var_memo,
             metadata: var_metadata,
+            status: var_status,
         };
     }
 }
@@ -4249,6 +4251,18 @@ impl SseDecode for crate::api::wallet::TransactionDirection {
             0 => crate::api::wallet::TransactionDirection::Incoming,
             1 => crate::api::wallet::TransactionDirection::Outgoing,
             _ => unreachable!("Invalid variant for TransactionDirection: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::wallet::TransactionStatus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::wallet::TransactionStatus::Pending,
+            1 => crate::api::wallet::TransactionStatus::Settled,
+            _ => unreachable!("Invalid variant for TransactionStatus: {}", inner),
         };
     }
 }
@@ -5208,6 +5222,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::wallet::Transaction {
             self.timestamp.into_into_dart().into_dart(),
             self.memo.into_into_dart().into_dart(),
             self.metadata.into_into_dart().into_dart(),
+            self.status.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -5241,6 +5256,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::TransactionDirection>
     for crate::api::wallet::TransactionDirection
 {
     fn into_into_dart(self) -> crate::api::wallet::TransactionDirection {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::wallet::TransactionStatus {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Pending => 0.into_dart(),
+            Self::Settled => 1.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::wallet::TransactionStatus
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::TransactionStatus>
+    for crate::api::wallet::TransactionStatus
+{
+    fn into_into_dart(self) -> crate::api::wallet::TransactionStatus {
         self
     }
 }
@@ -6081,6 +6117,7 @@ impl SseEncode for crate::api::wallet::Transaction {
         <u64>::sse_encode(self.timestamp, serializer);
         <Option<String>>::sse_encode(self.memo, serializer);
         <std::collections::HashMap<String, String>>::sse_encode(self.metadata, serializer);
+        <crate::api::wallet::TransactionStatus>::sse_encode(self.status, serializer);
     }
 }
 
@@ -6091,6 +6128,22 @@ impl SseEncode for crate::api::wallet::TransactionDirection {
             match self {
                 crate::api::wallet::TransactionDirection::Incoming => 0,
                 crate::api::wallet::TransactionDirection::Outgoing => 1,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::api::wallet::TransactionStatus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::wallet::TransactionStatus::Pending => 0,
+                crate::api::wallet::TransactionStatus::Settled => 1,
                 _ => {
                     unimplemented!("");
                 }

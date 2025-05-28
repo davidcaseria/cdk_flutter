@@ -139,13 +139,29 @@ impl Wallet {
         &self,
         direction: Option<TransactionDirection>,
     ) -> Result<Vec<Transaction>, Error> {
-        Ok(self
+        let pending_ys = self
             .inner
-            .list_transactions(direction.map(|d| d.into()))
+            .get_pending_spent_proofs()
             .await?
             .into_iter()
-            .map(|tx| tx.into())
-            .collect())
+            .map(|p| p.y())
+            .collect::<Result<Vec<_>, _>>()?;
+        let cdk_txs = self
+            .inner
+            .list_transactions(direction.map(|d| d.into()))
+            .await?;
+        let mut txs = Vec::new();
+        for tx in cdk_txs {
+            let status = if pending_ys.iter().any(|y| tx.ys.contains(y)) {
+                TransactionStatus::Pending
+            } else {
+                TransactionStatus::Settled
+            };
+            let mut transaction: Transaction = tx.into();
+            transaction.status = status;
+            txs.push(transaction);
+        }
+        Ok(txs)
     }
 
     pub async fn melt_quote(&self, request: String) -> Result<MeltQuote, Error> {
@@ -549,6 +565,7 @@ pub struct Transaction {
     pub timestamp: u64,
     pub memo: Option<String>,
     pub metadata: HashMap<String, String>,
+    pub status: TransactionStatus,
 }
 
 impl From<CdkTransaction> for Transaction {
@@ -564,6 +581,7 @@ impl From<CdkTransaction> for Transaction {
             timestamp: tx.timestamp,
             memo: tx.memo,
             metadata: tx.metadata,
+            status: TransactionStatus::Settled,
         }
     }
 }
@@ -602,6 +620,12 @@ impl Into<CdkTransactionDirection> for TransactionDirection {
             Self::Outgoing => CdkTransactionDirection::Outgoing,
         }
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TransactionStatus {
+    Pending,
+    Settled,
 }
 
 #[derive(Clone)]

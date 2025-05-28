@@ -2912,8 +2912,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Transaction dco_decode_transaction(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 10)
-      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    if (arr.length != 11)
+      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
     return Transaction(
       id: dco_decode_String(arr[0]),
       mintUrl: dco_decode_String(arr[1]),
@@ -2925,6 +2925,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       timestamp: dco_decode_u_64(arr[7]),
       memo: dco_decode_opt_String(arr[8]),
       metadata: dco_decode_Map_String_String_None(arr[9]),
+      status: dco_decode_transaction_status(arr[10]),
     );
   }
 
@@ -2932,6 +2933,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TransactionDirection dco_decode_transaction_direction(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return TransactionDirection.values[raw as int];
+  }
+
+  @protected
+  TransactionStatus dco_decode_transaction_status(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return TransactionStatus.values[raw as int];
   }
 
   @protected
@@ -4020,6 +4027,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_timestamp = sse_decode_u_64(deserializer);
     var var_memo = sse_decode_opt_String(deserializer);
     var var_metadata = sse_decode_Map_String_String_None(deserializer);
+    var var_status = sse_decode_transaction_status(deserializer);
     return Transaction(
         id: var_id,
         mintUrl: var_mintUrl,
@@ -4030,7 +4038,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         ys: var_ys,
         timestamp: var_timestamp,
         memo: var_memo,
-        metadata: var_metadata);
+        metadata: var_metadata,
+        status: var_status);
   }
 
   @protected
@@ -4039,6 +4048,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
     return TransactionDirection.values[inner];
+  }
+
+  @protected
+  TransactionStatus sse_decode_transaction_status(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return TransactionStatus.values[inner];
   }
 
   @protected
@@ -5010,11 +5027,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_64(self.timestamp, serializer);
     sse_encode_opt_String(self.memo, serializer);
     sse_encode_Map_String_String_None(self.metadata, serializer);
+    sse_encode_transaction_status(self.status, serializer);
   }
 
   @protected
   void sse_encode_transaction_direction(
       TransactionDirection self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_transaction_status(
+      TransactionStatus self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
   }

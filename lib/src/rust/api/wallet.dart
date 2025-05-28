@@ -14,7 +14,7 @@ import 'token.dart';
 part 'wallet.freezed.dart';
 
 // These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`, `try_into`, `try_into`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `eq`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`, `try_into`, `try_into`
 
 Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
 
@@ -363,6 +363,7 @@ class Transaction {
   final BigInt timestamp;
   final String? memo;
   final Map<String, String> metadata;
+  final TransactionStatus status;
 
   const Transaction({
     required this.id,
@@ -375,6 +376,7 @@ class Transaction {
     required this.timestamp,
     this.memo,
     required this.metadata,
+    required this.status,
   });
 
   @override
@@ -388,7 +390,8 @@ class Transaction {
       ys.hashCode ^
       timestamp.hashCode ^
       memo.hashCode ^
-      metadata.hashCode;
+      metadata.hashCode ^
+      status.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -404,11 +407,18 @@ class Transaction {
           ys == other.ys &&
           timestamp == other.timestamp &&
           memo == other.memo &&
-          metadata == other.metadata;
+          metadata == other.metadata &&
+          status == other.status;
 }
 
 enum TransactionDirection {
   incoming,
   outgoing,
+  ;
+}
+
+enum TransactionStatus {
+  pending,
+  settled,
   ;
 }
