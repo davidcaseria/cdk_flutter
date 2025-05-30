@@ -4130,7 +4130,7 @@ impl SseDecode for crate::api::wallet::ParseInputResult {
                 return crate::api::wallet::ParseInputResult::BitcoinAddress(var_field0);
             }
             1 => {
-                let mut var_field0 = <String>::sse_decode(deserializer);
+                let mut var_field0 = <crate::api::bolt11::Bolt11Invoice>::sse_decode(deserializer);
                 return crate::api::wallet::ParseInputResult::Bolt11Invoice(var_field0);
             }
             2 => {
@@ -6112,7 +6112,7 @@ impl SseEncode for crate::api::wallet::ParseInputResult {
             }
             crate::api::wallet::ParseInputResult::Bolt11Invoice(field0) => {
                 <i32>::sse_encode(1, serializer);
-                <String>::sse_encode(field0, serializer);
+                <crate::api::bolt11::Bolt11Invoice>::sse_encode(field0, serializer);
             }
             crate::api::wallet::ParseInputResult::PaymentRequest(field0) => {
                 <i32>::sse_encode(2, serializer);

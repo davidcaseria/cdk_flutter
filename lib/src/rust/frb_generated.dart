@@ -2833,7 +2833,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         );
       case 1:
         return ParseInputResult_Bolt11Invoice(
-          dco_decode_String(raw[1]),
+          dco_decode_box_autoadd_bolt_11_invoice(raw[1]),
         );
       case 2:
         return ParseInputResult_PaymentRequest(
@@ -3993,7 +3993,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_field0 = sse_decode_box_autoadd_bitcoin_address(deserializer);
         return ParseInputResult_BitcoinAddress(var_field0);
       case 1:
-        var var_field0 = sse_decode_String(deserializer);
+        var var_field0 = sse_decode_box_autoadd_bolt_11_invoice(deserializer);
         return ParseInputResult_Bolt11Invoice(var_field0);
       case 2:
         var var_field0 = sse_decode_box_autoadd_payment_request(deserializer);
@@ -5049,7 +5049,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_bitcoin_address(field0, serializer);
       case ParseInputResult_Bolt11Invoice(field0: final field0):
         sse_encode_i_32(1, serializer);
-        sse_encode_String(field0, serializer);
+        sse_encode_box_autoadd_bolt_11_invoice(field0, serializer);
       case ParseInputResult_PaymentRequest(field0: final field0):
         sse_encode_i_32(2, serializer);
         sse_encode_box_autoadd_payment_request(field0, serializer);

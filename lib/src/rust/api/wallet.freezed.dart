@@ -20,7 +20,7 @@ mixin _$ParseInputResult {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BitcoinAddress field0) bitcoinAddress,
-    required TResult Function(String field0) bolt11Invoice,
+    required TResult Function(Bolt11Invoice field0) bolt11Invoice,
     required TResult Function(PaymentRequest field0) paymentRequest,
     required TResult Function(Token field0) token,
   }) =>
@@ -28,7 +28,7 @@ mixin _$ParseInputResult {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult? Function(String field0)? bolt11Invoice,
+    TResult? Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult? Function(PaymentRequest field0)? paymentRequest,
     TResult? Function(Token field0)? token,
   }) =>
@@ -36,7 +36,7 @@ mixin _$ParseInputResult {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult Function(String field0)? bolt11Invoice,
+    TResult Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult Function(PaymentRequest field0)? paymentRequest,
     TResult Function(Token field0)? token,
     required TResult orElse(),
@@ -168,7 +168,7 @@ class _$ParseInputResult_BitcoinAddressImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BitcoinAddress field0) bitcoinAddress,
-    required TResult Function(String field0) bolt11Invoice,
+    required TResult Function(Bolt11Invoice field0) bolt11Invoice,
     required TResult Function(PaymentRequest field0) paymentRequest,
     required TResult Function(Token field0) token,
   }) {
@@ -179,7 +179,7 @@ class _$ParseInputResult_BitcoinAddressImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult? Function(String field0)? bolt11Invoice,
+    TResult? Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult? Function(PaymentRequest field0)? paymentRequest,
     TResult? Function(Token field0)? token,
   }) {
@@ -190,7 +190,7 @@ class _$ParseInputResult_BitcoinAddressImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult Function(String field0)? bolt11Invoice,
+    TResult Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult Function(PaymentRequest field0)? paymentRequest,
     TResult Function(Token field0)? token,
     required TResult orElse(),
@@ -265,7 +265,7 @@ abstract class _$$ParseInputResult_Bolt11InvoiceImplCopyWith<$Res> {
           $Res Function(_$ParseInputResult_Bolt11InvoiceImpl) then) =
       __$$ParseInputResult_Bolt11InvoiceImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String field0});
+  $Res call({Bolt11Invoice field0});
 }
 
 /// @nodoc
@@ -289,7 +289,7 @@ class __$$ParseInputResult_Bolt11InvoiceImplCopyWithImpl<$Res>
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Bolt11Invoice,
     ));
   }
 }
@@ -301,7 +301,7 @@ class _$ParseInputResult_Bolt11InvoiceImpl
   const _$ParseInputResult_Bolt11InvoiceImpl(this.field0) : super._();
 
   @override
-  final String field0;
+  final Bolt11Invoice field0;
 
   @override
   String toString() {
@@ -333,7 +333,7 @@ class _$ParseInputResult_Bolt11InvoiceImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BitcoinAddress field0) bitcoinAddress,
-    required TResult Function(String field0) bolt11Invoice,
+    required TResult Function(Bolt11Invoice field0) bolt11Invoice,
     required TResult Function(PaymentRequest field0) paymentRequest,
     required TResult Function(Token field0) token,
   }) {
@@ -344,7 +344,7 @@ class _$ParseInputResult_Bolt11InvoiceImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult? Function(String field0)? bolt11Invoice,
+    TResult? Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult? Function(PaymentRequest field0)? paymentRequest,
     TResult? Function(Token field0)? token,
   }) {
@@ -355,7 +355,7 @@ class _$ParseInputResult_Bolt11InvoiceImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult Function(String field0)? bolt11Invoice,
+    TResult Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult Function(PaymentRequest field0)? paymentRequest,
     TResult Function(Token field0)? token,
     required TResult orElse(),
@@ -408,12 +408,12 @@ class _$ParseInputResult_Bolt11InvoiceImpl
 }
 
 abstract class ParseInputResult_Bolt11Invoice extends ParseInputResult {
-  const factory ParseInputResult_Bolt11Invoice(final String field0) =
+  const factory ParseInputResult_Bolt11Invoice(final Bolt11Invoice field0) =
       _$ParseInputResult_Bolt11InvoiceImpl;
   const ParseInputResult_Bolt11Invoice._() : super._();
 
   @override
-  String get field0;
+  Bolt11Invoice get field0;
 
   /// Create a copy of ParseInputResult
   /// with the given fields replaced by the non-null parameter values.
@@ -498,7 +498,7 @@ class _$ParseInputResult_PaymentRequestImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BitcoinAddress field0) bitcoinAddress,
-    required TResult Function(String field0) bolt11Invoice,
+    required TResult Function(Bolt11Invoice field0) bolt11Invoice,
     required TResult Function(PaymentRequest field0) paymentRequest,
     required TResult Function(Token field0) token,
   }) {
@@ -509,7 +509,7 @@ class _$ParseInputResult_PaymentRequestImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult? Function(String field0)? bolt11Invoice,
+    TResult? Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult? Function(PaymentRequest field0)? paymentRequest,
     TResult? Function(Token field0)? token,
   }) {
@@ -520,7 +520,7 @@ class _$ParseInputResult_PaymentRequestImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult Function(String field0)? bolt11Invoice,
+    TResult Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult Function(PaymentRequest field0)? paymentRequest,
     TResult Function(Token field0)? token,
     required TResult orElse(),
@@ -660,7 +660,7 @@ class _$ParseInputResult_TokenImpl extends ParseInputResult_Token {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BitcoinAddress field0) bitcoinAddress,
-    required TResult Function(String field0) bolt11Invoice,
+    required TResult Function(Bolt11Invoice field0) bolt11Invoice,
     required TResult Function(PaymentRequest field0) paymentRequest,
     required TResult Function(Token field0) token,
   }) {
@@ -671,7 +671,7 @@ class _$ParseInputResult_TokenImpl extends ParseInputResult_Token {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult? Function(String field0)? bolt11Invoice,
+    TResult? Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult? Function(PaymentRequest field0)? paymentRequest,
     TResult? Function(Token field0)? token,
   }) {
@@ -682,7 +682,7 @@ class _$ParseInputResult_TokenImpl extends ParseInputResult_Token {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BitcoinAddress field0)? bitcoinAddress,
-    TResult Function(String field0)? bolt11Invoice,
+    TResult Function(Bolt11Invoice field0)? bolt11Invoice,
     TResult Function(PaymentRequest field0)? paymentRequest,
     TResult Function(Token field0)? token,
     required TResult orElse(),

@@ -947,7 +947,7 @@ pub fn parse_input(input: String) -> Result<ParseInputResult, Error> {
         return Ok(ParseInputResult::Token(token));
     }
     if let Ok(invoice) = Bolt11Invoice::from_str(input) {
-        return Ok(ParseInputResult::Bolt11Invoice(invoice.to_string()));
+        return Ok(ParseInputResult::Bolt11Invoice(invoice));
     }
     if let Ok(addr) = BitcoinAddress::from_str(input) {
         return Ok(ParseInputResult::BitcoinAddress(addr));
@@ -957,7 +957,7 @@ pub fn parse_input(input: String) -> Result<ParseInputResult, Error> {
 
 pub enum ParseInputResult {
     BitcoinAddress(BitcoinAddress),
-    Bolt11Invoice(String),
+    Bolt11Invoice(Bolt11Invoice),
     PaymentRequest(PaymentRequest),
     Token(Token),
 }
