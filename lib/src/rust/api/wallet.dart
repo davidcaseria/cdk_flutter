@@ -5,6 +5,7 @@
 
 import '../frb_generated.dart';
 import 'bitcoin.dart';
+import 'bolt11.dart';
 import 'error.dart';
 import 'mint.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';

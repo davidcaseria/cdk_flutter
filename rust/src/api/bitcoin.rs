@@ -2,16 +2,17 @@ use std::{borrow::Cow, str::FromStr};
 
 use bip21::{de::ParamKind, DeserializationError, DeserializationState, DeserializeParams, Param};
 use cdk_common::{
-    bitcoin::Address, lightning_invoice::ParseOrSemanticError, nut18, Bolt11Invoice,
-    PaymentRequest as CdkPaymentRequest,
+    bitcoin::Address, lightning_invoice::ParseOrSemanticError, nut18,
+    Bolt11Invoice as CdkBolt11Invoice, PaymentRequest as CdkPaymentRequest,
 };
+use flutter_rust_bridge::frb;
 
-use super::{error::Error, payment_request::PaymentRequest};
+use super::{bolt11::Bolt11Invoice, error::Error, payment_request::PaymentRequest};
 
 pub struct BitcoinAddress {
     pub address: String,
     pub amount: Option<u64>,
-    pub lightning: Option<String>,
+    pub lightning: Option<Bolt11Invoice>,
     pub cashu: Option<PaymentRequest>,
 }
 
@@ -23,8 +24,8 @@ impl FromStr for BitcoinAddress {
             return Ok(BitcoinAddress {
                 address: uri.address.assume_checked().to_string(),
                 amount: uri.amount.map(|a| a.to_sat()),
-                lightning: uri.extras.lightning.map(|l| l.to_string()),
-                cashu: uri.extras.cashu,
+                lightning: uri.extras.lightning.map(|l| l.into()),
+                cashu: uri.extras.cashu.map(|c| c.into()),
             });
         }
         if let Ok(address) = Address::from_str(s) {
@@ -40,10 +41,11 @@ impl FromStr for BitcoinAddress {
 }
 
 #[derive(Debug, Default, Clone)]
+#[frb(ignore)]
 struct CashuExtras {
-    pub lightning: Option<Bolt11Invoice>,
+    pub lightning: Option<CdkBolt11Invoice>,
     // pub b12: Option<Offer>,
-    pub cashu: Option<PaymentRequest>,
+    pub cashu: Option<CdkPaymentRequest>,
 }
 
 #[derive(Debug, Eq, PartialEq, Clone)]
@@ -96,7 +98,7 @@ impl<'a> DeserializationState<'a> for CashuExtras {
             "lightning" if self.lightning.is_none() => {
                 let str =
                     Cow::try_from(value).map_err(|_| ExtraParamsParseError::InvoiceParsingError)?;
-                let invoice = Bolt11Invoice::from_str(&str)?;
+                let invoice = CdkBolt11Invoice::from_str(&str)?;
                 self.lightning = Some(invoice);
 
                 Ok(ParamKind::Known)
@@ -106,7 +108,7 @@ impl<'a> DeserializationState<'a> for CashuExtras {
                 let str = Cow::try_from(value)
                     .map_err(|_| ExtraParamsParseError::PaymentRequestParsingError)?;
                 let payment_request = CdkPaymentRequest::from_str(&str)?;
-                self.cashu = Some(payment_request.into());
+                self.cashu = Some(payment_request);
 
                 Ok(ParamKind::Known)
             }
