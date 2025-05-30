@@ -372,11 +372,11 @@ impl Wallet {
         Ok(())
     }
 
-    pub async fn revert_transaction(&self, transaction_id: String) -> Result<bool, Error> {
+    pub async fn revert_transaction(&self, transaction_id: String) -> Result<(), Error> {
         let id = TransactionId::from_str(&transaction_id)?;
-        let is_reverted = self.inner.revert_transaction(id).await?;
+        self.inner.revert_transaction(id).await?;
         self.update_balance_streams().await;
-        Ok(is_reverted)
+        Ok(())
     }
 
     fn mint_url(&self) -> Result<MintUrl, Error> {

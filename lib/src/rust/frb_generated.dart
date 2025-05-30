@@ -244,7 +244,7 @@ abstract class RustLibApi extends BaseApi {
 
   Future<void> crateApiWalletWalletRestore({required Wallet that});
 
-  Future<bool> crateApiWalletWalletRevertTransaction(
+  Future<void> crateApiWalletWalletRevertTransaction(
       {required Wallet that, required String transactionId});
 
   Future<Token> crateApiWalletWalletSend(
@@ -1708,7 +1708,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<bool> crateApiWalletWalletRevertTransaction(
+  Future<void> crateApiWalletWalletRevertTransaction(
       {required Wallet that, required String transactionId}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1720,7 +1720,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 50, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_bool,
+        decodeSuccessData: sse_decode_unit,
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletRevertTransactionConstMeta,
@@ -5343,7 +5343,7 @@ class WalletImpl extends RustOpaque implements Wallet {
         that: this,
       );
 
-  Future<bool> revertTransaction({required String transactionId}) =>
+  Future<void> revertTransaction({required String transactionId}) =>
       RustLib.instance.api.crateApiWalletWalletRevertTransaction(
           that: this, transactionId: transactionId);
 
