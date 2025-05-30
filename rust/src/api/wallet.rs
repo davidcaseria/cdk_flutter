@@ -20,7 +20,7 @@ use cdk_common::{
         Transaction as CdkTransaction, TransactionDirection as CdkTransactionDirection,
         TransactionId,
     },
-    PaymentRequestPayload,
+    Bolt11Invoice, PaymentRequestPayload,
 };
 use cdk_sqlite::WalletSqliteDatabase;
 use flutter_rust_bridge::frb;
@@ -946,6 +946,9 @@ pub fn parse_input(input: String) -> Result<ParseInputResult, Error> {
     if let Ok(token) = Token::from_str(input) {
         return Ok(ParseInputResult::Token(token));
     }
+    if let Ok(invoice) = Bolt11Invoice::from_str(input) {
+        return Ok(ParseInputResult::Bolt11Invoice(invoice.to_string()));
+    }
     if let Ok(addr) = BitcoinAddress::from_str(input) {
         return Ok(ParseInputResult::BitcoinAddress(addr));
     }
@@ -954,6 +957,7 @@ pub fn parse_input(input: String) -> Result<ParseInputResult, Error> {
 
 pub enum ParseInputResult {
     BitcoinAddress(BitcoinAddress),
+    Bolt11Invoice(String),
     PaymentRequest(PaymentRequest),
     Token(Token),
 }

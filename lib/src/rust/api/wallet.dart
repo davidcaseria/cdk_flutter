@@ -282,6 +282,9 @@ sealed class ParseInputResult with _$ParseInputResult {
   const factory ParseInputResult.bitcoinAddress(
     BitcoinAddress field0,
   ) = ParseInputResult_BitcoinAddress;
+  const factory ParseInputResult.bolt11Invoice(
+    String field0,
+  ) = ParseInputResult_Bolt11Invoice;
   const factory ParseInputResult.paymentRequest(
     PaymentRequest field0,
   ) = ParseInputResult_PaymentRequest;

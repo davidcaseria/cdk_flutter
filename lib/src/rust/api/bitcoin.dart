@@ -4,10 +4,12 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
+import '../lib.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'payment_request.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `from_str`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `ExtraParamsParseError`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `deserialize_temp`, `eq`, `finalize`, `fmt`, `fmt`, `from_str`, `from`, `from`, `is_param_known`
 
 class BitcoinAddress {
   final String address;
@@ -33,6 +35,30 @@ class BitcoinAddress {
           runtimeType == other.runtimeType &&
           address == other.address &&
           amount == other.amount &&
+          lightning == other.lightning &&
+          cashu == other.cashu;
+}
+
+class CashuExtras {
+  final Bolt11Invoice? lightning;
+  final PaymentRequest? cashu;
+
+  const CashuExtras({
+    this.lightning,
+    this.cashu,
+  });
+
+  static Future<CashuExtras> default_() =>
+      RustLib.instance.api.crateApiBitcoinCashuExtrasDefault();
+
+  @override
+  int get hashCode => lightning.hashCode ^ cashu.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CashuExtras &&
+          runtimeType == other.runtimeType &&
           lightning == other.lightning &&
           cashu == other.cashu;
 }

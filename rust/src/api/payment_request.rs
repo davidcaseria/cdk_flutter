@@ -11,7 +11,7 @@ use flutter_rust_bridge::frb;
 
 use super::error::Error;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct PaymentRequest {
     pub payment_id: Option<String>,
     pub amount: Option<u64>,
@@ -140,7 +140,7 @@ impl TryInto<CdkPaymentRequest> for &PaymentRequest {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Transport {
     pub _type: TransportType,
     pub target: String,

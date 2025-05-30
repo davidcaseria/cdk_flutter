@@ -26,6 +26,7 @@
 // Section: imports
 
 use crate::api::wallet::*;
+use crate::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
 use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
@@ -38,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.10.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -772225100;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1940586512;
 
 // Section: executor
 
@@ -2901,6 +2902,39 @@ fn wire__crate__api__wallet__Wallet_stream_balance_impl(
         },
     )
 }
+fn wire__crate__api__bitcoin__cashu_extras_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "cashu_extras_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(crate::api::bitcoin::CashuExtras::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__crate__api__wallet__generate_hex_seed_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -3222,6 +3256,9 @@ fn wire__crate__api__token__token_parse_impl(
 // Section: related_funcs
 
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>
+);
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MultiMintWallet>
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
@@ -3241,6 +3278,16 @@ impl SseDecode for flutter_rust_bridge::for_generated::anyhow::Error {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <String>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::anyhow::anyhow!("{}", inner);
+    }
+}
+
+impl SseDecode for Bolt11Invoice {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
     }
 }
 
@@ -3289,6 +3336,16 @@ impl SseDecode for std::collections::HashMap<String, String> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<(String, String)>>::sse_decode(deserializer);
         return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return decode_rust_opaque_moi(inner);
     }
 }
 
@@ -3390,6 +3447,19 @@ impl SseDecode for bool {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_u8().unwrap() != 0
+    }
+}
+
+impl SseDecode for crate::api::bitcoin::CashuExtras {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_lightning = <Option<Bolt11Invoice>>::sse_decode(deserializer);
+        let mut var_cashu =
+            <Option<crate::api::payment_request::PaymentRequest>>::sse_decode(deserializer);
+        return crate::api::bitcoin::CashuExtras {
+            lightning: var_lightning,
+            cashu: var_cashu,
+        };
     }
 }
 
@@ -3884,6 +3954,17 @@ impl SseDecode for Option<String> {
     }
 }
 
+impl SseDecode for Option<Bolt11Invoice> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Bolt11Invoice>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<Wallet> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4096,11 +4177,15 @@ impl SseDecode for crate::api::wallet::ParseInputResult {
                 return crate::api::wallet::ParseInputResult::BitcoinAddress(var_field0);
             }
             1 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return crate::api::wallet::ParseInputResult::Bolt11Invoice(var_field0);
+            }
+            2 => {
                 let mut var_field0 =
                     <crate::api::payment_request::PaymentRequest>::sse_decode(deserializer);
                 return crate::api::wallet::ParseInputResult::PaymentRequest(var_field0);
             }
-            2 => {
+            3 => {
                 let mut var_field0 = <crate::api::token::Token>::sse_decode(deserializer);
                 return crate::api::wallet::ParseInputResult::Token(var_field0);
             }
@@ -4468,15 +4553,18 @@ fn pde_ffi_dispatcher_primary_impl(
         52 => {
             wire__crate__api__wallet__Wallet_stream_balance_impl(port, ptr, rust_vec_len, data_len)
         }
-        55 => wire__crate__api__mint__get_mint_info_impl(port, ptr, rust_vec_len, data_len),
-        57 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
-        60 => wire__crate__api__wallet__receive_options_default_impl(
+        53 => {
+            wire__crate__api__bitcoin__cashu_extras_default_impl(port, ptr, rust_vec_len, data_len)
+        }
+        56 => wire__crate__api__mint__get_mint_info_impl(port, ptr, rust_vec_len, data_len),
+        58 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
+        61 => wire__crate__api__wallet__receive_options_default_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        61 => {
+        62 => {
             wire__crate__api__wallet__send_options_default_impl(port, ptr, rust_vec_len, data_len)
         }
         _ => unreachable!(),
@@ -4563,21 +4651,36 @@ fn pde_ffi_dispatcher_sync_impl(
         ),
         41 => wire__crate__api__wallet__Wallet_new_impl(ptr, rust_vec_len, data_len),
         42 => wire__crate__api__wallet__Wallet_new_from_hex_seed_impl(ptr, rust_vec_len, data_len),
-        53 => wire__crate__api__wallet__generate_hex_seed_impl(ptr, rust_vec_len, data_len),
-        54 => wire__crate__api__wallet__generate_seed_impl(ptr, rust_vec_len, data_len),
-        56 => wire__crate__api__wallet__get_pub_key_impl(ptr, rust_vec_len, data_len),
-        58 => wire__crate__api__wallet__parse_input_impl(ptr, rust_vec_len, data_len),
-        59 => wire__crate__api__payment_request__payment_request_encode_impl(
+        54 => wire__crate__api__wallet__generate_hex_seed_impl(ptr, rust_vec_len, data_len),
+        55 => wire__crate__api__wallet__generate_seed_impl(ptr, rust_vec_len, data_len),
+        57 => wire__crate__api__wallet__get_pub_key_impl(ptr, rust_vec_len, data_len),
+        59 => wire__crate__api__wallet__parse_input_impl(ptr, rust_vec_len, data_len),
+        60 => wire__crate__api__payment_request__payment_request_encode_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        62 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
+        63 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
 
 // Section: rust2dart
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<Bolt11Invoice> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<Bolt11Invoice> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<Bolt11Invoice>> for Bolt11Invoice {
+    fn into_into_dart(self) -> FrbWrapper<Bolt11Invoice> {
+        self.into()
+    }
+}
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<MultiMintWallet> {
@@ -4680,6 +4783,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::mint::BlindAuthSettings>
     for crate::api::mint::BlindAuthSettings
 {
     fn into_into_dart(self) -> crate::api::mint::BlindAuthSettings {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::bitcoin::CashuExtras {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.lightning.into_into_dart().into_dart(),
+            self.cashu.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::bitcoin::CashuExtras
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::bitcoin::CashuExtras>
+    for crate::api::bitcoin::CashuExtras
+{
+    fn into_into_dart(self) -> crate::api::bitcoin::CashuExtras {
         self
     }
 }
@@ -5059,11 +5183,14 @@ impl flutter_rust_bridge::IntoDart for crate::api::wallet::ParseInputResult {
             crate::api::wallet::ParseInputResult::BitcoinAddress(field0) => {
                 [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::wallet::ParseInputResult::PaymentRequest(field0) => {
+            crate::api::wallet::ParseInputResult::Bolt11Invoice(field0) => {
                 [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::wallet::ParseInputResult::Token(field0) => {
+            crate::api::wallet::ParseInputResult::PaymentRequest(field0) => {
                 [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::wallet::ParseInputResult::Token(field0) => {
+                [3.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -5331,6 +5458,13 @@ impl SseEncode for flutter_rust_bridge::for_generated::anyhow::Error {
     }
 }
 
+impl SseEncode for Bolt11Invoice {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
+    }
+}
+
 impl SseEncode for MultiMintWallet {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5363,6 +5497,17 @@ impl SseEncode for std::collections::HashMap<String, String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Vec<(String, String)>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
     }
 }
 
@@ -5456,6 +5601,14 @@ impl SseEncode for bool {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_u8(self as _).unwrap();
+    }
+}
+
+impl SseEncode for crate::api::bitcoin::CashuExtras {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<Bolt11Invoice>>::sse_encode(self.lightning, serializer);
+        <Option<crate::api::payment_request::PaymentRequest>>::sse_encode(self.cashu, serializer);
     }
 }
 
@@ -5844,6 +5997,16 @@ impl SseEncode for Option<String> {
     }
 }
 
+impl SseEncode for Option<Bolt11Invoice> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Bolt11Invoice>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<Wallet> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6022,12 +6185,16 @@ impl SseEncode for crate::api::wallet::ParseInputResult {
                 <i32>::sse_encode(0, serializer);
                 <crate::api::bitcoin::BitcoinAddress>::sse_encode(field0, serializer);
             }
-            crate::api::wallet::ParseInputResult::PaymentRequest(field0) => {
+            crate::api::wallet::ParseInputResult::Bolt11Invoice(field0) => {
                 <i32>::sse_encode(1, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            crate::api::wallet::ParseInputResult::PaymentRequest(field0) => {
+                <i32>::sse_encode(2, serializer);
                 <crate::api::payment_request::PaymentRequest>::sse_encode(field0, serializer);
             }
             crate::api::wallet::ParseInputResult::Token(field0) => {
-                <i32>::sse_encode(2, serializer);
+                <i32>::sse_encode(3, serializer);
                 <crate::api::token::Token>::sse_encode(field0, serializer);
             }
             _ => {
@@ -6216,6 +6383,7 @@ mod io {
 
     use super::*;
     use crate::api::wallet::*;
+    use crate::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -6225,6 +6393,20 @@ mod io {
     // Section: boilerplate
 
     flutter_rust_bridge::frb_generated_boilerplate_io!();
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_cdk_flutter_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBolt11Invoice(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>>::increment_strong_count(ptr as _);
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_cdk_flutter_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBolt11Invoice(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>>::decrement_strong_count(ptr as _);
+    }
 
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_cdk_flutter_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet(
@@ -6295,6 +6477,7 @@ mod web {
 
     use super::*;
     use crate::api::wallet::*;
+    use crate::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -6306,6 +6489,20 @@ mod web {
     // Section: boilerplate
 
     flutter_rust_bridge::frb_generated_boilerplate_web!();
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBolt11Invoice(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>>::increment_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBolt11Invoice(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Bolt11Invoice>>::decrement_strong_count(ptr as _);
+    }
 
     #[wasm_bindgen]
     pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMultiMintWallet(
