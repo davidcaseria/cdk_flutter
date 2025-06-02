@@ -186,8 +186,13 @@ impl Wallet {
         let _ = sink.add(MintQuote::from(quote.clone()));
         let _self = self.clone();
         flutter_rust_bridge::spawn(async move {
+            let mut state = quote.state;
             loop {
                 if let Ok(state_res) = _self.inner.mint_quote_state(&quote.id).await {
+                    if state_res.state == state {
+                        continue;
+                    }
+                    state = state_res.state;
                     if state_res.state == CdkMintQuoteState::Issued
                         || state_res.state == CdkMintQuoteState::Paid
                     {
