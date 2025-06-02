@@ -16,6 +16,7 @@ use cdk::{
     },
 };
 use cdk_common::{
+    util::unix_time,
     wallet::{
         Transaction as CdkTransaction, TransactionDirection as CdkTransactionDirection,
         TransactionId,
@@ -186,10 +187,12 @@ impl Wallet {
         let _ = sink.add(MintQuote::from(quote.clone()));
         let _self = self.clone();
         flutter_rust_bridge::spawn(async move {
+            sleep(Duration::from_secs(3)).await;
             let mut state = quote.state;
             loop {
                 if let Ok(state_res) = _self.inner.mint_quote_state(&quote.id).await {
                     if state_res.state == state {
+                        sleep(Duration::from_secs(3)).await;
                         continue;
                     }
                     state = state_res.state;
@@ -236,9 +239,25 @@ impl Wallet {
                                         token: None,
                                         error: Some(e.to_string()),
                                     });
+                                    break;
                                 }
                             }
                             _self.update_balance_streams().await;
+                            break;
+                        }
+                    }
+                    // Check if the mint quote has expired
+                    if let Some(expiry) = state_res.expiry {
+                        if unix_time() > expiry {
+                            let _ = sink.add(MintQuote {
+                                id: quote.id,
+                                request: quote.request,
+                                amount: quote.amount.into(),
+                                expiry: Some(quote.expiry),
+                                state: MintQuoteState::Error,
+                                token: None,
+                                error: Some("Mint quote expired".to_string()),
+                            });
                             break;
                         }
                     }
