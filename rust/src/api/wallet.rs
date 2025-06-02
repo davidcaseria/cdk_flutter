@@ -20,7 +20,7 @@ use cdk_common::{
         Transaction as CdkTransaction, TransactionDirection as CdkTransactionDirection,
         TransactionId,
     },
-    Bolt11Invoice, PaymentRequestPayload,
+    PaymentRequestPayload,
 };
 use cdk_sqlite::WalletSqliteDatabase;
 use flutter_rust_bridge::frb;
@@ -33,7 +33,7 @@ use tokio::{
     time::sleep,
 };
 
-use crate::frb_generated::StreamSink;
+use crate::{api::bolt11::Bolt11Invoice, frb_generated::StreamSink};
 
 use super::{
     bitcoin::BitcoinAddress,
