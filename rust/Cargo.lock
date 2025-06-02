@@ -558,7 +558,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cashu"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#98440b436caa76f38e1a2dd2d660096fe2960b0a"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#1f2654d9748d992785edd8a23dcd17e368cdd2be"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -620,7 +620,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#98440b436caa76f38e1a2dd2d660096fe2960b0a"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#1f2654d9748d992785edd8a23dcd17e368cdd2be"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -650,7 +650,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#98440b436caa76f38e1a2dd2d660096fe2960b0a"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#1f2654d9748d992785edd8a23dcd17e368cdd2be"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -673,7 +673,7 @@ dependencies = [
 [[package]]
 name = "cdk-signatory"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#98440b436caa76f38e1a2dd2d660096fe2960b0a"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#1f2654d9748d992785edd8a23dcd17e368cdd2be"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -686,6 +686,7 @@ dependencies = [
  "prost",
  "thiserror 2.0.12",
  "tokio",
+ "tokio-stream",
  "tonic",
  "tonic-build",
  "tracing",
@@ -695,7 +696,7 @@ dependencies = [
 [[package]]
 name = "cdk-sqlite"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#98440b436caa76f38e1a2dd2d660096fe2960b0a"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#1f2654d9748d992785edd8a23dcd17e368cdd2be"
 dependencies = [
  "async-trait",
  "bitcoin",
@@ -1452,9 +1453,9 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "hermit-abi"
-version = "0.3.9"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d231dfb89cfffdbc30e7fc41579ed6066ad03abda9e567ccafae602b97ec5024"
+checksum = "f154ce46856750ed433c8649605bf7ed2de3bc35fd9d2a9f30cddd873c80cb08"
 
 [[package]]
 name = "hex"
@@ -2200,9 +2201,9 @@ dependencies = [
 
 [[package]]
 name = "num_cpus"
-version = "1.16.0"
+version = "1.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4161fcb6d602d4d2081af7c3a45852d875a03dd337a6bfdd6e06407b61342a43"
+checksum = "91df4bbde75afed763b708b7eee1e8e7651e02d97f6d5dd763e89367e957b23b"
 dependencies = [
  "hermit-abi",
  "libc",
@@ -2441,9 +2442,9 @@ dependencies = [
 
 [[package]]
 name = "prettyplease"
-version = "0.2.32"
+version = "0.2.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "664ec5419c51e34154eec046ebcba56312d5a2fc3b09a06da188e1ad21afadf6"
+checksum = "9dee91521343f4c5c6a63edd65e54f31f5c92fe8978c40a4282f8372194c6a7d"
 dependencies = [
  "proc-macro2",
  "syn 2.0.101",
@@ -2694,9 +2695,9 @@ checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 
 [[package]]
 name = "reqwest"
-version = "0.12.18"
+version = "0.12.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e98ff6b0dbbe4d5a37318f433d4fc82babd21631f194d370409ceb2e40b2f0b5"
+checksum = "a2f8e5513d63f2e5b386eb5106dc67eaf3f84e95258e210489136b8b92ad6119"
 dependencies = [
  "async-compression",
  "base64 0.22.1",
@@ -3750,9 +3751,9 @@ dependencies = [
 
 [[package]]
 name = "tower-http"
-version = "0.6.4"
+version = "0.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0fdb0c213ca27a9f57ab69ddb290fd80d970922355b83ae380b395d3986b8a2e"
+checksum = "5cc2d9e086a412a451384326f521c8123a99a466b329941a9403696bff9b0da2"
 dependencies = [
  "bitflags",
  "bytes",
