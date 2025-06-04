@@ -720,6 +720,7 @@ dependencies = [
  "cdk-sqlite",
  "flutter_rust_bridge",
  "futures",
+ "log",
  "nostr",
  "nostr-sdk",
  "rand 0.9.1",

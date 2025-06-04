@@ -17,6 +17,7 @@ cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "main",
 ] }
 flutter_rust_bridge = { version = "=2.10.0", features = ["log"] }
 futures = "0.3.31"
+log = { version = "0.4.27", default-features = false }
 nostr = { version = "0.42.1", default-features = false }
 nostr-sdk = { version = "0.42.0", default-features = false, features = [
     "nip59",
