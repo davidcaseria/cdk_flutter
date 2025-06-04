@@ -118,6 +118,8 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<void> cancelSend({required PreparedSend send});
 
+  Future<void> checkAllMintQuotes();
+
   Future<void> checkPendingTransactions();
 
   Future<Mint> getMint();
