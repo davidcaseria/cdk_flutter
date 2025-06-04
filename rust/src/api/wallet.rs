@@ -195,83 +195,95 @@ impl Wallet {
         let _ = sink.add(MintQuote::from(quote.clone()));
         let _self = self.clone();
         flutter_rust_bridge::spawn(async move {
-            sleep(Duration::from_secs(3)).await;
             let mut state = quote.state;
             loop {
-                if let Ok(state_res) = _self.inner.mint_quote_state(&quote.id).await {
-                    if let Some(expiry) = state_res.expiry {
-                        if expiry < unix_time() {
-                            let _ = sink.add(MintQuote {
-                                id: quote.id,
-                                request: quote.request,
-                                amount: quote.amount.into(),
-                                expiry: Some(expiry),
-                                state: CdkMintQuoteState::Unpaid.into(),
-                                token: None,
-                                error: Some("Quote expired".to_string()),
-                            });
-                            break;
+                sleep(Duration::from_secs(3)).await;
+                match _self.inner.mint_quote_state(&quote.id).await {
+                    Ok(state_res) => {
+                        if let Some(expiry) = state_res.expiry {
+                            if expiry < unix_time() {
+                                let _ = sink.add(MintQuote {
+                                    id: quote.id,
+                                    request: quote.request,
+                                    amount: quote.amount.into(),
+                                    expiry: Some(expiry),
+                                    state: CdkMintQuoteState::Unpaid.into(),
+                                    token: None,
+                                    error: Some("Quote expired".to_string()),
+                                });
+                                break;
+                            }
                         }
-                    }
-                    if state_res.state == state {
-                        sleep(Duration::from_secs(3)).await;
-                        continue;
-                    }
-                    state = state_res.state;
-                    let _ = sink.add(MintQuote {
-                        id: state_res.quote,
-                        request: state_res.request,
-                        amount: quote.amount.into(),
-                        expiry: state_res.expiry,
-                        state: state_res.state.into(),
-                        token: None,
-                        error: None,
-                    });
-                    match state_res.state {
-                        CdkMintQuoteState::Unpaid | CdkMintQuoteState::Pending => {
-                            sleep(Duration::from_secs(3)).await;
+                        if state_res.state == state {
                             continue;
                         }
-                        CdkMintQuoteState::Issued => {
-                            break;
-                        }
-                        CdkMintQuoteState::Paid => {
-                            match _self.inner.mint(&quote.id, SplitTarget::None, None).await {
-                                Ok(mint_proofs) => {
-                                    let mint_amount =
-                                        mint_proofs.total_amount().unwrap_or_default();
-                                    let _ = sink.add(MintQuote {
-                                        id: quote.id,
-                                        request: quote.request,
-                                        amount: mint_amount.into(),
-                                        expiry: Some(quote.expiry),
-                                        state: CdkMintQuoteState::Issued.into(),
-                                        token: Token::try_from(CdkToken::new(
-                                            mint_url,
-                                            mint_proofs,
-                                            None,
-                                            unit,
-                                        ))
-                                        .ok(),
-                                        error: None,
-                                    });
-                                    _self.update_balance_streams().await;
-                                    break;
-                                }
-                                Err(e) => {
-                                    let _ = sink.add(MintQuote {
-                                        id: quote.id,
-                                        request: quote.request,
-                                        amount: quote.amount.into(),
-                                        expiry: Some(quote.expiry),
-                                        state: MintQuoteState::Error,
-                                        token: None,
-                                        error: Some(e.to_string()),
-                                    });
-                                    break;
+                        state = state_res.state;
+                        let _ = sink.add(MintQuote {
+                            id: state_res.quote,
+                            request: state_res.request,
+                            amount: quote.amount.into(),
+                            expiry: state_res.expiry,
+                            state: state_res.state.into(),
+                            token: None,
+                            error: None,
+                        });
+                        match state_res.state {
+                            CdkMintQuoteState::Unpaid | CdkMintQuoteState::Pending => {
+                                continue;
+                            }
+                            CdkMintQuoteState::Issued => {
+                                break;
+                            }
+                            CdkMintQuoteState::Paid => {
+                                match _self.inner.mint(&quote.id, SplitTarget::None, None).await {
+                                    Ok(mint_proofs) => {
+                                        let mint_amount =
+                                            mint_proofs.total_amount().unwrap_or_default();
+                                        let _ = sink.add(MintQuote {
+                                            id: quote.id,
+                                            request: quote.request,
+                                            amount: mint_amount.into(),
+                                            expiry: Some(quote.expiry),
+                                            state: CdkMintQuoteState::Issued.into(),
+                                            token: Token::try_from(CdkToken::new(
+                                                mint_url,
+                                                mint_proofs,
+                                                None,
+                                                unit,
+                                            ))
+                                            .ok(),
+                                            error: None,
+                                        });
+                                        _self.update_balance_streams().await;
+                                        break;
+                                    }
+                                    Err(e) => {
+                                        let _ = sink.add(MintQuote {
+                                            id: quote.id,
+                                            request: quote.request,
+                                            amount: quote.amount.into(),
+                                            expiry: Some(quote.expiry),
+                                            state: MintQuoteState::Error,
+                                            token: None,
+                                            error: Some(e.to_string()),
+                                        });
+                                        break;
+                                    }
                                 }
                             }
                         }
+                    }
+                    Err(e) => {
+                        let _ = sink.add(MintQuote {
+                            id: quote.id,
+                            request: quote.request,
+                            amount: quote.amount.into(),
+                            expiry: Some(quote.expiry),
+                            state: MintQuoteState::Error,
+                            token: None,
+                            error: Some(e.to_string()),
+                        });
+                        break;
                     }
                 }
             }
