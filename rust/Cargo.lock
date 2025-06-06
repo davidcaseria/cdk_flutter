@@ -584,7 +584,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cashu"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#c5a6c82e46f329438f2e635ae454d485bde06375"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#1f30dd8acc85f774a712a3801a5853d0b44dcc96"
 dependencies = [
  "bc-ur",
  "bitcoin",
@@ -648,7 +648,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#c5a6c82e46f329438f2e635ae454d485bde06375"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#1f30dd8acc85f774a712a3801a5853d0b44dcc96"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -678,7 +678,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#c5a6c82e46f329438f2e635ae454d485bde06375"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#1f30dd8acc85f774a712a3801a5853d0b44dcc96"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -701,7 +701,7 @@ dependencies = [
 [[package]]
 name = "cdk-signatory"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#c5a6c82e46f329438f2e635ae454d485bde06375"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#1f30dd8acc85f774a712a3801a5853d0b44dcc96"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -724,7 +724,7 @@ dependencies = [
 [[package]]
 name = "cdk-sqlite"
 version = "0.9.2"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#c5a6c82e46f329438f2e635ae454d485bde06375"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=nut-16#1f30dd8acc85f774a712a3801a5853d0b44dcc96"
 dependencies = [
  "async-trait",
  "bitcoin",
