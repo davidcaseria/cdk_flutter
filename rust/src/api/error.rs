@@ -1,4 +1,5 @@
 pub enum Error {
+    Cbor(String),
     Cdk(String),
     Database(String),
     Hex(String),
@@ -50,6 +51,12 @@ impl From<cdk::nuts::nut01::Error> for Error {
 impl From<cdk::nuts::nut16::Error> for Error {
     fn from(e: cdk::nuts::nut16::Error) -> Self {
         Self::Protocol(e.to_string())
+    }
+}
+
+impl From<cdk::nuts::nut16::CborError> for Error {
+    fn from(e: cdk::nuts::nut16::CborError) -> Self {
+        Self::Cbor(e.to_string())
     }
 }
 
