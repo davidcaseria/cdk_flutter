@@ -82,6 +82,7 @@ pub struct TokenDecoder {
 }
 
 impl TokenDecoder {
+    #[frb(sync)]
     pub fn new() -> Self {
         Self {
             decoder: Arc::new(Mutex::new(MultipartDecoder::new())),

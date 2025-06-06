@@ -18,9 +18,7 @@ List<String> encodeQrToken({required Token token, BigInt? maxFragmentLen}) =>
 abstract class TokenDecoder implements RustOpaqueInterface {
   bool isComplete();
 
-  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
-  static Future<TokenDecoder> newInstance() =>
-      RustLib.instance.api.crateApiTokenTokenDecoderNew();
+  factory TokenDecoder() => RustLib.instance.api.crateApiTokenTokenDecoderNew();
 
   void receive({required String part_});
 

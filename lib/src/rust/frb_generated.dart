@@ -170,7 +170,7 @@ abstract class RustLibApi extends BaseApi {
 
   bool crateApiTokenTokenDecoderIsComplete({required TokenDecoder that});
 
-  Future<TokenDecoder> crateApiTokenTokenDecoderNew();
+  TokenDecoder crateApiTokenTokenDecoderNew();
 
   void crateApiTokenTokenDecoderReceive(
       {required TokenDecoder that, required String part_});
@@ -1077,12 +1077,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<TokenDecoder> crateApiTokenTokenDecoderNew() {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
+  TokenDecoder crateApiTokenTokenDecoderNew() {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 27, port: port_);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
       },
       codec: SseCodec(
         decodeSuccessData:
