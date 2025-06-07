@@ -10,9 +10,9 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 // These functions are ignored because they are not marked as `pub`: `proofs`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `from_str`, `try_from`, `try_into`, `try_into`
 
-List<String> encodeQrToken({required Token token, BigInt? maxFragmentLen}) =>
+List<String> encodeQrToken({required Token token, BigInt? maxFragmentLength}) =>
     RustLib.instance.api.crateApiTokenEncodeQrToken(
-        token: token, maxFragmentLen: maxFragmentLen);
+        token: token, maxFragmentLength: maxFragmentLength);
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<TokenDecoder>>
 abstract class TokenDecoder implements RustOpaqueInterface {

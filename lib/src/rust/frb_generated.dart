@@ -268,7 +268,7 @@ abstract class RustLibApi extends BaseApi {
   Stream<BigInt> crateApiWalletWalletStreamBalance({required Wallet that});
 
   List<String> crateApiTokenEncodeQrToken(
-      {required Token token, BigInt? maxFragmentLen});
+      {required Token token, BigInt? maxFragmentLength});
 
   String crateApiWalletGenerateHexSeed();
 
@@ -1949,12 +1949,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   List<String> crateApiTokenEncodeQrToken(
-      {required Token token, BigInt? maxFragmentLen}) {
+      {required Token token, BigInt? maxFragmentLength}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_token(token, serializer);
-        sse_encode_opt_box_autoadd_usize(maxFragmentLen, serializer);
+        sse_encode_opt_box_autoadd_usize(maxFragmentLength, serializer);
         return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 58)!;
       },
       codec: SseCodec(
@@ -1962,14 +1962,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiTokenEncodeQrTokenConstMeta,
-      argValues: [token, maxFragmentLen],
+      argValues: [token, maxFragmentLength],
       apiImpl: this,
     ));
   }
 
   TaskConstMeta get kCrateApiTokenEncodeQrTokenConstMeta => const TaskConstMeta(
         debugName: "encode_qr_token",
-        argNames: ["token", "maxFragmentLen"],
+        argNames: ["token", "maxFragmentLength"],
       );
 
   @override
@@ -2629,10 +2629,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dco_decode_String(raw[1]),
         );
       case 8:
-        return Error_Url(
+        return Error_Ur(
           dco_decode_String(raw[1]),
         );
       case 9:
+        return Error_Url(
+          dco_decode_String(raw[1]),
+        );
+      case 10:
+        return Error_Utf8(
+          dco_decode_String(raw[1]),
+        );
+      case 11:
         return Error_WalletNotEmpty();
       default:
         throw Exception("unreachable");
@@ -3632,8 +3640,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return Error_Reqwest(var_field0);
       case 8:
         var var_field0 = sse_decode_String(deserializer);
-        return Error_Url(var_field0);
+        return Error_Ur(var_field0);
       case 9:
+        var var_field0 = sse_decode_String(deserializer);
+        return Error_Url(var_field0);
+      case 10:
+        var var_field0 = sse_decode_String(deserializer);
+        return Error_Utf8(var_field0);
+      case 11:
         return Error_WalletNotEmpty();
       default:
         throw UnimplementedError('');
@@ -4816,11 +4830,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case Error_Reqwest(field0: final field0):
         sse_encode_i_32(7, serializer);
         sse_encode_String(field0, serializer);
-      case Error_Url(field0: final field0):
+      case Error_Ur(field0: final field0):
         sse_encode_i_32(8, serializer);
         sse_encode_String(field0, serializer);
-      case Error_WalletNotEmpty():
+      case Error_Url(field0: final field0):
         sse_encode_i_32(9, serializer);
+        sse_encode_String(field0, serializer);
+      case Error_Utf8(field0: final field0):
+        sse_encode_i_32(10, serializer);
+        sse_encode_String(field0, serializer);
+      case Error_WalletNotEmpty():
+        sse_encode_i_32(11, serializer);
     }
   }
 

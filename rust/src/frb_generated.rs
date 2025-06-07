@@ -3152,11 +3152,11 @@ fn wire__crate__api__token__encode_qr_token_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_token = <crate::api::token::Token>::sse_decode(&mut deserializer);
-            let api_max_fragment_len = <Option<usize>>::sse_decode(&mut deserializer);
+            let api_max_fragment_length = <Option<usize>>::sse_decode(&mut deserializer);
             deserializer.end();
             transform_result_sse::<_, crate::api::error::Error>((move || {
                 let output_ok =
-                    crate::api::token::encode_qr_token(&api_token, api_max_fragment_len)?;
+                    crate::api::token::encode_qr_token(&api_token, api_max_fragment_length)?;
                 Ok(output_ok)
             })())
         },
@@ -3763,9 +3763,17 @@ impl SseDecode for crate::api::error::Error {
             }
             8 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::error::Error::Url(var_field0);
+                return crate::api::error::Error::Ur(var_field0);
             }
             9 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return crate::api::error::Error::Url(var_field0);
+            }
+            10 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return crate::api::error::Error::Utf8(var_field0);
+            }
+            11 => {
                 return crate::api::error::Error::WalletNotEmpty;
             }
             _ => {
@@ -5122,10 +5130,16 @@ impl flutter_rust_bridge::IntoDart for crate::api::error::Error {
             crate::api::error::Error::Reqwest(field0) => {
                 [7.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::error::Error::Url(field0) => {
+            crate::api::error::Error::Ur(field0) => {
                 [8.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::error::Error::WalletNotEmpty => [9.into_dart()].into_dart(),
+            crate::api::error::Error::Url(field0) => {
+                [9.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::error::Error::Utf8(field0) => {
+                [10.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::error::Error::WalletNotEmpty => [11.into_dart()].into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -5920,12 +5934,20 @@ impl SseEncode for crate::api::error::Error {
                 <i32>::sse_encode(7, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::error::Error::Url(field0) => {
+            crate::api::error::Error::Ur(field0) => {
                 <i32>::sse_encode(8, serializer);
                 <String>::sse_encode(field0, serializer);
             }
-            crate::api::error::Error::WalletNotEmpty => {
+            crate::api::error::Error::Url(field0) => {
                 <i32>::sse_encode(9, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            crate::api::error::Error::Utf8(field0) => {
+                <i32>::sse_encode(10, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            crate::api::error::Error::WalletNotEmpty => {
+                <i32>::sse_encode(11, serializer);
             }
             _ => {
                 unimplemented!("");
