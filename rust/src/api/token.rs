@@ -1,17 +1,12 @@
 use std::{
     str::FromStr,
-    sync::{Arc, Mutex},
+    sync::{Arc, RwLock},
 };
 
-use cdk::nuts::{
-    nut16::{MultipartEncoder, UREncodable},
-    Token as CdkToken,
-};
-use cdk_common::{
-    nut16::{MultipartDecoder, URDecodable},
-    Proofs,
-};
+use cdk::nuts::Token as CdkToken;
+use cdk_common::Proofs;
 use flutter_rust_bridge::frb;
+use ur::{Decoder, Encoder};
 
 use super::error::Error;
 
@@ -78,36 +73,38 @@ impl TryInto<CdkToken> for &Token {
 }
 
 pub struct TokenDecoder {
-    decoder: Arc<Mutex<MultipartDecoder>>,
+    decoder: Arc<RwLock<Decoder>>,
 }
 
 impl TokenDecoder {
     #[frb(sync)]
     pub fn new() -> Self {
         Self {
-            decoder: Arc::new(Mutex::new(MultipartDecoder::new())),
+            decoder: Arc::new(RwLock::new(Decoder::default())),
         }
     }
 
     #[frb(sync)]
     pub fn is_complete(&self) -> bool {
-        let decoder = self.decoder.lock().expect("Lock poisoned");
-        decoder.is_complete()
+        let decoder = self.decoder.read().expect("Lock poisoned");
+        decoder.complete()
     }
 
     #[frb(sync)]
     pub fn receive(&self, part: String) -> Result<(), Error> {
-        let mut decoder = self.decoder.lock().expect("Lock poisoned");
+        let mut decoder = self.decoder.write().expect("Lock poisoned");
         decoder.receive(&part)?;
         Ok(())
     }
 
     #[frb(sync)]
     pub fn value(&self) -> Result<Option<Token>, Error> {
-        let decoder = self.decoder.lock().expect("Lock poisened");
+        let decoder = self.decoder.read().expect("Lock poisened");
         let ur = decoder.message()?;
         match ur {
-            Some(ur) => Ok(Some(CdkToken::from_ur(ur)?.try_into()?)),
+            Some(ur) => Ok(Some(
+                CdkToken::from_str(&String::from_utf8(ur)?)?.try_into()?,
+            )),
             None => Ok(None),
         }
     }
@@ -116,18 +113,14 @@ impl TokenDecoder {
 #[frb(sync)]
 pub fn encode_qr_token(
     token: &Token,
-    max_fragment_len: Option<usize>,
+    max_fragment_length: Option<usize>,
 ) -> Result<Vec<String>, Error> {
-    let cdk_token: CdkToken = token.try_into()?;
-    let ur = cdk_token.ur();
-    let mut encoder = MultipartEncoder::new(&ur, max_fragment_len.unwrap_or(300))?;
+    let mut encoder = Encoder::bytes(token.encoded.as_bytes(), max_fragment_length.unwrap_or(300))?;
     let mut parts = Vec::new();
-    loop {
-        let part = encoder.next_part()?;
-        if part.is_empty() {
-            break;
+    for _ in 0..encoder.fragment_count() {
+        if let Ok(part) = encoder.next_part() {
+            parts.push(part);
         }
-        parts.push(part);
     }
     Ok(parts)
 }

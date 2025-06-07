@@ -1,5 +1,4 @@
 pub enum Error {
-    Cbor(String),
     Cdk(String),
     Database(String),
     Hex(String),
@@ -8,7 +7,9 @@ pub enum Error {
     Nostr(String),
     Protocol(String),
     Reqwest(String),
+    Ur(String),
     Url(String),
+    Utf8(String),
     WalletNotEmpty,
 }
 
@@ -45,18 +46,6 @@ impl From<cdk::nuts::nut00::Error> for Error {
 impl From<cdk::nuts::nut01::Error> for Error {
     fn from(e: cdk::nuts::nut01::Error) -> Self {
         Self::Protocol(e.to_string())
-    }
-}
-
-impl From<cdk::nuts::nut16::Error> for Error {
-    fn from(e: cdk::nuts::nut16::Error) -> Self {
-        Self::Protocol(e.to_string())
-    }
-}
-
-impl From<cdk::nuts::nut16::CborError> for Error {
-    fn from(e: cdk::nuts::nut16::CborError) -> Self {
-        Self::Cbor(e.to_string())
     }
 }
 
@@ -99,5 +88,17 @@ impl From<reqwest::Error> for Error {
 impl From<serde_json::Error> for Error {
     fn from(e: serde_json::Error) -> Self {
         Self::Json(e.to_string())
+    }
+}
+
+impl From<std::string::FromUtf8Error> for Error {
+    fn from(e: std::string::FromUtf8Error) -> Self {
+        Self::Utf8(e.to_string())
+    }
+}
+
+impl From<ur::ur::Error> for Error {
+    fn from(e: ur::ur::Error) -> Self {
+        Self::Ur(e.to_string())
     }
 }
