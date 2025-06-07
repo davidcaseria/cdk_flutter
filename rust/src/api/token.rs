@@ -115,7 +115,7 @@ pub fn encode_qr_token(
     token: &Token,
     max_fragment_length: Option<usize>,
 ) -> Result<Vec<String>, Error> {
-    let mut encoder = Encoder::bytes(token.encoded.as_bytes(), max_fragment_length.unwrap_or(300))?;
+    let mut encoder = Encoder::bytes(token.encoded.as_bytes(), max_fragment_length.unwrap_or(150))?;
     let mut parts = Vec::new();
     for _ in 0..encoder.fragment_count() {
         if let Ok(part) = encoder.next_part() {
