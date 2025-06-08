@@ -8,6 +8,7 @@ use cdk_common::{
     PaymentRequest as CdkPaymentRequest, Transport as CdkTransport,
 };
 use flutter_rust_bridge::frb;
+use ur::Encoder;
 
 use super::error::Error;
 
@@ -199,4 +200,22 @@ impl Into<CdkTransportType> for TransportType {
             TransportType::HttpPost => CdkTransportType::HttpPost,
         }
     }
+}
+
+#[frb(sync)]
+pub fn encode_qr_payment_request(
+    payment_request: PaymentRequest,
+    max_fragment_length: Option<usize>,
+) -> Result<Vec<String>, Error> {
+    let mut encoder = Encoder::bytes(
+        payment_request.encode().as_bytes(),
+        max_fragment_length.unwrap_or(150),
+    )?;
+    let mut parts = Vec::new();
+    for _ in 0..encoder.fragment_count() {
+        if let Ok(part) = encoder.next_part() {
+            parts.push(part);
+        }
+    }
+    Ok(parts)
 }
