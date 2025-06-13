@@ -27,20 +27,26 @@ abstract class TokenDecoder implements RustOpaqueInterface {
 
 class Token {
   final String encoded;
+  final Uint8List? raw;
   final BigInt amount;
   final String mintUrl;
 
   const Token({
     required this.encoded,
+    this.raw,
     required this.amount,
     required this.mintUrl,
   });
+
+  static Future<Token> fromRawBytes({required List<int> raw}) =>
+      RustLib.instance.api.crateApiTokenTokenFromRawBytes(raw: raw);
 
   static Token parse({required String encoded}) =>
       RustLib.instance.api.crateApiTokenTokenParse(encoded: encoded);
 
   @override
-  int get hashCode => encoded.hashCode ^ amount.hashCode ^ mintUrl.hashCode;
+  int get hashCode =>
+      encoded.hashCode ^ raw.hashCode ^ amount.hashCode ^ mintUrl.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -48,6 +54,7 @@ class Token {
       other is Token &&
           runtimeType == other.runtimeType &&
           encoded == other.encoded &&
+          raw == other.raw &&
           amount == other.amount &&
           mintUrl == other.mintUrl;
 }

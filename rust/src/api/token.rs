@@ -12,6 +12,7 @@ use super::error::Error;
 
 pub struct Token {
     pub encoded: String,
+    pub raw: Option<Vec<u8>>,
     pub amount: u64,
     pub mint_url: String,
 }
@@ -20,6 +21,11 @@ impl Token {
     #[frb(sync)]
     pub fn parse(encoded: &str) -> Result<Self, Error> {
         let token = CdkToken::from_str(encoded)?;
+        Token::try_from(token)
+    }
+
+    pub fn from_raw_bytes(raw: Vec<u8>) -> Result<Self, Error> {
+        let token = CdkToken::try_from(&raw)?;
         Token::try_from(token)
     }
 
@@ -44,11 +50,13 @@ impl TryFrom<CdkToken> for Token {
         match token {
             CdkToken::TokenV3(token_v3) => Ok(Token {
                 encoded: token_v3.to_string(),
+                raw: None,
                 amount: token_v3.value()?.into(),
                 mint_url: token_v3.mint_urls().first().unwrap().to_string(),
             }),
             CdkToken::TokenV4(token_v4) => Ok(Token {
                 encoded: token_v4.to_string(),
+                raw: Some(token_v4.to_raw_bytes()?),
                 amount: token_v4.value()?.into(),
                 mint_url: token_v4.mint_url.to_string(),
             }),

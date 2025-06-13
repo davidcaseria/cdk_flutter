@@ -74,7 +74,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.10.0';
 
   @override
-  int get rustContentHash => 1126338870;
+  int get rustContentHash => 458847634;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -291,6 +291,8 @@ abstract class RustLibApi extends BaseApi {
   Future<ReceiveOptions> crateApiWalletReceiveOptionsDefault();
 
   Future<SendOptions> crateApiWalletSendOptionsDefault();
+
+  Future<Token> crateApiTokenTokenFromRawBytes({required List<int> raw});
 
   Token crateApiTokenTokenParse({required String encoded});
 
@@ -2213,12 +2215,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<Token> crateApiTokenTokenFromRawBytes({required List<int> raw}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_list_prim_u_8_loose(raw, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 69, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_token,
+        decodeErrorData: sse_decode_error,
+      ),
+      constMeta: kCrateApiTokenTokenFromRawBytesConstMeta,
+      argValues: [raw],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiTokenTokenFromRawBytesConstMeta =>
+      const TaskConstMeta(
+        debugName: "token_from_raw_bytes",
+        argNames: ["raw"],
+      );
+
+  @override
   Token crateApiTokenTokenParse({required String encoded}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(encoded, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 69)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 70)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_token,
@@ -3061,6 +3088,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Uint8List? dco_decode_opt_list_prim_u_8_strict(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_prim_u_8_strict(raw);
+  }
+
+  @protected
   List<Transport>? dco_decode_opt_list_transport(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_list_transport(raw);
@@ -3175,12 +3208,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Token dco_decode_token(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return Token(
       encoded: dco_decode_String(arr[0]),
-      amount: dco_decode_u_64(arr[1]),
-      mintUrl: dco_decode_String(arr[2]),
+      raw: dco_decode_opt_list_prim_u_8_strict(arr[1]),
+      amount: dco_decode_u_64(arr[2]),
+      mintUrl: dco_decode_String(arr[3]),
     );
   }
 
@@ -4249,6 +4283,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Uint8List? sse_decode_opt_list_prim_u_8_strict(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_prim_u_8_strict(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   List<Transport>? sse_decode_opt_list_transport(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -4358,10 +4403,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Token sse_decode_token(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_encoded = sse_decode_String(deserializer);
+    var var_raw = sse_decode_opt_list_prim_u_8_strict(deserializer);
     var var_amount = sse_decode_u_64(deserializer);
     var var_mintUrl = sse_decode_String(deserializer);
     return Token(
-        encoded: var_encoded, amount: var_amount, mintUrl: var_mintUrl);
+        encoded: var_encoded,
+        raw: var_raw,
+        amount: var_amount,
+        mintUrl: var_mintUrl);
   }
 
   @protected
@@ -5341,6 +5390,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_list_prim_u_8_strict(
+      Uint8List? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_prim_u_8_strict(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_list_transport(
       List<Transport>? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5429,6 +5489,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_token(Token self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.encoded, serializer);
+    sse_encode_opt_list_prim_u_8_strict(self.raw, serializer);
     sse_encode_u_64(self.amount, serializer);
     sse_encode_String(self.mintUrl, serializer);
   }
