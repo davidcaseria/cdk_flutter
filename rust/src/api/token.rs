@@ -24,6 +24,7 @@ impl Token {
         Token::try_from(token)
     }
 
+    #[frb(sync)]
     pub fn from_raw_bytes(raw: Vec<u8>) -> Result<Self, Error> {
         let token = CdkToken::try_from(&raw)?;
         Token::try_from(token)

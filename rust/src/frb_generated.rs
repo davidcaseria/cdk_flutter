@@ -3576,16 +3576,15 @@ fn wire__crate__api__wallet__send_options_default_impl(
     )
 }
 fn wire__crate__api__token__token_from_raw_bytes_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
     data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
             debug_name: "token_from_raw_bytes",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
         },
         move || {
             let message = unsafe {
@@ -3599,12 +3598,10 @@ fn wire__crate__api__token__token_from_raw_bytes_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_raw = <Vec<u8>>::sse_decode(&mut deserializer);
             deserializer.end();
-            move |context| {
-                transform_result_sse::<_, crate::api::error::Error>((move || {
-                    let output_ok = crate::api::token::Token::from_raw_bytes(api_raw)?;
-                    Ok(output_ok)
-                })())
-            }
+            transform_result_sse::<_, crate::api::error::Error>((move || {
+                let output_ok = crate::api::token::Token::from_raw_bytes(api_raw)?;
+                Ok(output_ok)
+            })())
         },
     )
 }
@@ -4987,7 +4984,6 @@ fn pde_ffi_dispatcher_primary_impl(
         71 => {
             wire__crate__api__wallet__send_options_default_impl(port, ptr, rust_vec_len, data_len)
         }
-        72 => wire__crate__api__token__token_from_raw_bytes_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -5094,6 +5090,7 @@ fn pde_ffi_dispatcher_sync_impl(
             rust_vec_len,
             data_len,
         ),
+        72 => wire__crate__api__token__token_from_raw_bytes_impl(ptr, rust_vec_len, data_len),
         73 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }

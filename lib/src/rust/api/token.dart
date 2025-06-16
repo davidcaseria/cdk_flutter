@@ -38,7 +38,7 @@ class Token {
     required this.mintUrl,
   });
 
-  static Future<Token> fromRawBytes({required List<int> raw}) =>
+  static Token fromRawBytes({required List<int> raw}) =>
       RustLib.instance.api.crateApiTokenTokenFromRawBytes(raw: raw);
 
   static Token parse({required String encoded}) =>

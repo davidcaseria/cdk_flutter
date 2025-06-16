@@ -300,7 +300,7 @@ abstract class RustLibApi extends BaseApi {
 
   Future<SendOptions> crateApiWalletSendOptionsDefault();
 
-  Future<Token> crateApiTokenTokenFromRawBytes({required List<int> raw});
+  Token crateApiTokenTokenFromRawBytes({required List<int> raw});
 
   Token crateApiTokenTokenParse({required String encoded});
 
@@ -2294,13 +2294,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<Token> crateApiTokenTokenFromRawBytes({required List<int> raw}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
+  Token crateApiTokenTokenFromRawBytes({required List<int> raw}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_list_prim_u_8_loose(raw, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 72, port: port_);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 72)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_token,
