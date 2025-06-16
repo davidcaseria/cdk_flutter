@@ -17,14 +17,6 @@ part 'wallet.freezed.dart';
 // These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `eq`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`, `try_into`, `try_into`
 
-Uint8List generateSeed() => RustLib.instance.api.crateApiWalletGenerateSeed();
-
-String generateHexSeed() =>
-    RustLib.instance.api.crateApiWalletGenerateHexSeed();
-
-String getPubKey({required String secret}) =>
-    RustLib.instance.api.crateApiWalletGetPubKey(secret: secret);
-
 ParseInputResult parseInput({required String input}) =>
     RustLib.instance.api.crateApiWalletParseInput(input: input);
 

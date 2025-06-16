@@ -2,6 +2,7 @@ pub mod bitcoin;
 pub mod bolt11;
 pub mod error;
 pub mod init;
+pub mod key;
 pub mod mint;
 pub mod payment_request;
 pub mod token;

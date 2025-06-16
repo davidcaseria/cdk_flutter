@@ -9,6 +9,7 @@
 import 'api/bitcoin.dart';
 import 'api/bolt11.dart';
 import 'api/error.dart';
+import 'api/key.dart';
 import 'api/mint.dart';
 import 'api/payment_request.dart';
 import 'api/token.dart';

@@ -35,10 +35,11 @@ use tokio::{
     time::sleep,
 };
 
-use crate::{api::bolt11::Bolt11Invoice, frb_generated::StreamSink};
+use crate::frb_generated::StreamSink;
 
 use super::{
     bitcoin::BitcoinAddress,
+    bolt11::Bolt11Invoice,
     error::Error,
     mint::Mint,
     payment_request::{PaymentRequest, TransportType},
@@ -960,23 +961,6 @@ impl WalletDatabase {
         }
         Ok(mints)
     }
-}
-
-#[frb(sync)]
-pub fn generate_seed() -> Vec<u8> {
-    rand::random::<[u8; 32]>().to_vec()
-}
-
-#[frb(sync)]
-pub fn generate_hex_seed() -> String {
-    hex::encode(rand::random::<[u8; 32]>())
-}
-
-#[frb(sync)]
-pub fn get_pub_key(secret: String) -> Result<String, Error> {
-    let secret = SecretKey::from_str(&secret)?;
-    let pub_key = secret.public_key();
-    Ok(pub_key.to_string())
 }
 
 #[frb(sync)]
