@@ -31,3 +31,13 @@ pub fn get_pub_key(secret: String) -> Result<String, Error> {
     let pub_key = secret.public_key();
     Ok(pub_key.to_string())
 }
+
+#[frb(sync)]
+pub fn key_hex_to_bytes(key: String) -> Result<Vec<u8>, Error> {
+    hex::decode(&key).map_err(|e| Error::Hex(e.to_string()))
+}
+
+#[frb(sync)]
+pub fn key_bytes_to_hex(key: &[u8]) -> String {
+    hex::encode(key)
+}

@@ -17,3 +17,9 @@ String deriveSharedSecret({required String secret, required String pubKey}) =>
 
 String getPubKey({required String secret}) =>
     RustLib.instance.api.crateApiKeyGetPubKey(secret: secret);
+
+Uint8List keyHexToBytes({required String key}) =>
+    RustLib.instance.api.crateApiKeyKeyHexToBytes(key: key);
+
+String keyBytesToHex({required List<int> key}) =>
+    RustLib.instance.api.crateApiKeyKeyBytesToHex(key: key);
