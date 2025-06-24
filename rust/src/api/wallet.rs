@@ -140,7 +140,11 @@ impl Wallet {
 
     pub async fn is_token_spent(&self, token: Token) -> Result<bool, Error> {
         let token: CdkToken = token.try_into()?;
-        let proof_states = self.inner.check_proofs_spent(token.proofs()).await?;
+        let mint_keysets = self.inner.get_mint_keysets().await?;
+        let proof_states = self
+            .inner
+            .check_proofs_spent(token.proofs(&mint_keysets)?)
+            .await?;
         Ok(proof_states
             .iter()
             .any(|state| state.state == ProofState::Spent))
@@ -313,12 +317,13 @@ impl Wallet {
         let transports = pay_request.transports.ok_or(Error::InvalidInput)?;
         let transport = transports.first().ok_or(Error::InvalidInput)?;
 
+        let mint_keysets = self.inner.get_mint_keysets().await?;
         let payload = PaymentRequestPayload {
             id: pay_request.payment_id,
             memo,
             mint: self.mint_url()?,
             unit: self.unit(),
-            proofs: token.proofs()?,
+            proofs: token.proofs(&mint_keysets)?,
         };
 
         match transport._type {
@@ -409,7 +414,10 @@ impl Wallet {
     }
 
     pub async fn reclaim_send(&self, token: Token) -> Result<(), Error> {
-        self.inner.reclaim_unspent(token.proofs()?).await?;
+        let mint_keysets = self.inner.get_mint_keysets().await?;
+        self.inner
+            .reclaim_unspent(token.proofs(&mint_keysets)?)
+            .await?;
         self.inner.check_all_pending_proofs().await?;
         self.update_balance_streams().await;
         Ok(())

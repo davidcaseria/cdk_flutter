@@ -29,6 +29,11 @@ impl PaymentRequest {
         self.to_string()
     }
 
+    #[frb(sync)]
+    pub fn parse(encoded: &str) -> Result<Self, Error> {
+        encoded.parse()
+    }
+
     pub(crate) fn validate(&self, mint_url: MintUrl, unit: CurrencyUnit) -> bool {
         if let Some(pr_unit) = &self.unit {
             if pr_unit != &unit.to_string() {

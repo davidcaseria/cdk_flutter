@@ -4,7 +4,7 @@ use std::{
 };
 
 use cdk::nuts::Token as CdkToken;
-use cdk_common::Proofs;
+use cdk_common::{KeySetInfo, Proofs};
 use flutter_rust_bridge::frb;
 use ur::{Decoder, Encoder};
 
@@ -30,9 +30,9 @@ impl Token {
         Token::try_from(token)
     }
 
-    pub(crate) fn proofs(&self) -> Result<Proofs, Error> {
+    pub(crate) fn proofs(&self, mint_keysets: &[KeySetInfo]) -> Result<Proofs, Error> {
         let token: CdkToken = self.try_into()?;
-        Ok(token.proofs())
+        Ok(token.proofs(mint_keysets)?)
     }
 }
 

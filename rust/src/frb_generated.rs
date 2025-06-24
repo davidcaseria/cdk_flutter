@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.10.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -379690463;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1329700080;
 
 // Section: executor
 
@@ -3509,6 +3509,36 @@ fn wire__crate__api__payment_request__payment_request_encode_impl(
         },
     )
 }
+fn wire__crate__api__payment_request__payment_request_parse_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "payment_request_parse",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_encoded = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, crate::api::error::Error>((move || {
+                let output_ok = crate::api::payment_request::PaymentRequest::parse(&api_encoded)?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
 fn wire__crate__api__wallet__receive_options_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -4975,13 +5005,13 @@ fn pde_ffi_dispatcher_primary_impl(
         }
         63 => wire__crate__api__mint__get_mint_info_impl(port, ptr, rust_vec_len, data_len),
         65 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
-        70 => wire__crate__api__wallet__receive_options_default_impl(
+        71 => wire__crate__api__wallet__receive_options_default_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        71 => {
+        72 => {
             wire__crate__api__wallet__send_options_default_impl(port, ptr, rust_vec_len, data_len)
         }
         _ => unreachable!(),
@@ -5090,8 +5120,13 @@ fn pde_ffi_dispatcher_sync_impl(
             rust_vec_len,
             data_len,
         ),
-        72 => wire__crate__api__token__token_from_raw_bytes_impl(ptr, rust_vec_len, data_len),
-        73 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
+        70 => wire__crate__api__payment_request__payment_request_parse_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        73 => wire__crate__api__token__token_from_raw_bytes_impl(ptr, rust_vec_len, data_len),
+        74 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }

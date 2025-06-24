@@ -75,7 +75,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.10.0';
 
   @override
-  int get rustContentHash => -379690463;
+  int get rustContentHash => -1329700080;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -295,6 +295,9 @@ abstract class RustLibApi extends BaseApi {
 
   String crateApiPaymentRequestPaymentRequestEncode(
       {required PaymentRequest that});
+
+  PaymentRequest crateApiPaymentRequestPaymentRequestParse(
+      {required String encoded});
 
   Future<ReceiveOptions> crateApiWalletReceiveOptionsDefault();
 
@@ -2246,12 +2249,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  PaymentRequest crateApiPaymentRequestPaymentRequestParse(
+      {required String encoded}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_String(encoded, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 70)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_payment_request,
+        decodeErrorData: sse_decode_error,
+      ),
+      constMeta: kCrateApiPaymentRequestPaymentRequestParseConstMeta,
+      argValues: [encoded],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiPaymentRequestPaymentRequestParseConstMeta =>
+      const TaskConstMeta(
+        debugName: "payment_request_parse",
+        argNames: ["encoded"],
+      );
+
+  @override
   Future<ReceiveOptions> crateApiWalletReceiveOptionsDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 70, port: port_);
+            funcId: 71, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_receive_options,
@@ -2275,7 +2303,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 71, port: port_);
+            funcId: 72, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_send_options,
@@ -2299,7 +2327,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_list_prim_u_8_loose(raw, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 72)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 73)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_token,
@@ -2323,7 +2351,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(encoded, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 73)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 74)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_token,

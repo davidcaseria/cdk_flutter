@@ -39,6 +39,9 @@ class PaymentRequest {
         that: this,
       );
 
+  static PaymentRequest parse({required String encoded}) => RustLib.instance.api
+      .crateApiPaymentRequestPaymentRequestParse(encoded: encoded);
+
   @override
   int get hashCode =>
       paymentId.hashCode ^
