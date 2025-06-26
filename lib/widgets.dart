@@ -18,6 +18,10 @@ class MeltQuoteBuilder extends StatefulWidget {
 }
 
 class MeltQuoteBuilderState extends State<MeltQuoteBuilder> {
+  Future<MeltQuoteResult>? _meltQuoteFuture;
+  Wallet? _wallet;
+  String? _request;
+
   Future<MeltQuoteResult> _createMeltQuoteResult(Wallet wallet) async {
     final quote = await wallet.meltQuote(request: widget.request);
     return MeltQuoteResult(
@@ -30,8 +34,14 @@ class MeltQuoteBuilderState extends State<MeltQuoteBuilder> {
   }
 
   Widget buildWithWallet(BuildContext context, Wallet wallet) {
+    // Only create the future if it hasn't been created yet or if the wallet/request changed
+    if (_meltQuoteFuture == null || _wallet != wallet || _request != widget.request) {
+      _meltQuoteFuture = _createMeltQuoteResult(wallet);
+      _wallet = wallet;
+      _request = widget.request;
+    }
     return FutureBuilder<MeltQuoteResult>(
-      future: _createMeltQuoteResult(wallet),
+      future: _meltQuoteFuture,
       builder: widget.builder,
     );
   }
