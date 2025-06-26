@@ -24,7 +24,7 @@ Future<void> main() async {
   }
 
   final db = await WalletDatabase.newInstance(path: '${path.path}/wallet.sqlite');
-  final wallet = Wallet.newFromHexSeed(mintUrl: 'http://testnut.cashu.space/', unit: 'sat', seed: seed, localstore: db);
+  final wallet = Wallet.newFromHexSeed(mintUrl: 'http://testnut.cashu.space/', unit: 'sat', seed: seed, db: db);
   runApp(WalletProvider(wallet: wallet, child: MyApp()));
 }
 

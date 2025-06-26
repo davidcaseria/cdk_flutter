@@ -502,7 +502,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cashu"
 version = "0.10.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#896b1dfa5f75d1d4d216f47adeb0240718981439"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#a2b9a793a9884cf218848edd6919bd4570059888"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -564,7 +564,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.10.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#896b1dfa5f75d1d4d216f47adeb0240718981439"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#a2b9a793a9884cf218848edd6919bd4570059888"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -579,6 +579,7 @@ dependencies = [
  "lightning-invoice",
  "regex",
  "reqwest",
+ "ring",
  "rustls",
  "serde",
  "serde_json",
@@ -595,7 +596,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.10.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#896b1dfa5f75d1d4d216f47adeb0240718981439"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#a2b9a793a9884cf218848edd6919bd4570059888"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -618,7 +619,7 @@ dependencies = [
 [[package]]
 name = "cdk-signatory"
 version = "0.10.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#896b1dfa5f75d1d4d216f47adeb0240718981439"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#a2b9a793a9884cf218848edd6919bd4570059888"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -628,6 +629,7 @@ dependencies = [
  "clap",
  "getrandom 0.2.16",
  "home",
+ "rustls",
  "thiserror 2.0.12",
  "tokio",
  "tokio-stream",
@@ -638,7 +640,7 @@ dependencies = [
 [[package]]
 name = "cdk-sqlite"
 version = "0.10.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#896b1dfa5f75d1d4d216f47adeb0240718981439"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#a2b9a793a9884cf218848edd6919bd4570059888"
 dependencies = [
  "async-trait",
  "bitcoin",
@@ -869,9 +871,9 @@ dependencies = [
 
 [[package]]
 name = "crunchy"
-version = "0.2.3"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43da5946c66ffcc7745f48db692ffbb10a83bfe0afd96235c5c2a4fb23994929"
+checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 
 [[package]]
 name = "crypto-common"

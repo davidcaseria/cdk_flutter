@@ -63,7 +63,7 @@ impl Wallet {
         unit: String,
         seed: Vec<u8>,
         target_proof_count: Option<usize>,
-        localstore: WalletDatabase,
+        db: &WalletDatabase,
     ) -> Result<Self, Error> {
         let unit = CurrencyUnit::from_str(&unit).unwrap_or(CurrencyUnit::Custom(unit.to_string()));
         Ok(Self {
@@ -73,7 +73,7 @@ impl Wallet {
             inner: CdkWallet::new(
                 &mint_url,
                 unit,
-                Arc::new(localstore.inner),
+                Arc::new(db.inner.clone()),
                 &seed,
                 target_proof_count,
             )?,
@@ -87,10 +87,10 @@ impl Wallet {
         unit: String,
         seed: String,
         target_proof_count: Option<usize>,
-        localstore: WalletDatabase,
+        db: &WalletDatabase,
     ) -> Result<Self, Error> {
         let seed = hex::decode(seed)?;
-        Self::new(mint_url, unit, seed, target_proof_count, localstore)
+        Self::new(mint_url, unit, seed, target_proof_count, db)
     }
 
     pub async fn balance(&self) -> Result<u64, Error> {
@@ -667,7 +667,7 @@ pub struct MultiMintWallet {
 
     seed: Vec<u8>,
     target_proof_count: Option<usize>,
-    localstore: WalletDatabase,
+    db: WalletDatabase,
 
     wallets: Arc<Mutex<HashMap<MintUrl, Wallet>>>,
     added_wallets: Arc<Mutex<Vec<mpsc::Sender<MintUrl>>>>,
@@ -678,9 +678,9 @@ impl MultiMintWallet {
         unit: String,
         seed: Vec<u8>,
         target_proof_count: Option<usize>,
-        localstore: WalletDatabase,
+        db: &WalletDatabase,
     ) -> Result<Self, Error> {
-        let mints = localstore.inner.get_mints().await?;
+        let mints = db.inner.get_mints().await?;
         let mut wallets = HashMap::new();
         for (mint_url, _) in &mints {
             wallets.insert(
@@ -690,7 +690,7 @@ impl MultiMintWallet {
                     unit.clone(),
                     seed.clone(),
                     target_proof_count,
-                    localstore.clone(),
+                    &db,
                 )?,
             );
         }
@@ -698,7 +698,7 @@ impl MultiMintWallet {
             unit: unit.to_string(),
             seed,
             target_proof_count,
-            localstore,
+            db: db.clone(),
             wallets: Arc::new(Mutex::new(wallets)),
             added_wallets: Arc::new(Mutex::new(Vec::new())),
         })
@@ -708,10 +708,10 @@ impl MultiMintWallet {
         unit: String,
         seed: String,
         target_proof_count: Option<usize>,
-        localstore: WalletDatabase,
+        db: &WalletDatabase,
     ) -> Result<Self, Error> {
         let seed = hex::decode(seed)?;
-        Ok(Self::new(unit, seed, target_proof_count, localstore).await?)
+        Ok(Self::new(unit, seed, target_proof_count, db).await?)
     }
 
     pub async fn add_mint(&self, mint_url: String) -> Result<(), Error> {
@@ -726,7 +726,7 @@ impl MultiMintWallet {
             self.unit.clone(),
             self.seed.clone(),
             self.target_proof_count,
-            self.localstore.clone(),
+            &self.db,
         )?;
         wallets.insert(mint_url.clone(), wallet);
         let mut added_wallets = self.added_wallets.lock().await;
@@ -788,7 +788,7 @@ impl MultiMintWallet {
             self.unit.clone(),
             self.seed.clone(),
             self.target_proof_count,
-            self.localstore.clone(),
+            &self.db,
         )?;
         wallets.insert(mint_url, wallet.clone());
         Ok(wallet)

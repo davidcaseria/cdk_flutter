@@ -122,13 +122,13 @@ abstract class RustLibApi extends BaseApi {
       {required String unit,
       required List<int> seed,
       BigInt? targetProofCount,
-      required WalletDatabase localstore});
+      required WalletDatabase db});
 
   Future<MultiMintWallet> crateApiWalletMultiMintWalletNewFromHexSeed(
       {required String unit,
       required String seed,
       BigInt? targetProofCount,
-      required WalletDatabase localstore});
+      required WalletDatabase db});
 
   Future<void> crateApiWalletMultiMintWalletReclaimReserved(
       {required MultiMintWallet that});
@@ -226,14 +226,14 @@ abstract class RustLibApi extends BaseApi {
       required String unit,
       required List<int> seed,
       BigInt? targetProofCount,
-      required WalletDatabase localstore});
+      required WalletDatabase db});
 
   Wallet crateApiWalletWalletNewFromHexSeed(
       {required String mintUrl,
       required String unit,
       required String seed,
       BigInt? targetProofCount,
-      required WalletDatabase localstore});
+      required WalletDatabase db});
 
   Future<void> crateApiWalletWalletPayRequest(
       {required Wallet that,
@@ -646,15 +646,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       {required String unit,
       required List<int> seed,
       BigInt? targetProofCount,
-      required WalletDatabase localstore}) {
+      required WalletDatabase db}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(unit, serializer);
         sse_encode_list_prim_u_8_loose(seed, serializer);
         sse_encode_opt_box_autoadd_usize(targetProofCount, serializer);
-        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
-            localstore, serializer);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
+            db, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 11, port: port_);
       },
@@ -664,7 +664,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletMultiMintWalletNewConstMeta,
-      argValues: [unit, seed, targetProofCount, localstore],
+      argValues: [unit, seed, targetProofCount, db],
       apiImpl: this,
     ));
   }
@@ -672,7 +672,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletMultiMintWalletNewConstMeta =>
       const TaskConstMeta(
         debugName: "MultiMintWallet_new",
-        argNames: ["unit", "seed", "targetProofCount", "localstore"],
+        argNames: ["unit", "seed", "targetProofCount", "db"],
       );
 
   @override
@@ -680,15 +680,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       {required String unit,
       required String seed,
       BigInt? targetProofCount,
-      required WalletDatabase localstore}) {
+      required WalletDatabase db}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(unit, serializer);
         sse_encode_String(seed, serializer);
         sse_encode_opt_box_autoadd_usize(targetProofCount, serializer);
-        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
-            localstore, serializer);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
+            db, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 12, port: port_);
       },
@@ -698,7 +698,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletMultiMintWalletNewFromHexSeedConstMeta,
-      argValues: [unit, seed, targetProofCount, localstore],
+      argValues: [unit, seed, targetProofCount, db],
       apiImpl: this,
     ));
   }
@@ -706,7 +706,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletMultiMintWalletNewFromHexSeedConstMeta =>
       const TaskConstMeta(
         debugName: "MultiMintWallet_new_from_hex_seed",
-        argNames: ["unit", "seed", "targetProofCount", "localstore"],
+        argNames: ["unit", "seed", "targetProofCount", "db"],
       );
 
   @override
@@ -1608,7 +1608,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       required String unit,
       required List<int> seed,
       BigInt? targetProofCount,
-      required WalletDatabase localstore}) {
+      required WalletDatabase db}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -1616,8 +1616,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(unit, serializer);
         sse_encode_list_prim_u_8_loose(seed, serializer);
         sse_encode_opt_box_autoadd_usize(targetProofCount, serializer);
-        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
-            localstore, serializer);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
+            db, serializer);
         return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
       },
       codec: SseCodec(
@@ -1626,14 +1626,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletNewConstMeta,
-      argValues: [mintUrl, unit, seed, targetProofCount, localstore],
+      argValues: [mintUrl, unit, seed, targetProofCount, db],
       apiImpl: this,
     ));
   }
 
   TaskConstMeta get kCrateApiWalletWalletNewConstMeta => const TaskConstMeta(
         debugName: "Wallet_new",
-        argNames: ["mintUrl", "unit", "seed", "targetProofCount", "localstore"],
+        argNames: ["mintUrl", "unit", "seed", "targetProofCount", "db"],
       );
 
   @override
@@ -1642,7 +1642,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       required String unit,
       required String seed,
       BigInt? targetProofCount,
-      required WalletDatabase localstore}) {
+      required WalletDatabase db}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -1650,8 +1650,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(unit, serializer);
         sse_encode_String(seed, serializer);
         sse_encode_opt_box_autoadd_usize(targetProofCount, serializer);
-        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
-            localstore, serializer);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
+            db, serializer);
         return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
       },
       codec: SseCodec(
@@ -1660,7 +1660,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletNewFromHexSeedConstMeta,
-      argValues: [mintUrl, unit, seed, targetProofCount, localstore],
+      argValues: [mintUrl, unit, seed, targetProofCount, db],
       apiImpl: this,
     ));
   }
@@ -1668,7 +1668,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletWalletNewFromHexSeedConstMeta =>
       const TaskConstMeta(
         debugName: "Wallet_new_from_hex_seed",
-        argNames: ["mintUrl", "unit", "seed", "targetProofCount", "localstore"],
+        argNames: ["mintUrl", "unit", "seed", "targetProofCount", "db"],
       );
 
   @override

@@ -9,7 +9,7 @@ void main() {
   test('Create a wallet', () async {
     final path = await getTemporaryDirectory();
     final db = await WalletDatabase.newInstance(path: '${path.path}/wallet.db');
-    final wallet = Wallet(mintUrl: 'http://localhost:8085', unit: 'sat', seed: [0], localstore: db);
+    final wallet = Wallet(mintUrl: 'http://localhost:8085', unit: 'sat', seed: [0], db: db);
     expect(wallet, isNotNull);
   });
 }

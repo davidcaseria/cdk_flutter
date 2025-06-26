@@ -48,23 +48,17 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
           {required String unit,
           required List<int> seed,
           BigInt? targetProofCount,
-          required WalletDatabase localstore}) =>
+          required WalletDatabase db}) =>
       RustLib.instance.api.crateApiWalletMultiMintWalletNew(
-          unit: unit,
-          seed: seed,
-          targetProofCount: targetProofCount,
-          localstore: localstore);
+          unit: unit, seed: seed, targetProofCount: targetProofCount, db: db);
 
   static Future<MultiMintWallet> newFromHexSeed(
           {required String unit,
           required String seed,
           BigInt? targetProofCount,
-          required WalletDatabase localstore}) =>
+          required WalletDatabase db}) =>
       RustLib.instance.api.crateApiWalletMultiMintWalletNewFromHexSeed(
-          unit: unit,
-          seed: seed,
-          targetProofCount: targetProofCount,
-          localstore: localstore);
+          unit: unit, seed: seed, targetProofCount: targetProofCount, db: db);
 
   Future<void> reclaimReserved();
 
@@ -131,26 +125,26 @@ abstract class Wallet implements RustOpaqueInterface {
           required String unit,
           required List<int> seed,
           BigInt? targetProofCount,
-          required WalletDatabase localstore}) =>
+          required WalletDatabase db}) =>
       RustLib.instance.api.crateApiWalletWalletNew(
           mintUrl: mintUrl,
           unit: unit,
           seed: seed,
           targetProofCount: targetProofCount,
-          localstore: localstore);
+          db: db);
 
   static Wallet newFromHexSeed(
           {required String mintUrl,
           required String unit,
           required String seed,
           BigInt? targetProofCount,
-          required WalletDatabase localstore}) =>
+          required WalletDatabase db}) =>
       RustLib.instance.api.crateApiWalletWalletNewFromHexSeed(
           mintUrl: mintUrl,
           unit: unit,
           seed: seed,
           targetProofCount: targetProofCount,
-          localstore: localstore);
+          db: db);
 
   Future<void> payRequest(
       {required PreparedSend send, String? memo, bool? includeMemo});

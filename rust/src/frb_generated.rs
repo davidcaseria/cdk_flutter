@@ -649,16 +649,32 @@ fn wire__crate__api__wallet__MultiMintWallet_new_impl(
             let api_unit = <String>::sse_decode(&mut deserializer);
             let api_seed = <Vec<u8>>::sse_decode(&mut deserializer);
             let api_target_proof_count = <Option<usize>>::sse_decode(&mut deserializer);
-            let api_localstore = <WalletDatabase>::sse_decode(&mut deserializer);
+            let api_db = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>,
+            >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::error::Error>(
                     (move || async move {
+                        let mut api_db_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_db, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => api_db_guard = Some(api_db.lockable_decode_async_ref().await),
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_db_guard = api_db_guard.unwrap();
                         let output_ok = crate::api::wallet::MultiMintWallet::new(
                             api_unit,
                             api_seed,
                             api_target_proof_count,
-                            api_localstore,
+                            &*api_db_guard,
                         )
                         .await?;
                         Ok(output_ok)
@@ -694,16 +710,32 @@ fn wire__crate__api__wallet__MultiMintWallet_new_from_hex_seed_impl(
             let api_unit = <String>::sse_decode(&mut deserializer);
             let api_seed = <String>::sse_decode(&mut deserializer);
             let api_target_proof_count = <Option<usize>>::sse_decode(&mut deserializer);
-            let api_localstore = <WalletDatabase>::sse_decode(&mut deserializer);
+            let api_db = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>,
+            >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::error::Error>(
                     (move || async move {
+                        let mut api_db_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_db, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => api_db_guard = Some(api_db.lockable_decode_async_ref().await),
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_db_guard = api_db_guard.unwrap();
                         let output_ok = crate::api::wallet::MultiMintWallet::new_from_hex_seed(
                             api_unit,
                             api_seed,
                             api_target_proof_count,
-                            api_localstore,
+                            &*api_db_guard,
                         )
                         .await?;
                         Ok(output_ok)
@@ -2470,15 +2502,31 @@ fn wire__crate__api__wallet__Wallet_new_impl(
             let api_unit = <String>::sse_decode(&mut deserializer);
             let api_seed = <Vec<u8>>::sse_decode(&mut deserializer);
             let api_target_proof_count = <Option<usize>>::sse_decode(&mut deserializer);
-            let api_localstore = <WalletDatabase>::sse_decode(&mut deserializer);
+            let api_db = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>,
+            >>::sse_decode(&mut deserializer);
             deserializer.end();
             transform_result_sse::<_, crate::api::error::Error>((move || {
+                let mut api_db_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_db, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_db_guard = Some(api_db.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_db_guard = api_db_guard.unwrap();
                 let output_ok = crate::api::wallet::Wallet::new(
                     api_mint_url,
                     api_unit,
                     api_seed,
                     api_target_proof_count,
-                    api_localstore,
+                    &*api_db_guard,
                 )?;
                 Ok(output_ok)
             })())
@@ -2510,15 +2558,31 @@ fn wire__crate__api__wallet__Wallet_new_from_hex_seed_impl(
             let api_unit = <String>::sse_decode(&mut deserializer);
             let api_seed = <String>::sse_decode(&mut deserializer);
             let api_target_proof_count = <Option<usize>>::sse_decode(&mut deserializer);
-            let api_localstore = <WalletDatabase>::sse_decode(&mut deserializer);
+            let api_db = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>,
+            >>::sse_decode(&mut deserializer);
             deserializer.end();
             transform_result_sse::<_, crate::api::error::Error>((move || {
+                let mut api_db_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_db, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_db_guard = Some(api_db.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_db_guard = api_db_guard.unwrap();
                 let output_ok = crate::api::wallet::Wallet::new_from_hex_seed(
                     api_mint_url,
                     api_unit,
                     api_seed,
                     api_target_proof_count,
-                    api_localstore,
+                    &*api_db_guard,
                 )?;
                 Ok(output_ok)
             })())
