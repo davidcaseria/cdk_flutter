@@ -10,7 +10,8 @@ class MeltQuoteBuilder extends StatefulWidget {
   final void Function(BigInt) onSuccess;
   final AsyncWidgetBuilder<MeltQuoteResult> builder;
 
-  const MeltQuoteBuilder({super.key, this.mintUrl, required this.request, required this.onSuccess, required this.builder});
+  const MeltQuoteBuilder(
+      {super.key, this.mintUrl, required this.request, required this.onSuccess, required this.builder});
 
   @override
   MeltQuoteBuilderState createState() => MeltQuoteBuilderState();
@@ -102,6 +103,9 @@ class MintQuoteBuilder extends StatefulWidget {
 
 class MintQuoteBuilderState extends State<MintQuoteBuilder> {
   final ValueNotifier<MintQuote?> _mintQuoteNotifier = ValueNotifier<MintQuote?>(null);
+  Stream<MintQuote>? _mintQuoteStream;
+  Wallet? _wallet;
+  BigInt? _mintQuoteStreamAmount;
 
   @override
   void dispose() {
@@ -116,7 +120,12 @@ class MintQuoteBuilderState extends State<MintQuoteBuilder> {
   }
 
   ValueListenableBuilder<MintQuote?> buildWithWallet(Wallet wallet) {
-    final stream = wallet.mint(amount: widget.amount);
+    // Only create the stream if it hasn't been created yet or if the wallet/amount changed
+    if (_mintQuoteStream == null || _wallet != wallet || widget.amount != (_mintQuoteStreamAmount ?? widget.amount)) {
+      _mintQuoteStream = wallet.mint(amount: widget.amount);
+      _wallet = wallet;
+      _mintQuoteStreamAmount = widget.amount;
+    }
     return ValueListenableBuilder<MintQuote?>(
       valueListenable: _mintQuoteNotifier,
       builder: (context, mintQuote, child) {
@@ -124,7 +133,7 @@ class MintQuoteBuilderState extends State<MintQuoteBuilder> {
           widget.listener!(mintQuote);
         }
         return StreamBuilder<MintQuote>(
-          stream: stream,
+          stream: _mintQuoteStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               _updateMintQuote(snapshot.data);
@@ -166,7 +175,8 @@ class ReceiveBuilder extends StatelessWidget {
   final String token;
   final AsyncWidgetBuilder<ReceiveResult> builder;
 
-  const ReceiveBuilder({super.key, this.mintUrl, this.signingKeys, this.preimages, required this.token, required this.builder});
+  const ReceiveBuilder(
+      {super.key, this.mintUrl, this.signingKeys, this.preimages, required this.token, required this.builder});
 
   Widget _buildWithWallet(Wallet wallet) {
     final token = Token.parse(encoded: this.token);
@@ -176,7 +186,8 @@ class ReceiveBuilder extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return builder(context, AsyncSnapshot<ReceiveResult>.nothing());
         } else if (snapshot.hasData) {
-          return builder(context, AsyncSnapshot<ReceiveResult>.withData(ConnectionState.active, ReceiveResult(token, snapshot.data!)));
+          return builder(context,
+              AsyncSnapshot<ReceiveResult>.withData(ConnectionState.active, ReceiveResult(token, snapshot.data!)));
         } else {
           return builder(context, AsyncSnapshot<ReceiveResult>.nothing());
         }
@@ -224,11 +235,20 @@ class SendBuilder extends StatelessWidget {
   final AsyncWidgetBuilder<PreparedSendResult> builder;
 
   const SendBuilder(
-      {super.key, required this.amount, this.mintUrl, this.pubkey, this.memo, this.includeMemo, this.onError, required this.onSuccess, required this.builder});
+      {super.key,
+      required this.amount,
+      this.mintUrl,
+      this.pubkey,
+      this.memo,
+      this.includeMemo,
+      this.onError,
+      required this.onSuccess,
+      required this.builder});
 
   Widget _buildWithWallet(Wallet wallet) {
     return FutureBuilder<PreparedSend>(
-      future: wallet.prepareSend(amount: amount, opts: SendOptions(pubkey: pubkey, memo: memo, includeMemo: includeMemo)),
+      future:
+          wallet.prepareSend(amount: amount, opts: SendOptions(pubkey: pubkey, memo: memo, includeMemo: includeMemo)),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final preparedSend = snapshot.data!;
@@ -243,7 +263,10 @@ class SendBuilder extends StatelessWidget {
             }
           }
 
-          return builder(context, AsyncSnapshot<PreparedSendResult>.withData(ConnectionState.active, PreparedSendResult(preparedSend, send)));
+          return builder(
+              context,
+              AsyncSnapshot<PreparedSendResult>.withData(
+                  ConnectionState.active, PreparedSendResult(preparedSend, send)));
         } else {
           return builder(context, AsyncSnapshot<PreparedSendResult>.nothing());
         }
