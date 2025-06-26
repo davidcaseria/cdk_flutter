@@ -31,6 +31,7 @@ impl PaymentRequest {
 
     #[frb(sync)]
     pub fn parse(encoded: &str) -> Result<Self, Error> {
+        let encoded = encoded.strip_prefix("cashu:").unwrap_or(encoded);
         encoded.parse()
     }
 

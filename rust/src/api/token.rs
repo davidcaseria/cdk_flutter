@@ -20,6 +20,7 @@ pub struct Token {
 impl Token {
     #[frb(sync)]
     pub fn parse(encoded: &str) -> Result<Self, Error> {
+        let encoded = encoded.strip_prefix("cashu:").unwrap_or(encoded);
         let token = CdkToken::from_str(encoded)?;
         Token::try_from(token)
     }
