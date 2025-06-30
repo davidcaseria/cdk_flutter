@@ -130,12 +130,12 @@ class MeltMethodSettings {
 class Mint {
   final String url;
   final MintInfo? info;
-  final BigInt balance;
+  final BigInt? balance;
 
   const Mint({
     required this.url,
     this.info,
-    required this.balance,
+    this.balance,
   });
 
   @override

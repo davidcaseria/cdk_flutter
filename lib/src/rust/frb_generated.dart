@@ -2957,7 +2957,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return Mint(
       url: dco_decode_String(arr[0]),
       info: dco_decode_opt_box_autoadd_mint_info(arr[1]),
-      balance: dco_decode_u_64(arr[2]),
+      balance: dco_decode_opt_box_autoadd_u_64(arr[2]),
     );
   }
 
@@ -4042,7 +4042,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_url = sse_decode_String(deserializer);
     var var_info = sse_decode_opt_box_autoadd_mint_info(deserializer);
-    var var_balance = sse_decode_u_64(deserializer);
+    var var_balance = sse_decode_opt_box_autoadd_u_64(deserializer);
     return Mint(url: var_url, info: var_info, balance: var_balance);
   }
 
@@ -5208,7 +5208,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.url, serializer);
     sse_encode_opt_box_autoadd_mint_info(self.info, serializer);
-    sse_encode_u_64(self.balance, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.balance, serializer);
   }
 
   @protected

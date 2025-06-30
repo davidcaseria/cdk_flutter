@@ -119,7 +119,7 @@ impl Wallet {
         let info = self.inner.get_mint_info().await?;
         Ok(Mint {
             url: self.mint_url.clone(),
-            balance: self.balance().await?,
+            balance: self.balance().await.ok(),
             info: info.map(|info| info.into()),
         })
     }
@@ -768,7 +768,7 @@ impl MultiMintWallet {
             let mint_url = MintUrl::from_str(&mint_url)?;
             if let Some(wallet) = wallets.get(&mint_url) {
                 let mint = wallet.get_mint().await?;
-                if mint.balance >= amount.unwrap_or_default() {
+                if mint.balance.unwrap_or_default() >= amount.unwrap_or_default() {
                     mints.push(mint);
                 }
             }
@@ -965,7 +965,7 @@ impl WalletDatabase {
         let mut mints = Vec::new();
         let mint_infos = self.inner.get_mints().await?;
         for (mint_url, mint_info) in mint_infos {
-            let mut balance = 0;
+            let mut balance = None;
             if let Some(unit) = &unit {
                 let seed = seed
                     .clone()
@@ -973,7 +973,7 @@ impl WalletDatabase {
                 if let Some(seed) = seed {
                     let wallet =
                         Wallet::new(mint_url.to_string(), unit.clone(), seed, None, &self)?;
-                    balance = wallet.balance().await?;
+                    balance = wallet.balance().await.ok();
                 }
             }
             let mint = Mint {

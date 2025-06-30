@@ -4268,7 +4268,7 @@ impl SseDecode for crate::api::mint::Mint {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_info = <Option<crate::api::mint::MintInfo>>::sse_decode(deserializer);
-        let mut var_balance = <u64>::sse_decode(deserializer);
+        let mut var_balance = <Option<u64>>::sse_decode(deserializer);
         return crate::api::mint::Mint {
             url: var_url,
             info: var_info,
@@ -6432,7 +6432,7 @@ impl SseEncode for crate::api::mint::Mint {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.url, serializer);
         <Option<crate::api::mint::MintInfo>>::sse_encode(self.info, serializer);
-        <u64>::sse_encode(self.balance, serializer);
+        <Option<u64>>::sse_encode(self.balance, serializer);
     }
 }
 

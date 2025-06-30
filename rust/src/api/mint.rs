@@ -21,7 +21,7 @@ use super::error::Error;
 pub struct Mint {
     pub url: String,
     pub info: Option<MintInfo>,
-    pub balance: u64,
+    pub balance: Option<u64>,
 }
 
 impl Eq for Mint {}
