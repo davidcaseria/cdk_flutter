@@ -956,13 +956,29 @@ impl WalletDatabase {
         Ok(Self { inner })
     }
 
-    pub async fn list_mints(&self) -> Result<Vec<Mint>, Error> {
+    pub async fn list_mints(
+        &self,
+        unit: Option<String>,
+        seed: Option<Vec<u8>>,
+        hex_seed: Option<String>,
+    ) -> Result<Vec<Mint>, Error> {
         let mut mints = Vec::new();
         let mint_infos = self.inner.get_mints().await?;
         for (mint_url, mint_info) in mint_infos {
+            let mut balance = 0;
+            if let Some(unit) = &unit {
+                let seed = seed
+                    .clone()
+                    .or_else(|| hex_seed.as_ref().map(|s| hex::decode(s).ok()).flatten());
+                if let Some(seed) = seed {
+                    let wallet =
+                        Wallet::new(mint_url.to_string(), unit.clone(), seed, None, &self)?;
+                    balance = wallet.balance().await?;
+                }
+            }
             let mint = Mint {
                 url: mint_url.to_string(),
-                balance: 0,
+                balance,
                 info: mint_info.map(|info| info.into()),
             };
             mints.push(mint);

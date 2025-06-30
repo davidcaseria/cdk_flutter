@@ -1629,6 +1629,9 @@ fn wire__crate__api__wallet__WalletDatabase_list_mints_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>,
             >>::sse_decode(&mut deserializer);
+            let api_unit = <Option<String>>::sse_decode(&mut deserializer);
+            let api_seed = <Option<Vec<u8>>>::sse_decode(&mut deserializer);
+            let api_hex_seed = <Option<String>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::error::Error>(
@@ -1650,9 +1653,13 @@ fn wire__crate__api__wallet__WalletDatabase_list_mints_impl(
                             }
                         }
                         let api_that_guard = api_that_guard.unwrap();
-                        let output_ok =
-                            crate::api::wallet::WalletDatabase::list_mints(&*api_that_guard)
-                                .await?;
+                        let output_ok = crate::api::wallet::WalletDatabase::list_mints(
+                            &*api_that_guard,
+                            api_unit,
+                            api_seed,
+                            api_hex_seed,
+                        )
+                        .await?;
                         Ok(output_ok)
                     })()
                     .await,

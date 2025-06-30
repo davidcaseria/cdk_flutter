@@ -179,7 +179,10 @@ abstract class RustLibApi extends BaseApi {
   Token? crateApiTokenTokenDecoderValue({required TokenDecoder that});
 
   Future<List<Mint>> crateApiWalletWalletDatabaseListMints(
-      {required WalletDatabase that});
+      {required WalletDatabase that,
+      String? unit,
+      Uint8List? seed,
+      String? hexSeed});
 
   Future<WalletDatabase> crateApiWalletWalletDatabaseNew(
       {required String path});
@@ -1170,12 +1173,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<List<Mint>> crateApiWalletWalletDatabaseListMints(
-      {required WalletDatabase that}) {
+      {required WalletDatabase that,
+      String? unit,
+      Uint8List? seed,
+      String? hexSeed}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerWalletDatabase(
             that, serializer);
+        sse_encode_opt_String(unit, serializer);
+        sse_encode_opt_list_prim_u_8_strict(seed, serializer);
+        sse_encode_opt_String(hexSeed, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 30, port: port_);
       },
@@ -1184,7 +1193,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiWalletWalletDatabaseListMintsConstMeta,
-      argValues: [that],
+      argValues: [that, unit, seed, hexSeed],
       apiImpl: this,
     ));
   }
@@ -1192,7 +1201,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiWalletWalletDatabaseListMintsConstMeta =>
       const TaskConstMeta(
         debugName: "WalletDatabase_list_mints",
-        argNames: ["that"],
+        argNames: ["that", "unit", "seed", "hexSeed"],
       );
 
   @override
@@ -5855,10 +5864,10 @@ class WalletDatabaseImpl extends RustOpaque implements WalletDatabase {
         RustLib.instance.api.rust_arc_decrement_strong_count_WalletDatabasePtr,
   );
 
-  Future<List<Mint>> listMints() =>
+  Future<List<Mint>> listMints(
+          {String? unit, Uint8List? seed, String? hexSeed}) =>
       RustLib.instance.api.crateApiWalletWalletDatabaseListMints(
-        that: this,
-      );
+          that: this, unit: unit, seed: seed, hexSeed: hexSeed);
 }
 
 @sealed
