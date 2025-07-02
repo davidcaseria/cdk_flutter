@@ -983,6 +983,7 @@ impl WalletDatabase {
             };
             mints.push(mint);
         }
+        mints.sort();
         Ok(mints)
     }
 
