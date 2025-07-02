@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.10.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 540609464;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1190328508;
 
 // Section: executor
 
@@ -3292,41 +3292,6 @@ fn wire__crate__api__key__derive_shared_secret_impl(
         },
     )
 }
-fn wire__crate__api__payment_request__encode_qr_payment_request_impl(
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "encode_qr_payment_request",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_payment_request =
-                <crate::api::payment_request::PaymentRequest>::sse_decode(&mut deserializer);
-            let api_max_fragment_length = <Option<usize>>::sse_decode(&mut deserializer);
-            deserializer.end();
-            transform_result_sse::<_, crate::api::error::Error>((move || {
-                let output_ok = crate::api::payment_request::encode_qr_payment_request(
-                    api_payment_request,
-                    api_max_fragment_length,
-                )?;
-                Ok(output_ok)
-            })())
-        },
-    )
-}
 fn wire__crate__api__token__encode_qr_token_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -3572,6 +3537,68 @@ fn wire__crate__api__key__key_hex_to_bytes_impl(
             deserializer.end();
             transform_result_sse::<_, crate::api::error::Error>((move || {
                 let output_ok = crate::api::key::key_hex_to_bytes(api_key)?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__payment_request__nut_10_secret_request_htlc_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "nut_10_secret_request_htlc",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_preimage = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, crate::api::error::Error>((move || {
+                let output_ok =
+                    crate::api::payment_request::Nut10SecretRequest::htlc(api_preimage)?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__payment_request__nut_10_secret_request_p2pk_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "nut_10_secret_request_p2pk",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_public_key = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, crate::api::error::Error>((move || {
+                let output_ok =
+                    crate::api::payment_request::Nut10SecretRequest::p2pk(api_public_key)?;
                 Ok(output_ok)
             })())
         },
@@ -4458,6 +4485,31 @@ impl SseDecode for crate::api::mint::Nut05Settings {
     }
 }
 
+impl SseDecode for crate::api::payment_request::Nut10Kind {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::payment_request::Nut10Kind::P2PK,
+            1 => crate::api::payment_request::Nut10Kind::HTLC,
+            _ => unreachable!("Invalid variant for Nut10Kind: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::payment_request::Nut10SecretRequest {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_kind = <crate::api::payment_request::Nut10Kind>::sse_decode(deserializer);
+        let mut var_secretData =
+            <crate::api::payment_request::SecretDataRequest>::sse_decode(deserializer);
+        return crate::api::payment_request::Nut10SecretRequest {
+            kind: var_kind,
+            secret_data: var_secretData,
+        };
+    }
+}
+
 impl SseDecode for crate::api::mint::Nuts {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4591,6 +4643,19 @@ impl SseDecode for Option<crate::api::mint::MintVersion> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<crate::api::mint::MintVersion>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::payment_request::Nut10SecretRequest> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <crate::api::payment_request::Nut10SecretRequest>::sse_decode(deserializer),
+            );
         } else {
             return None;
         }
@@ -4780,6 +4845,8 @@ impl SseDecode for crate::api::payment_request::PaymentRequest {
         let mut var_description = <Option<String>>::sse_decode(deserializer);
         let mut var_transports =
             <Option<Vec<crate::api::payment_request::Transport>>>::sse_decode(deserializer);
+        let mut var_nut10 =
+            <Option<crate::api::payment_request::Nut10SecretRequest>>::sse_decode(deserializer);
         return crate::api::payment_request::PaymentRequest {
             payment_id: var_paymentId,
             amount: var_amount,
@@ -4788,6 +4855,7 @@ impl SseDecode for crate::api::payment_request::PaymentRequest {
             mints: var_mints,
             description: var_description,
             transports: var_transports,
+            nut10: var_nut10,
         };
     }
 }
@@ -4825,6 +4893,18 @@ impl SseDecode for (String, String) {
         let mut var_field0 = <String>::sse_decode(deserializer);
         let mut var_field1 = <String>::sse_decode(deserializer);
         return (var_field0, var_field1);
+    }
+}
+
+impl SseDecode for crate::api::payment_request::SecretDataRequest {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_data = <String>::sse_decode(deserializer);
+        let mut var_tags = <Option<Vec<Vec<String>>>>::sse_decode(deserializer);
+        return crate::api::payment_request::SecretDataRequest {
+            data: var_data,
+            tags: var_tags,
+        };
     }
 }
 
@@ -5140,15 +5220,15 @@ fn pde_ffi_dispatcher_primary_impl(
         58 => {
             wire__crate__api__wallet__Wallet_stream_balance_impl(port, ptr, rust_vec_len, data_len)
         }
-        64 => wire__crate__api__mint__get_mint_info_impl(port, ptr, rust_vec_len, data_len),
-        66 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
-        72 => wire__crate__api__wallet__receive_options_default_impl(
+        63 => wire__crate__api__mint__get_mint_info_impl(port, ptr, rust_vec_len, data_len),
+        65 => wire__crate__api__init__init_app_impl(port, ptr, rust_vec_len, data_len),
+        73 => wire__crate__api__wallet__receive_options_default_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        73 => {
+        74 => {
             wire__crate__api__wallet__send_options_default_impl(port, ptr, rust_vec_len, data_len)
         }
         _ => unreachable!(),
@@ -5240,30 +5320,35 @@ fn pde_ffi_dispatcher_sync_impl(
         47 => wire__crate__api__wallet__Wallet_new_impl(ptr, rust_vec_len, data_len),
         48 => wire__crate__api__wallet__Wallet_new_from_hex_seed_impl(ptr, rust_vec_len, data_len),
         59 => wire__crate__api__key__derive_shared_secret_impl(ptr, rust_vec_len, data_len),
-        60 => wire__crate__api__payment_request__encode_qr_payment_request_impl(
+        60 => wire__crate__api__token__encode_qr_token_impl(ptr, rust_vec_len, data_len),
+        61 => wire__crate__api__key__generate_hex_seed_impl(ptr, rust_vec_len, data_len),
+        62 => wire__crate__api__key__generate_seed_impl(ptr, rust_vec_len, data_len),
+        64 => wire__crate__api__key__get_pub_key_impl(ptr, rust_vec_len, data_len),
+        66 => wire__crate__api__key__key_bytes_to_hex_impl(ptr, rust_vec_len, data_len),
+        67 => wire__crate__api__key__key_hex_to_bytes_impl(ptr, rust_vec_len, data_len),
+        68 => wire__crate__api__payment_request__nut_10_secret_request_htlc_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        61 => wire__crate__api__token__encode_qr_token_impl(ptr, rust_vec_len, data_len),
-        62 => wire__crate__api__key__generate_hex_seed_impl(ptr, rust_vec_len, data_len),
-        63 => wire__crate__api__key__generate_seed_impl(ptr, rust_vec_len, data_len),
-        65 => wire__crate__api__key__get_pub_key_impl(ptr, rust_vec_len, data_len),
-        67 => wire__crate__api__key__key_bytes_to_hex_impl(ptr, rust_vec_len, data_len),
-        68 => wire__crate__api__key__key_hex_to_bytes_impl(ptr, rust_vec_len, data_len),
-        69 => wire__crate__api__wallet__parse_input_impl(ptr, rust_vec_len, data_len),
-        70 => wire__crate__api__payment_request__payment_request_encode_impl(
+        69 => wire__crate__api__payment_request__nut_10_secret_request_p2pk_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        71 => wire__crate__api__payment_request__payment_request_parse_impl(
+        70 => wire__crate__api__wallet__parse_input_impl(ptr, rust_vec_len, data_len),
+        71 => wire__crate__api__payment_request__payment_request_encode_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        74 => wire__crate__api__token__token_from_raw_bytes_impl(ptr, rust_vec_len, data_len),
-        75 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
+        72 => wire__crate__api__payment_request__payment_request_parse_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        75 => wire__crate__api__token__token_from_raw_bytes_impl(ptr, rust_vec_len, data_len),
+        76 => wire__crate__api__token__token_parse_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -5764,6 +5849,48 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::mint::Nut05Settings>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::payment_request::Nut10Kind {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::P2PK => 0.into_dart(),
+            Self::HTLC => 1.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::payment_request::Nut10Kind
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::payment_request::Nut10Kind>
+    for crate::api::payment_request::Nut10Kind
+{
+    fn into_into_dart(self) -> crate::api::payment_request::Nut10Kind {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::payment_request::Nut10SecretRequest {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.kind.into_into_dart().into_dart(),
+            self.secret_data.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::payment_request::Nut10SecretRequest
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::payment_request::Nut10SecretRequest>
+    for crate::api::payment_request::Nut10SecretRequest
+{
+    fn into_into_dart(self) -> crate::api::payment_request::Nut10SecretRequest {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::mint::Nuts {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5833,6 +5960,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::payment_request::PaymentReque
             self.mints.into_into_dart().into_dart(),
             self.description.into_into_dart().into_dart(),
             self.transports.into_into_dart().into_dart(),
+            self.nut10.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -5888,6 +6016,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::wallet::ReceiveOptions>
     for crate::api::wallet::ReceiveOptions
 {
     fn into_into_dart(self) -> crate::api::wallet::ReceiveOptions {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::payment_request::SecretDataRequest {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.data.into_into_dart().into_dart(),
+            self.tags.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::payment_request::SecretDataRequest
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::payment_request::SecretDataRequest>
+    for crate::api::payment_request::SecretDataRequest
+{
+    fn into_into_dart(self) -> crate::api::payment_request::SecretDataRequest {
         self
     }
 }
@@ -6585,6 +6734,30 @@ impl SseEncode for crate::api::mint::Nut05Settings {
     }
 }
 
+impl SseEncode for crate::api::payment_request::Nut10Kind {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::payment_request::Nut10Kind::P2PK => 0,
+                crate::api::payment_request::Nut10Kind::HTLC => 1,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::api::payment_request::Nut10SecretRequest {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::payment_request::Nut10Kind>::sse_encode(self.kind, serializer);
+        <crate::api::payment_request::SecretDataRequest>::sse_encode(self.secret_data, serializer);
+    }
+}
+
 impl SseEncode for crate::api::mint::Nuts {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6689,6 +6862,16 @@ impl SseEncode for Option<crate::api::mint::MintVersion> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::mint::MintVersion>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::payment_request::Nut10SecretRequest> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::payment_request::Nut10SecretRequest>::sse_encode(value, serializer);
         }
     }
 }
@@ -6853,6 +7036,9 @@ impl SseEncode for crate::api::payment_request::PaymentRequest {
             self.transports,
             serializer,
         );
+        <Option<crate::api::payment_request::Nut10SecretRequest>>::sse_encode(
+            self.nut10, serializer,
+        );
     }
 }
 
@@ -6878,6 +7064,14 @@ impl SseEncode for (String, String) {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.0, serializer);
         <String>::sse_encode(self.1, serializer);
+    }
+}
+
+impl SseEncode for crate::api::payment_request::SecretDataRequest {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.data, serializer);
+        <Option<Vec<Vec<String>>>>::sse_encode(self.tags, serializer);
     }
 }
 

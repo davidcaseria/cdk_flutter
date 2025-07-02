@@ -193,6 +193,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MintVersion dco_decode_box_autoadd_mint_version(dynamic raw);
 
   @protected
+  Nut10SecretRequest dco_decode_box_autoadd_nut_10_secret_request(dynamic raw);
+
+  @protected
   PaymentRequest dco_decode_box_autoadd_payment_request(dynamic raw);
 
   @protected
@@ -304,6 +307,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Nut05Settings dco_decode_nut_05_settings(dynamic raw);
 
   @protected
+  Nut10Kind dco_decode_nut_10_kind(dynamic raw);
+
+  @protected
+  Nut10SecretRequest dco_decode_nut_10_secret_request(dynamic raw);
+
+  @protected
   Nuts dco_decode_nuts(dynamic raw);
 
   @protected
@@ -336,6 +345,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MintVersion? dco_decode_opt_box_autoadd_mint_version(dynamic raw);
+
+  @protected
+  Nut10SecretRequest? dco_decode_opt_box_autoadd_nut_10_secret_request(
+      dynamic raw);
 
   @protected
   PaymentRequest? dco_decode_opt_box_autoadd_payment_request(dynamic raw);
@@ -388,6 +401,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (String, String) dco_decode_record_string_string(dynamic raw);
+
+  @protected
+  SecretDataRequest dco_decode_secret_data_request(dynamic raw);
 
   @protected
   SendOptions dco_decode_send_options(dynamic raw);
@@ -580,6 +596,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MintVersion sse_decode_box_autoadd_mint_version(SseDeserializer deserializer);
 
   @protected
+  Nut10SecretRequest sse_decode_box_autoadd_nut_10_secret_request(
+      SseDeserializer deserializer);
+
+  @protected
   PaymentRequest sse_decode_box_autoadd_payment_request(
       SseDeserializer deserializer);
 
@@ -700,6 +720,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Nut05Settings sse_decode_nut_05_settings(SseDeserializer deserializer);
 
   @protected
+  Nut10Kind sse_decode_nut_10_kind(SseDeserializer deserializer);
+
+  @protected
+  Nut10SecretRequest sse_decode_nut_10_secret_request(
+      SseDeserializer deserializer);
+
+  @protected
   Nuts sse_decode_nuts(SseDeserializer deserializer);
 
   @protected
@@ -734,6 +761,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MintVersion? sse_decode_opt_box_autoadd_mint_version(
+      SseDeserializer deserializer);
+
+  @protected
+  Nut10SecretRequest? sse_decode_opt_box_autoadd_nut_10_secret_request(
       SseDeserializer deserializer);
 
   @protected
@@ -792,6 +823,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (String, String) sse_decode_record_string_string(
+      SseDeserializer deserializer);
+
+  @protected
+  SecretDataRequest sse_decode_secret_data_request(
       SseDeserializer deserializer);
 
   @protected
@@ -991,6 +1026,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MintVersion self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_nut_10_secret_request(
+      Nut10SecretRequest self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_payment_request(
       PaymentRequest self, SseSerializer serializer);
 
@@ -1118,6 +1157,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_nut_05_settings(Nut05Settings self, SseSerializer serializer);
 
   @protected
+  void sse_encode_nut_10_kind(Nut10Kind self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_nut_10_secret_request(
+      Nut10SecretRequest self, SseSerializer serializer);
+
+  @protected
   void sse_encode_nuts(Nuts self, SseSerializer serializer);
 
   @protected
@@ -1154,6 +1200,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_mint_version(
       MintVersion? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_nut_10_secret_request(
+      Nut10SecretRequest? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_payment_request(
@@ -1218,6 +1268,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_record_string_string(
       (String, String) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_secret_data_request(
+      SecretDataRequest self, SseSerializer serializer);
 
   @protected
   void sse_encode_send_options(SendOptions self, SseSerializer serializer);

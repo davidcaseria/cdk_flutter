@@ -8,12 +8,42 @@ import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `validate`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `from_str`, `from`, `from`, `from`, `into`, `into`, `into`, `try_into`, `try_into`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from_str`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `into`, `into`, `try_into`, `try_into`
 
-List<String> encodeQrPaymentRequest(
-        {required PaymentRequest paymentRequest, BigInt? maxFragmentLength}) =>
-    RustLib.instance.api.crateApiPaymentRequestEncodeQrPaymentRequest(
-        paymentRequest: paymentRequest, maxFragmentLength: maxFragmentLength);
+enum Nut10Kind {
+  p2Pk,
+  htlc,
+  ;
+}
+
+class Nut10SecretRequest {
+  final Nut10Kind kind;
+  final SecretDataRequest secretData;
+
+  const Nut10SecretRequest({
+    required this.kind,
+    required this.secretData,
+  });
+
+  static Nut10SecretRequest htlc({required String preimage}) =>
+      RustLib.instance.api
+          .crateApiPaymentRequestNut10SecretRequestHtlc(preimage: preimage);
+
+  static Nut10SecretRequest p2Pk({required String publicKey}) =>
+      RustLib.instance.api
+          .crateApiPaymentRequestNut10SecretRequestP2Pk(publicKey: publicKey);
+
+  @override
+  int get hashCode => kind.hashCode ^ secretData.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Nut10SecretRequest &&
+          runtimeType == other.runtimeType &&
+          kind == other.kind &&
+          secretData == other.secretData;
+}
 
 class PaymentRequest {
   final String? paymentId;
@@ -23,6 +53,7 @@ class PaymentRequest {
   final List<String>? mints;
   final String? description;
   final List<Transport>? transports;
+  final Nut10SecretRequest? nut10;
 
   const PaymentRequest({
     this.paymentId,
@@ -32,6 +63,7 @@ class PaymentRequest {
     this.mints,
     this.description,
     this.transports,
+    this.nut10,
   });
 
   String encode() =>
@@ -50,7 +82,8 @@ class PaymentRequest {
       singleUse.hashCode ^
       mints.hashCode ^
       description.hashCode ^
-      transports.hashCode;
+      transports.hashCode ^
+      nut10.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -63,7 +96,29 @@ class PaymentRequest {
           singleUse == other.singleUse &&
           mints == other.mints &&
           description == other.description &&
-          transports == other.transports;
+          transports == other.transports &&
+          nut10 == other.nut10;
+}
+
+class SecretDataRequest {
+  final String data;
+  final List<List<String>>? tags;
+
+  const SecretDataRequest({
+    required this.data,
+    this.tags,
+  });
+
+  @override
+  int get hashCode => data.hashCode ^ tags.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SecretDataRequest &&
+          runtimeType == other.runtimeType &&
+          data == other.data &&
+          tags == other.tags;
 }
 
 class Transport {

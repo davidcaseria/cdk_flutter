@@ -4,11 +4,12 @@ use std::{
 };
 
 use cdk_common::{
-    mint_url::MintUrl, nut18::TransportType as CdkTransportType, CurrencyUnit,
-    PaymentRequest as CdkPaymentRequest, Transport as CdkTransport,
+    mint_url::MintUrl,
+    nut18::{Nut10SecretRequest as CdkNut10SecretRequest, TransportType as CdkTransportType},
+    CurrencyUnit, PaymentRequest as CdkPaymentRequest, SpendingConditions,
+    Transport as CdkTransport,
 };
 use flutter_rust_bridge::frb;
-use ur::Encoder;
 
 use super::error::Error;
 
@@ -21,6 +22,7 @@ pub struct PaymentRequest {
     pub mints: Option<Vec<String>>,
     pub description: Option<String>,
     pub transports: Option<Vec<Transport>>,
+    pub nut10: Option<Nut10SecretRequest>,
 }
 
 impl PaymentRequest {
@@ -82,6 +84,7 @@ impl From<CdkPaymentRequest> for PaymentRequest {
             transports: cdk_payment_request
                 .transports
                 .map(|transports| transports.into_iter().map(|t| t.into()).collect()),
+            nut10: cdk_payment_request.nut10.map(|n| n.into()),
         }
     }
 }
@@ -208,20 +211,60 @@ impl Into<CdkTransportType> for TransportType {
     }
 }
 
-#[frb(sync)]
-pub fn encode_qr_payment_request(
-    payment_request: PaymentRequest,
-    max_fragment_length: Option<usize>,
-) -> Result<Vec<String>, Error> {
-    let mut encoder = Encoder::bytes(
-        payment_request.encode().as_bytes(),
-        max_fragment_length.unwrap_or(150),
-    )?;
-    let mut parts = Vec::new();
-    for _ in 0..encoder.fragment_count() {
-        if let Ok(part) = encoder.next_part() {
-            parts.push(part);
+#[derive(Clone, Debug)]
+pub struct Nut10SecretRequest {
+    pub kind: Nut10Kind,
+    pub secret_data: SecretDataRequest,
+}
+
+impl Nut10SecretRequest {
+    #[frb(sync)]
+    pub fn p2pk(public_key: String) -> Result<Self, Error> {
+        Ok(SpendingConditions::new_p2pk(public_key.parse()?, None).into())
+    }
+
+    #[frb(sync)]
+    pub fn htlc(preimage: String) -> Result<Self, Error> {
+        Ok(SpendingConditions::new_htlc(preimage, None)?.into())
+    }
+}
+
+impl From<CdkNut10SecretRequest> for Nut10SecretRequest {
+    fn from(cdk_nut10_secret_request: CdkNut10SecretRequest) -> Self {
+        Nut10SecretRequest {
+            kind: cdk_nut10_secret_request.kind.into(),
+            secret_data: SecretDataRequest {
+                data: cdk_nut10_secret_request.secret_data.data,
+                tags: cdk_nut10_secret_request.secret_data.tags,
+            },
         }
     }
-    Ok(parts)
+}
+
+impl From<SpendingConditions> for Nut10SecretRequest {
+    fn from(conditions: SpendingConditions) -> Self {
+        let cdk: CdkNut10SecretRequest = conditions.into();
+        cdk.into()
+    }
+}
+
+#[derive(Clone, Copy, Debug)]
+pub enum Nut10Kind {
+    P2PK,
+    HTLC,
+}
+
+impl From<cdk_common::nut10::Kind> for Nut10Kind {
+    fn from(kind: cdk_common::nut10::Kind) -> Self {
+        match kind {
+            cdk_common::nut10::Kind::P2PK => Nut10Kind::P2PK,
+            cdk_common::nut10::Kind::HTLC => Nut10Kind::HTLC,
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct SecretDataRequest {
+    pub data: String,
+    pub tags: Option<Vec<Vec<String>>>,
 }
