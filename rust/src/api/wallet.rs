@@ -985,6 +985,12 @@ impl WalletDatabase {
         }
         Ok(mints)
     }
+
+    pub async fn remove_mint(&self, mint_url: &str) -> Result<(), Error> {
+        let mint_url = MintUrl::from_str(mint_url)?;
+        self.inner.remove_mint(mint_url).await?;
+        Ok(())
+    }
 }
 
 #[frb(sync)]

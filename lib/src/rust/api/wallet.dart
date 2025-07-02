@@ -177,6 +177,8 @@ abstract class WalletDatabase implements RustOpaqueInterface {
   // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
   static Future<WalletDatabase> newInstance({required String path}) =>
       RustLib.instance.api.crateApiWalletWalletDatabaseNew(path: path);
+
+  Future<void> removeMint({required String mintUrl});
 }
 
 class MeltQuote {
