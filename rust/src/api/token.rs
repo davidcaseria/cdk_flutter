@@ -3,10 +3,10 @@ use std::{
     sync::{Arc, RwLock},
 };
 
+use bc_ur::{prelude::CBOR, MultipartDecoder, MultipartEncoder, UR};
 use cdk::nuts::Token as CdkToken;
 use cdk_common::{KeySetInfo, Proofs};
 use flutter_rust_bridge::frb;
-use ur::{Decoder, Encoder};
 
 use super::error::Error;
 
@@ -34,6 +34,12 @@ impl Token {
     pub(crate) fn proofs(&self, mint_keysets: &[KeySetInfo]) -> Result<Proofs, Error> {
         let token: CdkToken = self.try_into()?;
         Ok(token.proofs(mint_keysets)?)
+    }
+}
+
+impl std::fmt::Display for Token {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.encoded)
     }
 }
 
@@ -83,21 +89,21 @@ impl TryInto<CdkToken> for &Token {
 }
 
 pub struct TokenDecoder {
-    decoder: Arc<RwLock<Decoder>>,
+    decoder: Arc<RwLock<MultipartDecoder>>,
 }
 
 impl TokenDecoder {
     #[frb(sync)]
     pub fn new() -> Self {
         Self {
-            decoder: Arc::new(RwLock::new(Decoder::default())),
+            decoder: Arc::new(RwLock::new(MultipartDecoder::default())),
         }
     }
 
     #[frb(sync)]
     pub fn is_complete(&self) -> bool {
         let decoder = self.decoder.read().expect("Lock poisoned");
-        decoder.complete()
+        decoder.is_complete()
     }
 
     #[frb(sync)]
@@ -112,24 +118,7 @@ impl TokenDecoder {
         let decoder = self.decoder.read().expect("Lock poisoned");
         let ur = decoder.message()?;
         match ur {
-            Some(ur) => {
-                // Try parsing as UTF-8 string first
-                if let Ok(utf8_str) = std::str::from_utf8(&ur) {
-                    if let Ok(token) = CdkToken::from_str(utf8_str) {
-                        return Ok(Some(token.try_into()?));
-                    } else {
-                        log::warn!("Failed to parse token from UTF-8 string: {}", utf8_str);
-                    }
-                }
-                // Fallback: try parsing as token from bytes
-                match CdkToken::try_from(&ur) {
-                    Ok(token) => Ok(Some(token.try_into()?)),
-                    Err(e) => {
-                        log::warn!("Failed to parse token bytes: {}", e);
-                        Err(Error::InvalidInput)
-                    }
-                }
-            }
+            Some(ur) => Ok(Some(Token::from_str(&ur.cbor().to_string())?)),
             None => Ok(None),
         }
     }
@@ -140,9 +129,13 @@ pub fn encode_qr_token(
     token: &Token,
     max_fragment_length: Option<usize>,
 ) -> Result<Vec<String>, Error> {
-    let mut encoder = Encoder::bytes(token.encoded.as_bytes(), max_fragment_length.unwrap_or(150))?;
+    let ur = UR::new(
+        "",
+        CBOR::try_from_data(token.to_string().as_bytes()).map_err(|e| Error::Ur(e.to_string()))?,
+    )?;
+    let mut encoder = MultipartEncoder::new(&ur, max_fragment_length.unwrap_or(150))?;
     let mut parts = Vec::new();
-    for _ in 0..encoder.fragment_count() {
+    for _ in 0..encoder.parts_count() {
         if let Ok(part) = encoder.next_part() {
             parts.push(part);
         }

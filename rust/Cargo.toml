@@ -7,6 +7,7 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
+bc-ur = { version = "0.12.0", default-features = false }
 bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
 cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
     "wallet",
@@ -44,7 +45,6 @@ serde_json = { version = "1.0.140", default-features = false, features = [
 ] }
 tokio = { version = "1.45.1", default-features = false }
 tracing = { version = "0.1.41", default-features = false }
-ur = { version = "0.4.1", default-features = false }
 
 [target.'cfg(target_os = "android")'.dependencies]
 android_logger = { version = "0.15" }

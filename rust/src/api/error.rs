@@ -13,6 +13,12 @@ pub enum Error {
     WalletNotEmpty,
 }
 
+impl From<bc_ur::Error> for Error {
+    fn from(e: bc_ur::Error) -> Self {
+        Self::Ur(e.to_string())
+    }
+}
+
 impl From<cdk::amount::Error> for Error {
     fn from(e: cdk::amount::Error) -> Self {
         Self::Cdk(e.to_string())
@@ -100,11 +106,5 @@ impl From<serde_json::Error> for Error {
 impl From<std::string::FromUtf8Error> for Error {
     fn from(e: std::string::FromUtf8Error) -> Self {
         Self::Utf8(e.to_string())
-    }
-}
-
-impl From<ur::ur::Error> for Error {
-    fn from(e: ur::ur::Error) -> Self {
-        Self::Ur(e.to_string())
     }
 }
