@@ -118,7 +118,7 @@ impl TokenDecoder {
         let decoder = self.decoder.read().expect("Lock poisoned");
         let ur = decoder.message()?;
         match ur {
-            Some(ur) => Ok(Some(Token::from_str(&ur.cbor().to_string())?)),
+            Some(ur) => Ok(Some(Token::from_str(&ur.string())?)),
             None => Ok(None),
         }
     }
