@@ -118,7 +118,16 @@ impl TokenDecoder {
         let decoder = self.decoder.read().expect("Lock poisoned");
         let ur = decoder.message()?;
         match ur {
-            Some(ur) => Ok(Some(Token::from_str(&ur.string())?)),
+            Some(ur) => {
+                log::info!("Decoding UR: {}", ur);
+                let cbor = ur.cbor();
+                let token_str =
+                    String::from_utf8(cbor.to_cbor_data()).map_err(|e| Error::Ur(e.to_string()))?;
+                log::info!("Decoded CBOR: {}", token_str);
+                let token = Token::parse(&token_str)?;
+                log::info!("Decoded token: {}", token);
+                Ok(Some(token))
+            }
             None => Ok(None),
         }
     }
