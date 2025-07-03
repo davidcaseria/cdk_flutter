@@ -1534,7 +1534,7 @@ fn wire__crate__api__token__TokenDecoder_receive_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<TokenDecoder>,
             >>::sse_decode(&mut deserializer);
-            let api_part = <String>::sse_decode(&mut deserializer);
+            let api_input = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             transform_result_sse::<_, crate::api::error::Error>((move || {
                 let mut api_that_guard = None;
@@ -1552,7 +1552,7 @@ fn wire__crate__api__token__TokenDecoder_receive_impl(
                 }
                 let api_that_guard = api_that_guard.unwrap();
                 let output_ok =
-                    crate::api::token::TokenDecoder::receive(&*api_that_guard, api_part)?;
+                    crate::api::token::TokenDecoder::receive(&*api_that_guard, api_input)?;
                 Ok(output_ok)
             })())
         },

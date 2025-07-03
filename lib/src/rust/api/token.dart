@@ -20,7 +20,7 @@ abstract class TokenDecoder implements RustOpaqueInterface {
 
   factory TokenDecoder() => RustLib.instance.api.crateApiTokenTokenDecoderNew();
 
-  void receive({required String part_});
+  void receive({required String input});
 
   Token? value();
 }

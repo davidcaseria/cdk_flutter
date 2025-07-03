@@ -174,7 +174,7 @@ abstract class RustLibApi extends BaseApi {
   TokenDecoder crateApiTokenTokenDecoderNew();
 
   void crateApiTokenTokenDecoderReceive(
-      {required TokenDecoder that, required String part_});
+      {required TokenDecoder that, required String input});
 
   Token? crateApiTokenTokenDecoderValue({required TokenDecoder that});
 
@@ -1127,13 +1127,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   void crateApiTokenTokenDecoderReceive(
-      {required TokenDecoder that, required String part_}) {
+      {required TokenDecoder that, required String input}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTokenDecoder(
             that, serializer);
-        sse_encode_String(part_, serializer);
+        sse_encode_String(input, serializer);
         return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 28)!;
       },
       codec: SseCodec(
@@ -1141,7 +1141,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_error,
       ),
       constMeta: kCrateApiTokenTokenDecoderReceiveConstMeta,
-      argValues: [that, part_],
+      argValues: [that, input],
       apiImpl: this,
     ));
   }
@@ -1149,7 +1149,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiTokenTokenDecoderReceiveConstMeta =>
       const TaskConstMeta(
         debugName: "TokenDecoder_receive",
-        argNames: ["that", "part_"],
+        argNames: ["that", "input"],
       );
 
   @override
@@ -6029,8 +6029,8 @@ class TokenDecoderImpl extends RustOpaque implements TokenDecoder {
         that: this,
       );
 
-  void receive({required String part_}) => RustLib.instance.api
-      .crateApiTokenTokenDecoderReceive(that: this, part_: part_);
+  void receive({required String input}) => RustLib.instance.api
+      .crateApiTokenTokenDecoderReceive(that: this, input: input);
 
   Token? value() => RustLib.instance.api.crateApiTokenTokenDecoderValue(
         that: this,
