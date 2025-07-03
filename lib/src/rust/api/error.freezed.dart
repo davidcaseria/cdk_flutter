@@ -30,6 +30,7 @@ mixin _$Error {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -46,6 +47,7 @@ mixin _$Error {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -62,6 +64,7 @@ mixin _$Error {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -79,6 +82,7 @@ mixin _$Error {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -95,6 +99,7 @@ mixin _$Error {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -111,6 +116,7 @@ mixin _$Error {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -216,6 +222,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return cdk(field0);
   }
@@ -235,6 +242,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return cdk?.call(field0);
   }
@@ -254,6 +262,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (cdk != null) {
@@ -277,6 +286,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return cdk(this);
   }
@@ -296,6 +306,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return cdk?.call(this);
   }
@@ -315,6 +326,7 @@ class _$Error_CdkImpl extends Error_Cdk {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (cdk != null) {
@@ -418,6 +430,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return database(field0);
   }
@@ -437,6 +450,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return database?.call(field0);
   }
@@ -456,6 +470,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (database != null) {
@@ -479,6 +494,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return database(this);
   }
@@ -498,6 +514,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return database?.call(this);
   }
@@ -517,6 +534,7 @@ class _$Error_DatabaseImpl extends Error_Database {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (database != null) {
@@ -619,6 +637,7 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return hex(field0);
   }
@@ -638,6 +657,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return hex?.call(field0);
   }
@@ -657,6 +677,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (hex != null) {
@@ -680,6 +701,7 @@ class _$Error_HexImpl extends Error_Hex {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return hex(this);
   }
@@ -699,6 +721,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return hex?.call(this);
   }
@@ -718,6 +741,7 @@ class _$Error_HexImpl extends Error_Hex {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (hex != null) {
@@ -793,6 +817,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return invalidInput();
   }
@@ -812,6 +837,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return invalidInput?.call();
   }
@@ -831,6 +857,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (invalidInput != null) {
@@ -854,6 +881,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return invalidInput(this);
   }
@@ -873,6 +901,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return invalidInput?.call(this);
   }
@@ -892,6 +921,7 @@ class _$Error_InvalidInputImpl extends Error_InvalidInput {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (invalidInput != null) {
@@ -986,6 +1016,7 @@ class _$Error_JsonImpl extends Error_Json {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return json(field0);
   }
@@ -1005,6 +1036,7 @@ class _$Error_JsonImpl extends Error_Json {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return json?.call(field0);
   }
@@ -1024,6 +1056,7 @@ class _$Error_JsonImpl extends Error_Json {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (json != null) {
@@ -1047,6 +1080,7 @@ class _$Error_JsonImpl extends Error_Json {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return json(this);
   }
@@ -1066,6 +1100,7 @@ class _$Error_JsonImpl extends Error_Json {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return json?.call(this);
   }
@@ -1085,6 +1120,7 @@ class _$Error_JsonImpl extends Error_Json {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (json != null) {
@@ -1187,6 +1223,7 @@ class _$Error_NostrImpl extends Error_Nostr {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return nostr(field0);
   }
@@ -1206,6 +1243,7 @@ class _$Error_NostrImpl extends Error_Nostr {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return nostr?.call(field0);
   }
@@ -1225,6 +1263,7 @@ class _$Error_NostrImpl extends Error_Nostr {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (nostr != null) {
@@ -1248,6 +1287,7 @@ class _$Error_NostrImpl extends Error_Nostr {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return nostr(this);
   }
@@ -1267,6 +1307,7 @@ class _$Error_NostrImpl extends Error_Nostr {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return nostr?.call(this);
   }
@@ -1286,6 +1327,7 @@ class _$Error_NostrImpl extends Error_Nostr {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (nostr != null) {
@@ -1389,6 +1431,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return protocol(field0);
   }
@@ -1408,6 +1451,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return protocol?.call(field0);
   }
@@ -1427,6 +1471,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (protocol != null) {
@@ -1450,6 +1495,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return protocol(this);
   }
@@ -1469,6 +1515,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return protocol?.call(this);
   }
@@ -1488,6 +1535,7 @@ class _$Error_ProtocolImpl extends Error_Protocol {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (protocol != null) {
@@ -1590,6 +1638,7 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return reqwest(field0);
   }
@@ -1609,6 +1658,7 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return reqwest?.call(field0);
   }
@@ -1628,6 +1678,7 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (reqwest != null) {
@@ -1651,6 +1702,7 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return reqwest(this);
   }
@@ -1670,6 +1722,7 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return reqwest?.call(this);
   }
@@ -1689,6 +1742,7 @@ class _$Error_ReqwestImpl extends Error_Reqwest {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (reqwest != null) {
@@ -1791,6 +1845,7 @@ class _$Error_UrImpl extends Error_Ur {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return ur(field0);
   }
@@ -1810,6 +1865,7 @@ class _$Error_UrImpl extends Error_Ur {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return ur?.call(field0);
   }
@@ -1829,6 +1885,7 @@ class _$Error_UrImpl extends Error_Ur {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (ur != null) {
@@ -1852,6 +1909,7 @@ class _$Error_UrImpl extends Error_Ur {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return ur(this);
   }
@@ -1871,6 +1929,7 @@ class _$Error_UrImpl extends Error_Ur {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return ur?.call(this);
   }
@@ -1890,6 +1949,7 @@ class _$Error_UrImpl extends Error_Ur {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (ur != null) {
@@ -1992,6 +2052,7 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return url(field0);
   }
@@ -2011,6 +2072,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return url?.call(field0);
   }
@@ -2030,6 +2092,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (url != null) {
@@ -2053,6 +2116,7 @@ class _$Error_UrlImpl extends Error_Url {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return url(this);
   }
@@ -2072,6 +2136,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return url?.call(this);
   }
@@ -2091,6 +2156,7 @@ class _$Error_UrlImpl extends Error_Url {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (url != null) {
@@ -2193,6 +2259,7 @@ class _$Error_Utf8Impl extends Error_Utf8 {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return utf8(field0);
   }
@@ -2212,6 +2279,7 @@ class _$Error_Utf8Impl extends Error_Utf8 {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return utf8?.call(field0);
   }
@@ -2231,6 +2299,7 @@ class _$Error_Utf8Impl extends Error_Utf8 {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (utf8 != null) {
@@ -2254,6 +2323,7 @@ class _$Error_Utf8Impl extends Error_Utf8 {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return utf8(this);
   }
@@ -2273,6 +2343,7 @@ class _$Error_Utf8Impl extends Error_Utf8 {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return utf8?.call(this);
   }
@@ -2292,6 +2363,7 @@ class _$Error_Utf8Impl extends Error_Utf8 {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (utf8 != null) {
@@ -2368,6 +2440,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     required TResult Function(String field0) url,
     required TResult Function(String field0) utf8,
     required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
   }) {
     return walletNotEmpty();
   }
@@ -2387,6 +2460,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult? Function(String field0)? url,
     TResult? Function(String field0)? utf8,
     TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
   }) {
     return walletNotEmpty?.call();
   }
@@ -2406,6 +2480,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult Function(String field0)? url,
     TResult Function(String field0)? utf8,
     TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
     required TResult orElse(),
   }) {
     if (walletNotEmpty != null) {
@@ -2429,6 +2504,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     required TResult Function(Error_Url value) url,
     required TResult Function(Error_Utf8 value) utf8,
     required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
   }) {
     return walletNotEmpty(this);
   }
@@ -2448,6 +2524,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult? Function(Error_Url value)? url,
     TResult? Function(Error_Utf8 value)? utf8,
     TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
   }) {
     return walletNotEmpty?.call(this);
   }
@@ -2467,6 +2544,7 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
     TResult Function(Error_Url value)? url,
     TResult Function(Error_Utf8 value)? utf8,
     TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
     required TResult orElse(),
   }) {
     if (walletNotEmpty != null) {
@@ -2479,4 +2557,214 @@ class _$Error_WalletNotEmptyImpl extends Error_WalletNotEmpty {
 abstract class Error_WalletNotEmpty extends Error {
   const factory Error_WalletNotEmpty() = _$Error_WalletNotEmptyImpl;
   const Error_WalletNotEmpty._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Error_WalletNotFoundImplCopyWith<$Res> {
+  factory _$$Error_WalletNotFoundImplCopyWith(_$Error_WalletNotFoundImpl value,
+          $Res Function(_$Error_WalletNotFoundImpl) then) =
+      __$$Error_WalletNotFoundImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class __$$Error_WalletNotFoundImplCopyWithImpl<$Res>
+    extends _$ErrorCopyWithImpl<$Res, _$Error_WalletNotFoundImpl>
+    implements _$$Error_WalletNotFoundImplCopyWith<$Res> {
+  __$$Error_WalletNotFoundImplCopyWithImpl(_$Error_WalletNotFoundImpl _value,
+      $Res Function(_$Error_WalletNotFoundImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$Error_WalletNotFoundImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Error_WalletNotFoundImpl extends Error_WalletNotFound {
+  const _$Error_WalletNotFoundImpl(this.field0) : super._();
+
+  @override
+  final String field0;
+
+  @override
+  String toString() {
+    return 'Error.walletNotFound(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Error_WalletNotFoundImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Error_WalletNotFoundImplCopyWith<_$Error_WalletNotFoundImpl>
+      get copyWith =>
+          __$$Error_WalletNotFoundImplCopyWithImpl<_$Error_WalletNotFoundImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) cdk,
+    required TResult Function(String field0) database,
+    required TResult Function(String field0) hex,
+    required TResult Function() invalidInput,
+    required TResult Function(String field0) json,
+    required TResult Function(String field0) nostr,
+    required TResult Function(String field0) protocol,
+    required TResult Function(String field0) reqwest,
+    required TResult Function(String field0) ur,
+    required TResult Function(String field0) url,
+    required TResult Function(String field0) utf8,
+    required TResult Function() walletNotEmpty,
+    required TResult Function(String field0) walletNotFound,
+  }) {
+    return walletNotFound(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? cdk,
+    TResult? Function(String field0)? database,
+    TResult? Function(String field0)? hex,
+    TResult? Function()? invalidInput,
+    TResult? Function(String field0)? json,
+    TResult? Function(String field0)? nostr,
+    TResult? Function(String field0)? protocol,
+    TResult? Function(String field0)? reqwest,
+    TResult? Function(String field0)? ur,
+    TResult? Function(String field0)? url,
+    TResult? Function(String field0)? utf8,
+    TResult? Function()? walletNotEmpty,
+    TResult? Function(String field0)? walletNotFound,
+  }) {
+    return walletNotFound?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? cdk,
+    TResult Function(String field0)? database,
+    TResult Function(String field0)? hex,
+    TResult Function()? invalidInput,
+    TResult Function(String field0)? json,
+    TResult Function(String field0)? nostr,
+    TResult Function(String field0)? protocol,
+    TResult Function(String field0)? reqwest,
+    TResult Function(String field0)? ur,
+    TResult Function(String field0)? url,
+    TResult Function(String field0)? utf8,
+    TResult Function()? walletNotEmpty,
+    TResult Function(String field0)? walletNotFound,
+    required TResult orElse(),
+  }) {
+    if (walletNotFound != null) {
+      return walletNotFound(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Error_Cdk value) cdk,
+    required TResult Function(Error_Database value) database,
+    required TResult Function(Error_Hex value) hex,
+    required TResult Function(Error_InvalidInput value) invalidInput,
+    required TResult Function(Error_Json value) json,
+    required TResult Function(Error_Nostr value) nostr,
+    required TResult Function(Error_Protocol value) protocol,
+    required TResult Function(Error_Reqwest value) reqwest,
+    required TResult Function(Error_Ur value) ur,
+    required TResult Function(Error_Url value) url,
+    required TResult Function(Error_Utf8 value) utf8,
+    required TResult Function(Error_WalletNotEmpty value) walletNotEmpty,
+    required TResult Function(Error_WalletNotFound value) walletNotFound,
+  }) {
+    return walletNotFound(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Error_Cdk value)? cdk,
+    TResult? Function(Error_Database value)? database,
+    TResult? Function(Error_Hex value)? hex,
+    TResult? Function(Error_InvalidInput value)? invalidInput,
+    TResult? Function(Error_Json value)? json,
+    TResult? Function(Error_Nostr value)? nostr,
+    TResult? Function(Error_Protocol value)? protocol,
+    TResult? Function(Error_Reqwest value)? reqwest,
+    TResult? Function(Error_Ur value)? ur,
+    TResult? Function(Error_Url value)? url,
+    TResult? Function(Error_Utf8 value)? utf8,
+    TResult? Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult? Function(Error_WalletNotFound value)? walletNotFound,
+  }) {
+    return walletNotFound?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Error_Cdk value)? cdk,
+    TResult Function(Error_Database value)? database,
+    TResult Function(Error_Hex value)? hex,
+    TResult Function(Error_InvalidInput value)? invalidInput,
+    TResult Function(Error_Json value)? json,
+    TResult Function(Error_Nostr value)? nostr,
+    TResult Function(Error_Protocol value)? protocol,
+    TResult Function(Error_Reqwest value)? reqwest,
+    TResult Function(Error_Ur value)? ur,
+    TResult Function(Error_Url value)? url,
+    TResult Function(Error_Utf8 value)? utf8,
+    TResult Function(Error_WalletNotEmpty value)? walletNotEmpty,
+    TResult Function(Error_WalletNotFound value)? walletNotFound,
+    required TResult orElse(),
+  }) {
+    if (walletNotFound != null) {
+      return walletNotFound(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Error_WalletNotFound extends Error {
+  const factory Error_WalletNotFound(final String field0) =
+      _$Error_WalletNotFoundImpl;
+  const Error_WalletNotFound._() : super._();
+
+  String get field0;
+
+  /// Create a copy of Error
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Error_WalletNotFoundImplCopyWith<_$Error_WalletNotFoundImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

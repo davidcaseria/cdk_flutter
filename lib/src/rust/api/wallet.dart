@@ -34,6 +34,8 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
 
   Future<Wallet> createOrGetWallet({required String mintUrl});
 
+  Future<List<MintQuote>> getActiveMintQuotes({String? mintUrl});
+
   Future<Wallet?> getWallet({required String mintUrl});
 
   Future<List<Mint>> listMints();
@@ -107,6 +109,8 @@ abstract class Wallet implements RustOpaqueInterface {
   Future<void> checkAllMintQuotes();
 
   Future<void> checkPendingTransactions();
+
+  Future<List<MintQuote>> getActiveMintQuotes();
 
   Future<Mint> getMint();
 

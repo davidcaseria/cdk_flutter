@@ -11,6 +11,7 @@ pub enum Error {
     Url(String),
     Utf8(String),
     WalletNotEmpty,
+    WalletNotFound(String),
 }
 
 impl From<bc_ur::Error> for Error {

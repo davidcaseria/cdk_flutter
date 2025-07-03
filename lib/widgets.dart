@@ -178,6 +178,29 @@ class MintQuoteBuilderState extends State<MintQuoteBuilder> {
   }
 }
 
+class MintQuotesListBuilder extends StatelessWidget {
+  final String? mintUrl;
+  final AsyncWidgetBuilder<List<MintQuote>> builder;
+
+  const MintQuotesListBuilder({super.key, this.mintUrl, required this.builder});
+
+  @override
+  Widget build(BuildContext context) {
+    if (mintUrl != null) {
+      final wallet = context.read<MultiMintWallet>();
+      return FutureBuilder<List<MintQuote>>(
+        future: wallet.getActiveMintQuotes(mintUrl: mintUrl),
+        builder: builder,
+      );
+    }
+    final wallet = context.read<Wallet>();
+    return FutureBuilder<List<MintQuote>>(
+      future: wallet.getActiveMintQuotes(),
+      builder: builder,
+    );
+  }
+}
+
 class ReceiveBuilder extends StatelessWidget {
   final String? mintUrl;
   final List<String>? signingKeys;

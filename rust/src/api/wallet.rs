@@ -143,6 +143,12 @@ impl Wallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self))]
+    pub async fn get_active_mint_quotes(&self) -> Result<Vec<MintQuote>, Error> {
+        let quotes = self.inner.get_active_mint_quotes().await?;
+        Ok(quotes.into_iter().map(MintQuote::from).collect())
+    }
+
     #[tracing::instrument(skip(self, token))]
     pub async fn is_token_spent(&self, token: Token) -> Result<bool, Error> {
         let token: CdkToken = token.try_into()?;
@@ -816,6 +822,31 @@ impl MultiMintWallet {
         )?;
         wallets.insert(mint_url, wallet.clone());
         Ok(wallet)
+    }
+
+    #[tracing::instrument(skip(self))]
+    pub async fn get_active_mint_quotes(
+        &self,
+        mint_url: Option<String>,
+    ) -> Result<Vec<MintQuote>, Error> {
+        let mint_url = mint_url.map(|s| MintUrl::from_str(&s)).transpose()?;
+        let wallets = self.wallets.lock().await;
+        match mint_url {
+            Some(mint_url) => {
+                if let Some(wallet) = wallets.get(&mint_url) {
+                    return Ok(wallet.get_active_mint_quotes().await?);
+                }
+                Err(Error::WalletNotFound(mint_url.to_string()))
+            }
+            None => {
+                let mut all_quotes = Vec::new();
+                for wallet in wallets.values() {
+                    let quotes = wallet.get_active_mint_quotes().await?;
+                    all_quotes.extend(quotes);
+                }
+                Ok(all_quotes)
+            }
+        }
     }
 
     #[tracing::instrument(skip(self))]

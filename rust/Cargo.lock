@@ -513,7 +513,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cashu"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=increment-keyset-counter-on-error#f196055a6543f238452bdc35c24e00a1d49593e8"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=get-active-mint-quotes#abb43c39b1adfac14c2327c1c5bd253fad412a65"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -575,7 +575,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=increment-keyset-counter-on-error#f196055a6543f238452bdc35c24e00a1d49593e8"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=get-active-mint-quotes#abb43c39b1adfac14c2327c1c5bd253fad412a65"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -607,7 +607,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=increment-keyset-counter-on-error#f196055a6543f238452bdc35c24e00a1d49593e8"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=get-active-mint-quotes#abb43c39b1adfac14c2327c1c5bd253fad412a65"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -630,7 +630,7 @@ dependencies = [
 [[package]]
 name = "cdk-signatory"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=increment-keyset-counter-on-error#f196055a6543f238452bdc35c24e00a1d49593e8"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=get-active-mint-quotes#abb43c39b1adfac14c2327c1c5bd253fad412a65"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -651,7 +651,7 @@ dependencies = [
 [[package]]
 name = "cdk-sqlite"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=increment-keyset-counter-on-error#f196055a6543f238452bdc35c24e00a1d49593e8"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=get-active-mint-quotes#abb43c39b1adfac14c2327c1c5bd253fad412a65"
 dependencies = [
  "async-trait",
  "bitcoin",

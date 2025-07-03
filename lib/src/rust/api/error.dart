@@ -46,4 +46,7 @@ sealed class Error with _$Error implements FrbException {
     String field0,
   ) = Error_Utf8;
   const factory Error.walletNotEmpty() = Error_WalletNotEmpty;
+  const factory Error.walletNotFound(
+    String field0,
+  ) = Error_WalletNotFound;
 }
