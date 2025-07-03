@@ -65,7 +65,8 @@ impl FromStr for PaymentRequest {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Error> {
-        let cdk_payment_request = CdkPaymentRequest::from_str(s)?;
+        let encoded = s.strip_prefix("cashu:").unwrap_or(s);
+        let cdk_payment_request = CdkPaymentRequest::from_str(encoded)?;
         Ok(cdk_payment_request.into())
     }
 }

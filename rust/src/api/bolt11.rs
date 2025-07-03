@@ -17,6 +17,7 @@ impl FromStr for Bolt11Invoice {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let s = s.strip_prefix("lightning:").unwrap_or(s);
         let invoice =
             lightning_invoice::Bolt11Invoice::from_str(s).map_err(|_| Error::InvalidInput)?;
 
