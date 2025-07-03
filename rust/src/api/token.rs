@@ -119,16 +119,11 @@ impl TokenDecoder {
         let ur = decoder.message()?;
         match ur {
             Some(ur) => {
-                log::info!("Decoding UR: {}", ur);
                 let bytes = ur
                     .cbor()
-                    .as_byte_string()
-                    .ok_or(Error::Ur("Expected CBOR byte string".to_string()))?
-                    .to_vec();
-                log::info!("Decoded bytes: {:?}", bytes);
-                let utf8_encoded = String::from_utf8(bytes)
-                    .map_err(|e| Error::Ur(format!("Invalid UTF-8 sequence: {}", e)))?;
-                log::info!("UTF-8 encoded: {}", utf8_encoded);
+                    .try_byte_string()
+                    .map_err(|e| Error::Ur(format!("Failed to decode CBOR byte string: {}", e)))?;
+                let utf8_encoded = String::from_utf8(bytes)?;
                 let token = Token::from_str(&utf8_encoded)?;
                 Ok(Some(token))
             }
