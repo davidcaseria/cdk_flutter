@@ -101,9 +101,9 @@ impl TokenDecoder {
     }
 
     #[frb(sync)]
-    pub fn receive(&self, part: String) -> Result<(), Error> {
+    pub fn receive(&self, input: String) -> Result<(), Error> {
         let mut decoder = self.decoder.write().expect("Lock poisoned");
-        decoder.receive(&part)?;
+        decoder.receive(&input)?;
         Ok(())
     }
 
@@ -112,9 +112,7 @@ impl TokenDecoder {
         let decoder = self.decoder.read().expect("Lock poisened");
         let ur = decoder.message()?;
         match ur {
-            Some(ur) => Ok(Some(
-                CdkToken::from_str(&String::from_utf8(ur)?)?.try_into()?,
-            )),
+            Some(ur) => Ok(Some(CdkToken::try_from(&ur)?.try_into()?)),
             None => Ok(None),
         }
     }
