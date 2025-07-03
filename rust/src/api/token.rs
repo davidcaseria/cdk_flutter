@@ -5,7 +5,10 @@ use std::{
 
 use bc_ur::{prelude::CBOR, MultipartDecoder, MultipartEncoder, UR};
 use cdk::nuts::Token as CdkToken;
-use cdk_common::{KeySetInfo, Proofs};
+use cdk_common::{
+    bitcoin::base64::{self, Engine},
+    KeySetInfo, Proofs,
+};
 use flutter_rust_bridge::frb;
 
 use super::error::Error;
@@ -120,11 +123,12 @@ impl TokenDecoder {
         match ur {
             Some(ur) => {
                 log::info!("Decoding UR: {}", ur);
-                let cbor = ur.cbor();
-                let token_str =
-                    String::from_utf8(cbor.to_cbor_data()).map_err(|e| Error::Ur(e.to_string()))?;
-                log::info!("Decoded CBOR: {}", token_str);
-                let token = Token::parse(&token_str)?;
+                let data = ur.cbor().to_cbor_data();
+                log::info!(
+                    "CBOR base64 data: {}",
+                    base64::engine::general_purpose::STANDARD.encode(&data)
+                );
+                let token = CdkToken::try_from(&data)?.try_into()?;
                 log::info!("Decoded token: {}", token);
                 Ok(Some(token))
             }
