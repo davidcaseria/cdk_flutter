@@ -9,11 +9,11 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 bc-ur = { version = "0.12.0", default-features = false }
 bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
-cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
+cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "increment-keyset-counter-on-error", default-features = false, features = [
     "wallet",
 ] }
-cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false }
-cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
+cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "increment-keyset-counter-on-error", default-features = false }
+cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "increment-keyset-counter-on-error", default-features = false, features = [
     "wallet",
 ] }
 flutter_rust_bridge = { version = "=2.10.0", default-features = false, features = [
