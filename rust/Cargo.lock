@@ -513,7 +513,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cashu"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#7aecdc667d6145700f4808f18930146542fc9e48"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#cd63760324ef64928f496a5103cf5d6b1985a8be"
 dependencies = [
  "bitcoin",
  "cbor-diag",
@@ -575,7 +575,7 @@ dependencies = [
 [[package]]
 name = "cdk"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#7aecdc667d6145700f4808f18930146542fc9e48"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#cd63760324ef64928f496a5103cf5d6b1985a8be"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -607,7 +607,7 @@ dependencies = [
 [[package]]
 name = "cdk-common"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#7aecdc667d6145700f4808f18930146542fc9e48"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#cd63760324ef64928f496a5103cf5d6b1985a8be"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -630,7 +630,7 @@ dependencies = [
 [[package]]
 name = "cdk-signatory"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#7aecdc667d6145700f4808f18930146542fc9e48"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#cd63760324ef64928f496a5103cf5d6b1985a8be"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -651,7 +651,7 @@ dependencies = [
 [[package]]
 name = "cdk-sqlite"
 version = "0.11.0"
-source = "git+https://github.com/davidcaseria/cdk.git?branch=main#7aecdc667d6145700f4808f18930146542fc9e48"
+source = "git+https://github.com/davidcaseria/cdk.git?branch=main#cd63760324ef64928f496a5103cf5d6b1985a8be"
 dependencies = [
  "async-trait",
  "bitcoin",
