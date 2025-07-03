@@ -109,18 +109,27 @@ impl TokenDecoder {
 
     #[frb(sync)]
     pub fn value(&self) -> Result<Option<Token>, Error> {
-        let decoder = self.decoder.read().expect("Lock poisened");
+        let decoder = self.decoder.read().expect("Lock poisoned");
         let ur = decoder.message()?;
         match ur {
-            Some(ur) => match CdkToken::try_from(&ur) {
-                Ok(token) => Ok(Some(token.try_into()?)),
-                Err(e) => {
-                    log::warn!("Failed to parse token bytes: {}", e);
-                    Ok(Some(
-                        CdkToken::from_str(&String::from_utf8_lossy(&ur))?.try_into()?,
-                    ))
+            Some(ur) => {
+                // Try parsing as UTF-8 string first
+                if let Ok(utf8_str) = std::str::from_utf8(&ur) {
+                    if let Ok(token) = CdkToken::from_str(utf8_str) {
+                        return Ok(Some(token.try_into()?));
+                    } else {
+                        log::warn!("Failed to parse token from UTF-8 string: {}", utf8_str);
+                    }
                 }
-            },
+                // Fallback: try parsing as token from bytes
+                match CdkToken::try_from(&ur) {
+                    Ok(token) => Ok(Some(token.try_into()?)),
+                    Err(e) => {
+                        log::warn!("Failed to parse token bytes: {}", e);
+                        Err(Error::InvalidInput)
+                    }
+                }
+            }
             None => Ok(None),
         }
     }
