@@ -93,10 +93,12 @@ impl Wallet {
         Self::new(mint_url, unit, seed, target_proof_count, db)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn balance(&self) -> Result<u64, Error> {
         Ok(self.inner.total_balance().await?.into())
     }
 
+    #[tracing::instrument(skip(self, sink))]
     pub async fn stream_balance(&self, sink: StreamSink<u64>) -> Result<(), Error> {
         let mut receiver = self.balance_broadcast.subscribe();
         let _ = sink.add(self.balance().await?);
@@ -115,6 +117,7 @@ impl Wallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn get_mint(&self) -> Result<Mint, Error> {
         let info = self.inner.get_mint_info().await?;
         Ok(Mint {
@@ -124,12 +127,14 @@ impl Wallet {
         })
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn check_pending_transactions(&self) -> Result<(), Error> {
         self.inner.check_all_pending_proofs().await?;
         self.update_balance_streams().await;
         Ok(())
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn check_all_mint_quotes(&self) -> Result<(), Error> {
         let amount = self.inner.check_all_mint_quotes().await?;
         if amount > Amount::ZERO {
@@ -138,6 +143,7 @@ impl Wallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self, token))]
     pub async fn is_token_spent(&self, token: Token) -> Result<bool, Error> {
         let token: CdkToken = token.try_into()?;
         let mint_keysets = self.inner.get_mint_keysets().await?;
@@ -150,6 +156,7 @@ impl Wallet {
             .any(|state| state.state == ProofState::Spent))
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn list_transactions(
         &self,
         direction: Option<TransactionDirection>,
@@ -179,16 +186,19 @@ impl Wallet {
         Ok(txs)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn melt_quote(&self, request: String) -> Result<MeltQuote, Error> {
         Ok(self.inner.melt_quote(request, None).await?.into())
     }
 
+    #[tracing::instrument(skip(self, quote))]
     pub async fn melt(&self, quote: MeltQuote) -> Result<u64, Error> {
         let melted = self.inner.melt(&quote.id).await?;
         self.update_balance_streams().await;
         Ok(melted.total_amount().into())
     }
 
+    #[tracing::instrument(skip(self, sink))]
     pub async fn mint(
         &self,
         amount: u64,
@@ -291,6 +301,7 @@ impl Wallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self, request))]
     pub async fn prepare_pay_request(
         &self,
         request: PaymentRequest,
@@ -302,6 +313,7 @@ impl Wallet {
             .await
     }
 
+    #[tracing::instrument(skip(self, send, memo))]
     pub async fn pay_request(
         &self,
         send: PreparedSend,
@@ -354,6 +366,7 @@ impl Wallet {
         }
     }
 
+    #[tracing::instrument(skip(self, token, opts))]
     pub async fn receive(&self, token: Token, opts: Option<ReceiveOptions>) -> Result<u64, Error> {
         let amount = self
             .inner
@@ -364,12 +377,14 @@ impl Wallet {
         Ok(amount)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn restore(&self) -> Result<(), Error> {
         self.inner.restore().await?;
         self.update_balance_streams().await;
         Ok(())
     }
 
+    #[tracing::instrument(skip(self, opts))]
     pub async fn prepare_send(
         &self,
         amount: u64,
@@ -382,6 +397,7 @@ impl Wallet {
         Ok(prepared_send.into())
     }
 
+    #[tracing::instrument(skip(self, send, memo))]
     pub async fn send(
         &self,
         send: PreparedSend,
@@ -397,11 +413,13 @@ impl Wallet {
         Ok(Token::from_str(&token)?)
     }
 
+    #[tracing::instrument(skip(self, send))]
     pub async fn cancel_send(&self, send: PreparedSend) -> Result<(), Error> {
         self.inner.cancel_send(send.inner).await?;
         Ok(())
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn reclaim_reserved(&self) -> Result<(), Error> {
         let proofs = self.inner.get_reserved_proofs().await?;
         if proofs.is_empty() {
@@ -413,6 +431,7 @@ impl Wallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self, token))]
     pub async fn reclaim_send(&self, token: Token) -> Result<(), Error> {
         let mint_keysets = self.inner.get_mint_keysets().await?;
         self.inner
@@ -423,6 +442,7 @@ impl Wallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn revert_transaction(&self, transaction_id: String) -> Result<(), Error> {
         let id = TransactionId::from_str(&transaction_id)?;
         self.inner.revert_transaction(id).await?;
@@ -631,7 +651,7 @@ impl Ord for Transaction {
     }
 }
 
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum TransactionDirection {
     Incoming,
     Outgoing,
@@ -714,6 +734,7 @@ impl MultiMintWallet {
         Ok(Self::new(unit, seed, target_proof_count, db).await?)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn add_mint(&self, mint_url: String) -> Result<(), Error> {
         let mint_url = MintUrl::from_str(&mint_url)?;
         let mut wallets = self.wallets.lock().await;
@@ -742,6 +763,7 @@ impl MultiMintWallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self, wallet))]
     pub async fn add_wallet(&self, wallet: Wallet) -> Result<(), Error> {
         self.wallets
             .lock()
@@ -750,6 +772,7 @@ impl MultiMintWallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn available_mints(
         &self,
         amount: Option<u64>,
@@ -777,6 +800,7 @@ impl MultiMintWallet {
         Ok(mints)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn create_or_get_wallet(&self, mint_url: String) -> Result<Wallet, Error> {
         let mint_url = MintUrl::from_str(&mint_url)?;
         let mut wallets = self.wallets.lock().await;
@@ -794,6 +818,7 @@ impl MultiMintWallet {
         Ok(wallet)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn get_wallet(&self, mint_url: &str) -> Result<Option<Wallet>, Error> {
         let mint_url = MintUrl::from_str(mint_url)?;
         let wallets = self.wallets.lock().await;
@@ -803,6 +828,7 @@ impl MultiMintWallet {
         Ok(None)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn list_mints(&self) -> Result<Vec<Mint>, Error> {
         let wallets_guard = self.wallets.lock().await;
         let wallets = wallets_guard.values();
@@ -815,6 +841,7 @@ impl MultiMintWallet {
         Ok(mints)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn list_transactions(
         &self,
         direction: Option<TransactionDirection>,
@@ -841,10 +868,12 @@ impl MultiMintWallet {
         Ok(transactions)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn list_wallets(&self) -> Vec<Wallet> {
         self.wallets.lock().await.values().cloned().collect()
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn reclaim_reserved(&self) -> Result<(), Error> {
         let wallets = self.wallets.lock().await;
         for wallet in wallets.values() {
@@ -853,6 +882,7 @@ impl MultiMintWallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn remove_mint(&self, mint_url: String) -> Result<(), Error> {
         let mint_url = MintUrl::from_str(&mint_url)?;
         let mut wallets = self.wallets.lock().await;
@@ -865,6 +895,7 @@ impl MultiMintWallet {
         Ok(())
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn select_wallet(
         &self,
         amount: Option<u64>,
@@ -877,6 +908,7 @@ impl MultiMintWallet {
         Ok(None)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn total_balance(&self) -> Result<u64, Error> {
         let wallets = self.wallets.lock().await;
         let mut total = 0;
@@ -886,6 +918,7 @@ impl MultiMintWallet {
         Ok(total)
     }
 
+    #[tracing::instrument(skip(self, sink))]
     pub async fn stream_balance(&self, sink: StreamSink<u64>) -> Result<(), Error> {
         let _ = sink.add(self.total_balance().await?);
         let wallets = self.wallets.lock().await;
@@ -956,6 +989,7 @@ impl WalletDatabase {
         Ok(Self { inner })
     }
 
+    #[tracing::instrument(skip(self, seed, hex_seed))]
     pub async fn list_mints(
         &self,
         unit: Option<String>,
@@ -987,6 +1021,7 @@ impl WalletDatabase {
         Ok(mints)
     }
 
+    #[tracing::instrument(skip(self))]
     pub async fn remove_mint(&self, mint_url: &str) -> Result<(), Error> {
         let mint_url = MintUrl::from_str(mint_url)?;
         self.inner.remove_mint(mint_url).await?;

@@ -112,7 +112,15 @@ impl TokenDecoder {
         let decoder = self.decoder.read().expect("Lock poisened");
         let ur = decoder.message()?;
         match ur {
-            Some(ur) => Ok(Some(CdkToken::try_from(&ur)?.try_into()?)),
+            Some(ur) => match CdkToken::try_from(&ur) {
+                Ok(token) => Ok(Some(token.try_into()?)),
+                Err(e) => {
+                    log::warn!("Failed to parse token bytes: {}", e);
+                    Ok(Some(
+                        CdkToken::from_str(&String::from_utf8_lossy(&ur))?.try_into()?,
+                    ))
+                }
+            },
             None => Ok(None),
         }
     }

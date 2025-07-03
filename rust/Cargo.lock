@@ -674,6 +674,7 @@ dependencies = [
  "reqwest",
  "serde_json",
  "tokio",
+ "tracing",
  "ur",
 ]
 
