@@ -9,21 +9,14 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 bc-ur = { version = "0.12.0", default-features = false }
 bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
-cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "get-active-mint-quotes", default-features = false, features = [
+cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
     "wallet",
 ] }
-cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "get-active-mint-quotes", default-features = false }
-cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "get-active-mint-quotes", default-features = false, features = [
+cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false }
+cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
     "wallet",
 ] }
-flutter_rust_bridge = { version = "=2.10.0", default-features = false, features = [
-    "anyhow",
-    "dart-opaque",
-    "portable-atomic",
-    "rust-async",
-    "thread-pool",
-    "wasm-start",
-] }
+flutter_rust_bridge = { version = "=2.11.1", default-features = false, features = ["anyhow", "dart-opaque", "portable-atomic", "rust-async", "thread-pool", "wasm-start"] }
 futures = "0.3.31"
 log = { version = "0.4.27", default-features = false }
 nostr = { version = "0.42.1", default-features = false }
@@ -43,7 +36,7 @@ reqwest = { version = "0.12.18", default-features = false, features = [
 serde_json = { version = "1.0.140", default-features = false, features = [
     "std",
 ] }
-tokio = { version = "1.45.1", default-features = false }
+tokio = { version = "1.46.1", default-features = false }
 tracing = { version = "0.1.41", default-features = false }
 
 [target.'cfg(target_os = "android")'.dependencies]

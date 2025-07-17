@@ -222,13 +222,13 @@ impl Wallet {
                 info!("Checking mint quote state for {}", quote.id);
                 match _self.inner.mint_quote_state(&quote.id).await {
                     Ok(state_res) => match state_res.state {
-                        CdkMintQuoteState::Unpaid | CdkMintQuoteState::Pending => {
+                        CdkMintQuoteState::Unpaid => {
                             if let Some(expiry) = state_res.expiry {
                                 if expiry < unix_time() {
                                     let _ = sink.add(MintQuote {
                                         id: quote.id,
                                         request: quote.request,
-                                        amount: quote.amount.into(),
+                                        amount: quote.amount.map(|a| a.into()),
                                         expiry: Some(expiry),
                                         state: MintQuoteState::Error,
                                         token: None,
@@ -246,7 +246,7 @@ impl Wallet {
                             let _ = sink.add(MintQuote {
                                 id: quote.id.clone(),
                                 request: quote.request.clone(),
-                                amount: quote.amount.into(),
+                                amount: quote.amount.map(|a| a.into()),
                                 expiry: Some(quote.expiry),
                                 state: CdkMintQuoteState::Paid.into(),
                                 token: None,
@@ -259,7 +259,7 @@ impl Wallet {
                                     let _ = sink.add(MintQuote {
                                         id: quote.id,
                                         request: quote.request,
-                                        amount: mint_amount.into(),
+                                        amount: Some(mint_amount.into()),
                                         expiry: Some(quote.expiry),
                                         state: CdkMintQuoteState::Issued.into(),
                                         token: Token::try_from(CdkToken::new(
@@ -278,7 +278,7 @@ impl Wallet {
                                     let _ = sink.add(MintQuote {
                                         id: quote.id,
                                         request: quote.request,
-                                        amount: quote.amount.into(),
+                                        amount: quote.amount.map(|a| a.into()),
                                         expiry: Some(quote.expiry),
                                         state: MintQuoteState::Error,
                                         token: None,
@@ -293,7 +293,7 @@ impl Wallet {
                         let _ = sink.add(MintQuote {
                             id: quote.id,
                             request: quote.request,
-                            amount: quote.amount.into(),
+                            amount: quote.amount.map(|a| a.into()),
                             expiry: Some(quote.expiry),
                             state: MintQuoteState::Error,
                             token: None,
@@ -498,7 +498,7 @@ impl From<CdkMeltQuote> for MeltQuote {
 pub struct MintQuote {
     pub id: String,
     pub request: String,
-    pub amount: u64,
+    pub amount: Option<u64>,
     pub expiry: Option<u64>,
     pub state: MintQuoteState,
     pub token: Option<Token>,
@@ -510,7 +510,7 @@ impl From<CdkMintQuote> for MintQuote {
         Self {
             id: quote.id,
             request: quote.request,
-            amount: quote.amount.into(),
+            amount: quote.amount.map(|a| a.into()),
             expiry: Some(quote.expiry),
             state: quote.state.into(),
             token: None,
@@ -532,7 +532,6 @@ impl From<CdkMintQuoteState> for MintQuoteState {
             CdkMintQuoteState::Unpaid => Self::Unpaid,
             CdkMintQuoteState::Paid => Self::Paid,
             CdkMintQuoteState::Issued => Self::Issued,
-            CdkMintQuoteState::Pending => Self::Unpaid,
         }
     }
 }
