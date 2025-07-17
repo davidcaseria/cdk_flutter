@@ -129,18 +129,24 @@ impl Wallet {
     }
 
     #[tracing::instrument(skip(self))]
-    pub async fn check_pending_transactions(&self) -> Result<(), Error> {
-        self.inner.check_all_pending_proofs().await?;
-        self.update_balance_streams().await;
-        Ok(())
-    }
-
-    #[tracing::instrument(skip(self))]
     pub async fn check_all_mint_quotes(&self) -> Result<(), Error> {
         let amount = self.inner.check_all_mint_quotes().await?;
         if amount > Amount::ZERO {
             self.update_balance_streams().await;
         }
+        Ok(())
+    }
+
+    #[tracing::instrument(skip(self))]
+    pub async fn check_pending_melt_quotes(&self) -> Result<(), Error> {
+        self.inner.check_pending_melt_quotes().await?;
+        Ok(())
+    }
+
+    #[tracing::instrument(skip(self))]
+    pub async fn check_pending_transactions(&self) -> Result<(), Error> {
+        self.inner.check_all_pending_proofs().await?;
+        self.update_balance_streams().await;
         Ok(())
     }
 

@@ -108,6 +108,8 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<void> checkAllMintQuotes();
 
+  Future<void> checkPendingMeltQuotes();
+
   Future<void> checkPendingTransactions();
 
   Future<List<MintQuote>> getActiveMintQuotes();
