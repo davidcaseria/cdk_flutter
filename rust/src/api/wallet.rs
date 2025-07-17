@@ -16,12 +16,13 @@ use cdk::{
     },
 };
 use cdk_common::{
+    nut23::Amountless,
     util::unix_time,
     wallet::{
         Transaction as CdkTransaction, TransactionDirection as CdkTransactionDirection,
         TransactionId,
     },
-    PaymentRequestPayload,
+    MeltOptions as CdkMeltOptions, Mpp, PaymentRequestPayload,
 };
 use cdk_sqlite::WalletSqliteDatabase;
 use flutter_rust_bridge::frb;
@@ -193,8 +194,29 @@ impl Wallet {
     }
 
     #[tracing::instrument(skip(self))]
-    pub async fn melt_quote(&self, request: String) -> Result<MeltQuote, Error> {
-        Ok(self.inner.melt_quote(request, None).await?.into())
+    pub async fn melt_quote(
+        &self,
+        request: String,
+        opts: Option<MeltOptions>,
+    ) -> Result<MeltQuote, Error> {
+        Ok(self
+            .inner
+            .melt_quote(request, opts.map(|o| o.try_into()).transpose()?)
+            .await?
+            .into())
+    }
+
+    #[tracing::instrument(skip(self, request))]
+    pub async fn melt_bolt12_quote(
+        &self,
+        request: String,
+        opts: Option<MeltOptions>,
+    ) -> Result<MeltQuote, Error> {
+        Ok(self
+            .inner
+            .melt_bolt12_quote(request, opts.map(|o| o.try_into()).transpose()?)
+            .await?
+            .into())
     }
 
     #[tracing::instrument(skip(self, quote))]
@@ -472,6 +494,32 @@ impl Wallet {
             .unwrap_or(Amount::ZERO)
             .into();
         let _ = self.balance_broadcast.send(balance);
+    }
+}
+
+#[derive(Debug)]
+pub struct MeltOptions {
+    pub mpp: Option<u64>,
+    pub amountless_msat: Option<u64>,
+}
+
+impl TryInto<CdkMeltOptions> for MeltOptions {
+    type Error = Error;
+
+    fn try_into(self) -> Result<CdkMeltOptions, Self::Error> {
+        if let Some(mpp) = self.mpp {
+            return Ok(CdkMeltOptions::Mpp {
+                mpp: Mpp { amount: mpp.into() },
+            });
+        }
+        if let Some(amountless_msat) = self.amountless_msat {
+            return Ok(CdkMeltOptions::Amountless {
+                amountless: Amountless {
+                    amount_msat: amountless_msat.into(),
+                },
+            });
+        }
+        Err(Error::InvalidInput)
     }
 }
 

@@ -184,6 +184,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ClearAuthSettings dco_decode_box_autoadd_clear_auth_settings(dynamic raw);
 
   @protected
+  MeltOptions dco_decode_box_autoadd_melt_options(dynamic raw);
+
+  @protected
   MeltQuote dco_decode_box_autoadd_melt_quote(dynamic raw);
 
   @protected
@@ -283,6 +286,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MeltMethodSettings dco_decode_melt_method_settings(dynamic raw);
 
   @protected
+  MeltOptions dco_decode_melt_options(dynamic raw);
+
+  @protected
   MeltQuote dco_decode_melt_quote(dynamic raw);
 
   @protected
@@ -342,6 +348,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   ClearAuthSettings? dco_decode_opt_box_autoadd_clear_auth_settings(
       dynamic raw);
+
+  @protected
+  MeltOptions? dco_decode_opt_box_autoadd_melt_options(dynamic raw);
 
   @protected
   MintInfo? dco_decode_opt_box_autoadd_mint_info(dynamic raw);
@@ -590,6 +599,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  MeltOptions sse_decode_box_autoadd_melt_options(SseDeserializer deserializer);
+
+  @protected
   MeltQuote sse_decode_box_autoadd_melt_quote(SseDeserializer deserializer);
 
   @protected
@@ -698,6 +710,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  MeltOptions sse_decode_melt_options(SseDeserializer deserializer);
+
+  @protected
   MeltQuote sse_decode_melt_quote(SseDeserializer deserializer);
 
   @protected
@@ -760,6 +775,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ClearAuthSettings? sse_decode_opt_box_autoadd_clear_auth_settings(
+      SseDeserializer deserializer);
+
+  @protected
+  MeltOptions? sse_decode_opt_box_autoadd_melt_options(
       SseDeserializer deserializer);
 
   @protected
@@ -1020,6 +1039,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ClearAuthSettings self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_melt_options(
+      MeltOptions self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_melt_quote(
       MeltQuote self, SseSerializer serializer);
 
@@ -1138,6 +1161,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MeltMethodSettings self, SseSerializer serializer);
 
   @protected
+  void sse_encode_melt_options(MeltOptions self, SseSerializer serializer);
+
+  @protected
   void sse_encode_melt_quote(MeltQuote self, SseSerializer serializer);
 
   @protected
@@ -1202,6 +1228,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_clear_auth_settings(
       ClearAuthSettings? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_melt_options(
+      MeltOptions? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_mint_info(

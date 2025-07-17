@@ -15,7 +15,7 @@ import 'token.dart';
 part 'wallet.freezed.dart';
 
 // These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`, `try_into`, `try_into`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`, `try_into`, `try_into`, `try_into`
 
 ParseInputResult parseInput({required String input}) =>
     RustLib.instance.api.crateApiWalletParseInput(input: input);
@@ -120,7 +120,10 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Future<BigInt> melt({required MeltQuote quote});
 
-  Future<MeltQuote> meltQuote({required String request});
+  Future<MeltQuote> meltBolt12Quote(
+      {required String request, MeltOptions? opts});
+
+  Future<MeltQuote> meltQuote({required String request, MeltOptions? opts});
 
   Stream<MintQuote> mint({required BigInt amount, String? description});
 
@@ -183,6 +186,27 @@ abstract class WalletDatabase implements RustOpaqueInterface {
       RustLib.instance.api.crateApiWalletWalletDatabaseNew(path: path);
 
   Future<void> removeMint({required String mintUrl});
+}
+
+class MeltOptions {
+  final BigInt? mpp;
+  final BigInt? amountlessMsat;
+
+  const MeltOptions({
+    this.mpp,
+    this.amountlessMsat,
+  });
+
+  @override
+  int get hashCode => mpp.hashCode ^ amountlessMsat.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MeltOptions &&
+          runtimeType == other.runtimeType &&
+          mpp == other.mpp &&
+          amountlessMsat == other.amountlessMsat;
 }
 
 class MeltQuote {
