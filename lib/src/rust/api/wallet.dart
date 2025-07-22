@@ -180,6 +180,10 @@ abstract class Wallet implements RustOpaqueInterface {
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<WalletDatabase>>
 abstract class WalletDatabase implements RustOpaqueInterface {
+  String get path;
+
+  set path(String path);
+
   Future<List<Mint>> listMints(
       {String? unit, Uint8List? seed, String? hexSeed});
 

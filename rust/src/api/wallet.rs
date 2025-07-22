@@ -1063,14 +1063,18 @@ impl MultiMintWallet {
 
 #[derive(Clone)]
 pub struct WalletDatabase {
+    pub path: String,
+
     inner: WalletSqliteDatabase,
 }
 
 impl WalletDatabase {
     pub async fn new(path: &str) -> Result<Self, Error> {
-        let path = Path::new(path);
-        let inner = WalletSqliteDatabase::new(path).await?;
-        Ok(Self { inner })
+        let inner = WalletSqliteDatabase::new(Path::new(path)).await?;
+        Ok(Self {
+            inner,
+            path: path.to_string(),
+        })
     }
 
     #[tracing::instrument(skip(self, seed, hex_seed))]

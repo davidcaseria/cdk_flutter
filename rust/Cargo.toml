@@ -30,7 +30,7 @@ nostr = { version = "0.42.1", default-features = false }
 nostr-sdk = { version = "0.42.0", default-features = false, features = [
     "nip59",
 ] }
-rand = { version = "0.9.1", default-features = false, features = [
+rand = { version = "0.9.2", default-features = false, features = [
     "thread_rng",
 ] }
 reqwest = { version = "0.12.18", default-features = false, features = [
