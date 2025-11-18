@@ -24,7 +24,7 @@ Future<void> main() async {
   }
 
   final db = await WalletDatabase.newInstance(path: '${path.path}/wallet.sqlite');
-  final wallet = Wallet(mintUrl: 'https://testnut.cashu.space/', unit: 'sat', mnemonic: mnemonic, db: db);
+  final wallet = Wallet(mintUrl: 'https://fake.thesimplekid.dev', unit: 'sat', mnemonic: mnemonic, db: db);
   runApp(WalletProvider(wallet: wallet, child: MyApp()));
 }
 

@@ -43,21 +43,23 @@ void main() async {
 ### Mint Tokens
 
 ```dart
-await wallet.mint(amount: 1000, sink: StreamSink((quote) {
+final stream = wallet.mint(amount: BigInt.from(1000));
+
+stream.listen((quote) {
   if (quote.state == MintQuoteState.unpaid) {
     print('Pay: ${quote.request}');
   } else if (quote.state == MintQuoteState.issued) {
     print('Minted ${quote.amount} sats');
   }
-}));
+});
 ```
 
 ### Send Tokens
 
 ```dart
-final prepared = await wallet.prepareSend(amount: 100);
+final prepared = await wallet.prepareSend(amount: BigInt.from(100));
 final token = await wallet.send(send: prepared);
-print('Token: ${token.encoded}');
+print('Token: $token');
 ```
 
 ### Receive Tokens
