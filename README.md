@@ -58,8 +58,12 @@ stream.listen((quote) {
 
 ```dart
 final prepared = await wallet.prepareSend(amount: BigInt.from(100));
-final token = await wallet.send(send: prepared);
-print('Token: $token');
+final token = await wallet.send(
+  send: prepared,
+  memo: 'Payment to Alice',
+  includeMemo: true,
+);
+print('Token: ${token.encoded}');
 ```
 
 ### Receive Tokens
