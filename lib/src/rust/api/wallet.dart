@@ -14,7 +14,7 @@ import 'payment_request.dart';
 import 'token.dart';
 part 'wallet.freezed.dart';
 
-// These functions are ignored because they are not marked as `pub`: `derive_seed_64`, `mint_url`, `unit`, `update_balance_streams`
+// These functions are ignored because they are not marked as `pub`: `mint_url`, `unit`, `update_balance_streams`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `into`, `partial_cmp`, `try_into`, `try_into`, `try_into`
 
 ParseInputResult parseInput({required String input}) =>
@@ -46,21 +46,17 @@ abstract class MultiMintWallet implements RustOpaqueInterface {
   Future<List<Wallet>> listWallets();
 
   // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  /// Create a new multi-mint wallet from a BIP39 mnemonic
   static Future<MultiMintWallet> newInstance(
           {required String unit,
-          required List<int> seed,
+          required String mnemonic,
           BigInt? targetProofCount,
           required WalletDatabase db}) =>
       RustLib.instance.api.crateApiWalletMultiMintWalletNew(
-          unit: unit, seed: seed, targetProofCount: targetProofCount, db: db);
-
-  static Future<MultiMintWallet> newFromHexSeed(
-          {required String unit,
-          required String seed,
-          BigInt? targetProofCount,
-          required WalletDatabase db}) =>
-      RustLib.instance.api.crateApiWalletMultiMintWalletNewFromHexSeed(
-          unit: unit, seed: seed, targetProofCount: targetProofCount, db: db);
+          unit: unit,
+          mnemonic: mnemonic,
+          targetProofCount: targetProofCount,
+          db: db);
 
   Future<void> reclaimReserved();
 
@@ -129,29 +125,17 @@ abstract class Wallet implements RustOpaqueInterface {
 
   Stream<MintQuote> mint({required BigInt amount, String? description});
 
+  /// Create a new wallet from a BIP39 mnemonic
   factory Wallet(
           {required String mintUrl,
           required String unit,
-          required List<int> seed,
+          required String mnemonic,
           BigInt? targetProofCount,
           required WalletDatabase db}) =>
       RustLib.instance.api.crateApiWalletWalletNew(
           mintUrl: mintUrl,
           unit: unit,
-          seed: seed,
-          targetProofCount: targetProofCount,
-          db: db);
-
-  static Wallet newFromHexSeed(
-          {required String mintUrl,
-          required String unit,
-          required String seed,
-          BigInt? targetProofCount,
-          required WalletDatabase db}) =>
-      RustLib.instance.api.crateApiWalletWalletNewFromHexSeed(
-          mintUrl: mintUrl,
-          unit: unit,
-          seed: seed,
+          mnemonic: mnemonic,
           targetProofCount: targetProofCount,
           db: db);
 
@@ -184,8 +168,7 @@ abstract class WalletDatabase implements RustOpaqueInterface {
 
   set path(String path);
 
-  Future<List<Mint>> listMints(
-      {String? unit, Uint8List? seed, String? hexSeed});
+  Future<List<Mint>> listMints({String? unit, String? mnemonic});
 
   // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
   static Future<WalletDatabase> newInstance({required String path}) =>

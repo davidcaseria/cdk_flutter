@@ -1,5 +1,6 @@
 use std::{collections::HashMap, str::FromStr, sync::Arc, time::Duration, vec};
 
+use bip39::Mnemonic;
 use cdk::{
     amount::{Amount, SplitTarget},
     cdk_database::WalletDatabase as _,
@@ -8,7 +9,6 @@ use cdk::{
         nut00::ProofsMethods, CurrencyUnit, MintQuoteState as CdkMintQuoteState, PublicKey,
         SecretKey, SpendingConditions, State as ProofState, Token as CdkToken,
     },
-    util::hex,
     wallet::{
         MeltQuote as CdkMeltQuote, MintQuote as CdkMintQuote, PreparedSend as CdkPreparedSend,
         ReceiveOptions as CdkReceiveOptions, SendMemo, SendOptions as CdkSendOptions,
@@ -31,7 +31,6 @@ use nostr::{
     key::Keys,
     nips::nip19::{FromBech32, Nip19Profile},
 };
-use sha2::{Digest, Sha512};
 use tokio::{
     sync::{broadcast, mpsc, Mutex},
     time::sleep,
@@ -58,27 +57,19 @@ pub struct Wallet {
     seed: [u8; 64],
 }
 
-// Helper function to derive 64-byte seed from shorter input
-fn derive_seed_64(input: &[u8]) -> [u8; 64] {
-    let mut hasher = Sha512::new();
-    hasher.update(input);
-    let result = hasher.finalize();
-    let mut seed = [0u8; 64];
-    seed.copy_from_slice(&result);
-    seed
-}
-
 impl Wallet {
+    /// Create a new wallet from a BIP39 mnemonic
     #[frb(sync)]
     pub fn new(
         mint_url: String,
         unit: String,
-        seed: Vec<u8>,
+        mnemonic: String,
         target_proof_count: Option<usize>,
         db: &WalletDatabase,
     ) -> Result<Self, Error> {
+        let mnemonic = Mnemonic::parse(&mnemonic).map_err(|_| Error::InvalidInput)?;
+        let seed: [u8; 64] = mnemonic.to_seed("").into();
         let unit = CurrencyUnit::from_str(&unit).unwrap_or(CurrencyUnit::Custom(unit.to_string()));
-        let seed_64 = derive_seed_64(&seed);
         Ok(Self {
             mint_url: mint_url.clone(),
             unit: unit.to_string(),
@@ -87,24 +78,13 @@ impl Wallet {
                 &mint_url,
                 unit,
                 db.inner.clone(),
-                seed_64,
+                seed,
                 target_proof_count,
             )?,
-            seed: seed_64,
+            seed,
         })
     }
 
-    #[frb(sync)]
-    pub fn new_from_hex_seed(
-        mint_url: String,
-        unit: String,
-        seed: String,
-        target_proof_count: Option<usize>,
-        db: &WalletDatabase,
-    ) -> Result<Self, Error> {
-        let seed = hex::decode(seed)?;
-        Self::new(mint_url, unit, seed, target_proof_count, db)
-    }
 
     #[tracing::instrument(skip(self))]
     pub async fn balance(&self) -> Result<u64, Error> {
@@ -757,7 +737,7 @@ pub enum TransactionStatus {
 pub struct MultiMintWallet {
     pub unit: String,
 
-    seed: Vec<u8>,
+    mnemonic: String,
     target_proof_count: Option<usize>,
     db: WalletDatabase,
 
@@ -766,12 +746,16 @@ pub struct MultiMintWallet {
 }
 
 impl MultiMintWallet {
+    /// Create a new multi-mint wallet from a BIP39 mnemonic
     pub async fn new(
         unit: String,
-        seed: Vec<u8>,
+        mnemonic: String,
         target_proof_count: Option<usize>,
         db: &WalletDatabase,
     ) -> Result<Self, Error> {
+        // Validate mnemonic
+        Mnemonic::parse(&mnemonic).map_err(|_| Error::InvalidInput)?;
+
         let mints = db.inner.get_mints().await?;
         let mut wallets = HashMap::new();
         for (mint_url, _) in &mints {
@@ -780,30 +764,20 @@ impl MultiMintWallet {
                 Wallet::new(
                     mint_url.to_string(),
                     unit.clone(),
-                    seed.clone(),
+                    mnemonic.clone(),
                     target_proof_count,
-                    &db,
+                    db,
                 )?,
             );
         }
         Ok(Self {
             unit: unit.to_string(),
-            seed,
+            mnemonic,
             target_proof_count,
             db: db.clone(),
             wallets: Arc::new(Mutex::new(wallets)),
             added_wallets: Arc::new(Mutex::new(Vec::new())),
         })
-    }
-
-    pub async fn new_from_hex_seed(
-        unit: String,
-        seed: String,
-        target_proof_count: Option<usize>,
-        db: &WalletDatabase,
-    ) -> Result<Self, Error> {
-        let seed = hex::decode(seed)?;
-        Ok(Self::new(unit, seed, target_proof_count, db).await?)
     }
 
     #[tracing::instrument(skip(self))]
@@ -817,7 +791,7 @@ impl MultiMintWallet {
         let wallet = Wallet::new(
             mint_url.to_string(),
             self.unit.clone(),
-            self.seed.clone(),
+            self.mnemonic.clone(),
             self.target_proof_count,
             &self.db,
         )?;
@@ -882,7 +856,7 @@ impl MultiMintWallet {
         let wallet = Wallet::new(
             mint_url.to_string(),
             self.unit.clone(),
-            self.seed.clone(),
+            self.mnemonic.clone(),
             self.target_proof_count,
             &self.db,
         )?;
@@ -1090,24 +1064,20 @@ impl WalletDatabase {
         })
     }
 
-    #[tracing::instrument(skip(self, seed, hex_seed))]
+    #[tracing::instrument(skip(self, mnemonic))]
     pub async fn list_mints(
         &self,
         unit: Option<String>,
-        seed: Option<Vec<u8>>,
-        hex_seed: Option<String>,
+        mnemonic: Option<String>,
     ) -> Result<Vec<Mint>, Error> {
         let mut mints = Vec::new();
         let mint_infos = self.inner.get_mints().await?;
         for (mint_url, mint_info) in mint_infos {
             let mut balance = None;
             if let Some(unit) = &unit {
-                let seed = seed
-                    .clone()
-                    .or_else(|| hex_seed.as_ref().map(|s| hex::decode(s).ok()).flatten());
-                if let Some(seed) = seed {
+                if let Some(mnemonic) = &mnemonic {
                     let wallet =
-                        Wallet::new(mint_url.to_string(), unit.clone(), seed, None, &self)?;
+                        Wallet::new(mint_url.to_string(), unit.clone(), mnemonic.clone(), None, self)?;
                     balance = wallet.balance().await.ok();
                 }
             }

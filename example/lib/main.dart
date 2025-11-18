@@ -14,17 +14,17 @@ Future<void> main() async {
   await CdkFlutter.init();
   final path = await getApplicationDocumentsDirectory();
 
-  final seedFile = File('${path.path}/seed.txt');
-  String seed;
-  if (await seedFile.exists()) {
-    seed = await seedFile.readAsString();
+  final mnemonicFile = File('${path.path}/mnemonic.txt');
+  String mnemonic;
+  if (await mnemonicFile.exists()) {
+    mnemonic = await mnemonicFile.readAsString();
   } else {
-    seed = generateHexSeed();
-    await seedFile.writeAsString(seed);
+    mnemonic = generateMnemonic();
+    await mnemonicFile.writeAsString(mnemonic);
   }
 
   final db = await WalletDatabase.newInstance(path: '${path.path}/wallet.sqlite');
-  final wallet = Wallet.newFromHexSeed(mintUrl: 'http://testnut.cashu.space/', unit: 'sat', seed: seed, db: db);
+  final wallet = Wallet(mintUrl: 'https://testnut.cashu.space/', unit: 'sat', mnemonic: mnemonic, db: db);
   runApp(WalletProvider(wallet: wallet, child: MyApp()));
 }
 

@@ -9,6 +9,7 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 bc-ur = { version = "0.12.0", default-features = false }
 bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
+bip39 = { version = "2.1", default-features = false, features = ["std"] }
 cdk = { version = "0.13.4", default-features = false, features = [
     "wallet",
 ] }
@@ -43,7 +44,6 @@ reqwest = { version = "0.12.24", default-features = false, features = [
 serde_json = { version = "1.0.145", default-features = false, features = [
     "std",
 ] }
-sha2 = { version = "0.10", default-features = false, features = ["std"] }
 tokio = { version = "1.48.0", default-features = false }
 tracing = { version = "0.1.41", default-features = false }
 

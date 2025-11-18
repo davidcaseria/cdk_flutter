@@ -7,8 +7,17 @@ import '../frb_generated.dart';
 import 'error.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+/// Generate a new 12-word BIP39 mnemonic
+String generateMnemonic() => RustLib.instance.api.crateApiKeyGenerateMnemonic();
+
+/// Convert a mnemonic to a 64-byte seed
+Uint8List mnemonicToSeed({required String mnemonic}) =>
+    RustLib.instance.api.crateApiKeyMnemonicToSeed(mnemonic: mnemonic);
+
+/// Generate a random 64-byte seed (from a generated mnemonic)
 Uint8List generateSeed() => RustLib.instance.api.crateApiKeyGenerateSeed();
 
+/// Generate a hex-encoded 64-byte seed (from a generated mnemonic)
 String generateHexSeed() => RustLib.instance.api.crateApiKeyGenerateHexSeed();
 
 String deriveSharedSecret({required String secret, required String pubKey}) =>
