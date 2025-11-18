@@ -1,4 +1,4 @@
-use std::{collections::HashMap, path::Path, str::FromStr, sync::Arc, time::Duration, vec};
+use std::{collections::HashMap, str::FromStr, sync::Arc, time::Duration, vec};
 
 use cdk::{
     amount::{Amount, SplitTarget},
@@ -31,6 +31,7 @@ use nostr::{
     key::Keys,
     nips::nip19::{FromBech32, Nip19Profile},
 };
+use sha2::{Digest, Sha512};
 use tokio::{
     sync::{broadcast, mpsc, Mutex},
     time::sleep,
@@ -54,7 +55,17 @@ pub struct Wallet {
 
     balance_broadcast: broadcast::Sender<u64>,
     inner: CdkWallet,
-    seed: Vec<u8>,
+    seed: [u8; 64],
+}
+
+// Helper function to derive 64-byte seed from shorter input
+fn derive_seed_64(input: &[u8]) -> [u8; 64] {
+    let mut hasher = Sha512::new();
+    hasher.update(input);
+    let result = hasher.finalize();
+    let mut seed = [0u8; 64];
+    seed.copy_from_slice(&result);
+    seed
 }
 
 impl Wallet {
@@ -67,6 +78,7 @@ impl Wallet {
         db: &WalletDatabase,
     ) -> Result<Self, Error> {
         let unit = CurrencyUnit::from_str(&unit).unwrap_or(CurrencyUnit::Custom(unit.to_string()));
+        let seed_64 = derive_seed_64(&seed);
         Ok(Self {
             mint_url: mint_url.clone(),
             unit: unit.to_string(),
@@ -74,11 +86,11 @@ impl Wallet {
             inner: CdkWallet::new(
                 &mint_url,
                 unit,
-                Arc::new(db.inner.clone()),
-                &seed,
+                db.inner.clone(),
+                seed_64,
                 target_proof_count,
             )?,
-            seed,
+            seed: seed_64,
         })
     }
 
@@ -120,7 +132,7 @@ impl Wallet {
 
     #[tracing::instrument(skip(self))]
     pub async fn get_mint(&self) -> Result<Mint, Error> {
-        let info = self.inner.get_mint_info().await?;
+        let info = self.inner.fetch_mint_info().await?;
         Ok(Mint {
             url: self.mint_url.clone(),
             balance: self.balance().await.ok(),
@@ -376,8 +388,9 @@ impl Wallet {
             TransportType::Nostr => {
                 let profile = Nip19Profile::from_bech32(&transport.target)
                     .map_err(|_| Error::InvalidInput)?;
+                // Use first 32 bytes of seed for Nostr secret key
                 let client =
-                    nostr_sdk::Client::new(Keys::new(nostr::SecretKey::from_slice(&self.seed)?));
+                    nostr_sdk::Client::new(Keys::new(nostr::SecretKey::from_slice(&self.seed[..32])?));
                 for relay in profile.relays {
                     client.add_relay(relay).await?;
                 }
@@ -442,14 +455,14 @@ impl Wallet {
             memo: m,
             include_memo: include_memo.unwrap_or_default(),
         });
-        let token = self.inner.send(send.inner, send_memo).await?.to_string();
+        let token = send.inner.confirm(send_memo).await?.to_string();
         self.update_balance_streams().await;
         Ok(Token::from_str(&token)?)
     }
 
     #[tracing::instrument(skip(self, send))]
     pub async fn cancel_send(&self, send: PreparedSend) -> Result<(), Error> {
-        self.inner.cancel_send(send.inner).await?;
+        send.inner.cancel().await?;
         Ok(())
     }
 
@@ -1065,14 +1078,14 @@ impl MultiMintWallet {
 pub struct WalletDatabase {
     pub path: String,
 
-    inner: WalletSqliteDatabase,
+    inner: Arc<WalletSqliteDatabase>,
 }
 
 impl WalletDatabase {
     pub async fn new(path: &str) -> Result<Self, Error> {
-        let inner = WalletSqliteDatabase::new(Path::new(path)).await?;
+        let inner = WalletSqliteDatabase::new(path).await?;
         Ok(Self {
-            inner,
+            inner: Arc::new(inner),
             path: path.to_string(),
         })
     }

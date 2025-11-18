@@ -82,9 +82,11 @@ impl From<CdkPaymentRequest> for PaymentRequest {
                 .mints
                 .map(|m| m.iter().map(|m| m.to_string()).collect()),
             description: cdk_payment_request.description,
-            transports: cdk_payment_request
-                .transports
-                .map(|transports| transports.into_iter().map(|t| t.into()).collect()),
+            transports: if cdk_payment_request.transports.is_empty() {
+                None
+            } else {
+                Some(cdk_payment_request.transports.into_iter().map(|t| t.into()).collect())
+            },
             nut10: cdk_payment_request.nut10.map(|n| n.into()),
         }
     }
@@ -113,7 +115,8 @@ impl TryInto<CdkPaymentRequest> for PaymentRequest {
             description: self.description,
             transports: self
                 .transports
-                .map(|transports| transports.into_iter().map(|t| t.into()).collect()),
+                .map(|transports| transports.into_iter().map(|t| t.into()).collect())
+                .unwrap_or_default(),
             nut10: None,
         })
     }
@@ -145,7 +148,8 @@ impl TryInto<CdkPaymentRequest> for &PaymentRequest {
             transports: self
                 .transports
                 .as_ref()
-                .map(|transports| transports.iter().map(|t| t.into()).collect()),
+                .map(|transports| transports.iter().map(|t| t.into()).collect())
+                .unwrap_or_default(),
             nut10: None,
         })
     }
@@ -235,8 +239,8 @@ impl From<CdkNut10SecretRequest> for Nut10SecretRequest {
         Nut10SecretRequest {
             kind: cdk_nut10_secret_request.kind.into(),
             secret_data: SecretDataRequest {
-                data: cdk_nut10_secret_request.secret_data.data,
-                tags: cdk_nut10_secret_request.secret_data.tags,
+                data: cdk_nut10_secret_request.data,
+                tags: cdk_nut10_secret_request.tags,
             },
         }
     }

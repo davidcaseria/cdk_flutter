@@ -9,11 +9,11 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 bc-ur = { version = "0.12.0", default-features = false }
 bip21 = { version = "0.5.0", features = ["non-compliant-bytes", "std"] }
-cdk = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
+cdk = { version = "0.13.4", default-features = false, features = [
     "wallet",
 ] }
-cdk-common = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false }
-cdk-sqlite = { git = "https://github.com/davidcaseria/cdk.git", branch = "main", default-features = false, features = [
+cdk-common = { version = "0.13.4", default-features = false }
+cdk-sqlite = { version = "0.13.4", default-features = false, features = [
     "wallet",
 ] }
 flutter_rust_bridge = { version = "=2.11.1", default-features = false, features = [
@@ -25,25 +25,26 @@ flutter_rust_bridge = { version = "=2.11.1", default-features = false, features 
     "wasm-start",
 ] }
 futures = "0.3.31"
-log = { version = "0.4.27", default-features = false }
-nostr = { version = "0.42.1", default-features = false }
+log = { version = "0.4.28", default-features = false }
+nostr = { version = "0.42.2", default-features = false }
 nostr-sdk = { version = "0.42.0", default-features = false, features = [
     "nip59",
 ] }
 rand = { version = "0.9.2", default-features = false, features = [
     "thread_rng",
 ] }
-reqwest = { version = "0.12.18", default-features = false, features = [
+reqwest = { version = "0.12.24", default-features = false, features = [
     "deflate",
     "gzip",
     "json",
     "rustls-tls",
     "rustls-tls-native-roots",
 ] }
-serde_json = { version = "1.0.140", default-features = false, features = [
+serde_json = { version = "1.0.145", default-features = false, features = [
     "std",
 ] }
-tokio = { version = "1.46.1", default-features = false }
+sha2 = { version = "0.10", default-features = false, features = ["std"] }
+tokio = { version = "1.48.0", default-features = false }
 tracing = { version = "0.1.41", default-features = false }
 
 [target.'cfg(target_os = "android")'.dependencies]
