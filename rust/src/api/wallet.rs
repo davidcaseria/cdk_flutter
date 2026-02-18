@@ -6,11 +6,12 @@ use cdk::{
     cdk_database::WalletDatabase as _,
     mint_url::MintUrl,
     nuts::{
-        nut00::ProofsMethods, CurrencyUnit, MintQuoteState as CdkMintQuoteState, PublicKey,
-        SecretKey, SpendingConditions, State as ProofState, Token as CdkToken,
+        nut00::{KnownMethod, ProofsMethods},
+        CurrencyUnit, MintQuoteState as CdkMintQuoteState, PaymentMethod,
+        PublicKey, SecretKey, SpendingConditions, State as ProofState, Token as CdkToken,
     },
     wallet::{
-        MeltQuote as CdkMeltQuote, MintQuote as CdkMintQuote, PreparedSend as CdkPreparedSend,
+        MeltQuote as CdkMeltQuote, MintQuote as CdkMintQuote,
         ReceiveOptions as CdkReceiveOptions, SendMemo, SendOptions as CdkSendOptions,
         Wallet as CdkWallet,
     },
@@ -122,8 +123,8 @@ impl Wallet {
 
     #[tracing::instrument(skip(self))]
     pub async fn check_all_mint_quotes(&self) -> Result<(), Error> {
-        let amount = self.inner.check_all_mint_quotes().await?;
-        if amount > Amount::ZERO {
+        let quotes = self.inner.check_all_mint_quotes().await?;
+        if !quotes.is_empty() {
             self.update_balance_streams().await;
         }
         Ok(())
@@ -131,7 +132,7 @@ impl Wallet {
 
     #[tracing::instrument(skip(self))]
     pub async fn check_pending_melt_quotes(&self) -> Result<(), Error> {
-        self.inner.check_pending_melt_quotes().await?;
+        self.inner.finalize_pending_melts().await?;
         Ok(())
     }
 
@@ -199,7 +200,12 @@ impl Wallet {
     ) -> Result<MeltQuote, Error> {
         Ok(self
             .inner
-            .melt_quote(request, opts.map(|o| o.try_into()).transpose()?)
+            .melt_quote(
+                PaymentMethod::Known(KnownMethod::Bolt11),
+                request,
+                opts.map(|o| o.try_into()).transpose()?,
+                None,
+            )
             .await?
             .into())
     }
@@ -212,16 +218,23 @@ impl Wallet {
     ) -> Result<MeltQuote, Error> {
         Ok(self
             .inner
-            .melt_bolt12_quote(request, opts.map(|o| o.try_into()).transpose()?)
+            .melt_quote(
+                PaymentMethod::Known(KnownMethod::Bolt12),
+                request,
+                opts.map(|o| o.try_into()).transpose()?,
+                None,
+            )
             .await?
             .into())
     }
 
     #[tracing::instrument(skip(self, quote))]
     pub async fn melt(&self, quote: MeltQuote) -> Result<u64, Error> {
-        let melted = self.inner.melt(&quote.id).await?;
+        use std::collections::HashMap;
+        let prepared = self.inner.prepare_melt(&quote.id, HashMap::new()).await?;
+        let melted = prepared.confirm().await?;
         self.update_balance_streams().await;
-        Ok(melted.total_amount().into())
+        Ok(melted.amount().into())
     }
 
     #[tracing::instrument(skip(self, sink))]
@@ -233,29 +246,35 @@ impl Wallet {
     ) -> Result<(), Error> {
         let mint_url = self.mint_url()?;
         let unit = self.unit();
-        let quote = self.inner.mint_quote(amount.into(), description).await?;
+        let quote = self
+            .inner
+            .mint_quote(
+                PaymentMethod::Known(KnownMethod::Bolt11),
+                Some(amount.into()),
+                description,
+                None,
+            )
+            .await?;
         let _ = sink.add(MintQuote::from(quote.clone()));
         let _self = self.clone();
         flutter_rust_bridge::spawn(async move {
             loop {
                 sleep(Duration::from_secs(3)).await;
                 info!("Checking mint quote state for {}", quote.id);
-                match _self.inner.mint_quote_state(&quote.id).await {
+                match _self.inner.check_mint_quote_status(&quote.id).await {
                     Ok(state_res) => match state_res.state {
                         CdkMintQuoteState::Unpaid => {
-                            if let Some(expiry) = state_res.expiry {
-                                if expiry < unix_time() {
-                                    let _ = sink.add(MintQuote {
-                                        id: quote.id,
-                                        request: quote.request,
-                                        amount: quote.amount.map(|a| a.into()),
-                                        expiry: Some(expiry),
-                                        state: MintQuoteState::Error,
-                                        token: None,
-                                        error: Some("Quote expired".to_string()),
-                                    });
-                                    break;
-                                }
+                            if state_res.expiry < unix_time() {
+                                let _ = sink.add(MintQuote {
+                                    id: quote.id,
+                                    request: quote.request,
+                                    amount: quote.amount.map(|a| a.into()),
+                                    expiry: Some(state_res.expiry),
+                                    state: MintQuoteState::Error,
+                                    token: None,
+                                    error: Some("Quote expired".to_string()),
+                                });
+                                break;
                             }
                             continue;
                         }
@@ -327,37 +346,26 @@ impl Wallet {
         Ok(())
     }
 
-    #[tracing::instrument(skip(self, request))]
-    pub async fn prepare_pay_request(
-        &self,
-        request: PaymentRequest,
-    ) -> Result<PreparedSend, Error> {
-        if !request.validate(self.mint_url()?, self.unit()) {
-            return Err(Error::InvalidInput);
-        }
-        self.prepare_send(request.amount.ok_or(Error::InvalidInput)?, None)
-            .await
-    }
-
-    #[tracing::instrument(skip(self, send, memo))]
+    #[tracing::instrument(skip(self, request, memo))]
     pub async fn pay_request(
         &self,
-        send: PreparedSend,
+        request: PaymentRequest,
         memo: Option<String>,
         include_memo: Option<bool>,
     ) -> Result<(), Error> {
-        let pay_request = send.pay_request.clone().ok_or(Error::InvalidInput)?;
-        if !pay_request.validate(self.mint_url()?, self.unit()) {
+        if !request.validate(self.mint_url()?, self.unit()) {
             return Err(Error::InvalidInput);
         }
-        let token = self.send(send, memo.clone(), include_memo).await?;
+        
+        let amount = request.amount.ok_or(Error::InvalidInput)?;
+        let token = self.send(amount, None, memo.clone(), include_memo).await?;
 
-        let transports = pay_request.transports.ok_or(Error::InvalidInput)?;
+        let transports = request.transports.ok_or(Error::InvalidInput)?;
         let transport = transports.first().ok_or(Error::InvalidInput)?;
 
         let mint_keysets = self.inner.get_mint_keysets().await?;
         let payload = PaymentRequestPayload {
-            id: pay_request.payment_id,
+            id: request.payment_id,
             memo,
             mint: self.mint_url()?,
             unit: self.unit(),
@@ -411,39 +419,26 @@ impl Wallet {
         Ok(())
     }
 
-    #[tracing::instrument(skip(self, opts))]
-    pub async fn prepare_send(
+    #[tracing::instrument(skip(self, opts, memo))]
+    pub async fn send(
         &self,
         amount: u64,
         opts: Option<SendOptions>,
-    ) -> Result<PreparedSend, Error> {
+        memo: Option<String>,
+        include_memo: Option<bool>,
+    ) -> Result<Token, Error> {
         let prepared_send = self
             .inner
             .prepare_send(amount.into(), opts.unwrap_or_default().try_into()?)
             .await?;
-        Ok(prepared_send.into())
-    }
-
-    #[tracing::instrument(skip(self, send, memo))]
-    pub async fn send(
-        &self,
-        send: PreparedSend,
-        memo: Option<String>,
-        include_memo: Option<bool>,
-    ) -> Result<Token, Error> {
+        
         let send_memo = memo.map(|m| SendMemo {
             memo: m,
             include_memo: include_memo.unwrap_or_default(),
         });
-        let token = send.inner.confirm(send_memo).await?.to_string();
+        let token = prepared_send.confirm(send_memo).await?.to_string();
         self.update_balance_streams().await;
         Ok(Token::from_str(&token)?)
-    }
-
-    #[tracing::instrument(skip(self, send))]
-    pub async fn cancel_send(&self, send: PreparedSend) -> Result<(), Error> {
-        send.inner.cancel().await?;
-        Ok(())
     }
 
     #[tracing::instrument(skip(self))]
@@ -452,7 +447,8 @@ impl Wallet {
         if proofs.is_empty() {
             return Ok(());
         }
-        self.inner.reclaim_unspent(proofs).await?;
+        let ys = proofs.ys()?;
+        self.inner.unreserve_proofs(ys).await?;
         self.inner.check_all_pending_proofs().await?;
         self.update_balance_streams().await;
         Ok(())
@@ -461,9 +457,9 @@ impl Wallet {
     #[tracing::instrument(skip(self, token))]
     pub async fn reclaim_send(&self, token: Token) -> Result<(), Error> {
         let mint_keysets = self.inner.get_mint_keysets().await?;
-        self.inner
-            .reclaim_unspent(token.proofs(&mint_keysets)?)
-            .await?;
+        let proofs = token.proofs(&mint_keysets)?;
+        let ys = proofs.ys()?;
+        self.inner.unreserve_proofs(ys).await?;
         self.inner.check_all_pending_proofs().await?;
         self.update_balance_streams().await;
         Ok(())
@@ -583,28 +579,7 @@ impl From<CdkMintQuoteState> for MintQuoteState {
     }
 }
 
-pub struct PreparedSend {
-    pub amount: u64,
-    pub swap_fee: u64,
-    pub send_fee: u64,
-    pub fee: u64,
-
-    inner: CdkPreparedSend,
-    pay_request: Option<PaymentRequest>,
-}
-
-impl From<CdkPreparedSend> for PreparedSend {
-    fn from(prepared_send: CdkPreparedSend) -> Self {
-        Self {
-            amount: prepared_send.amount().into(),
-            swap_fee: prepared_send.swap_fee().into(),
-            send_fee: prepared_send.send_fee().into(),
-            fee: prepared_send.fee().into(),
-            inner: prepared_send,
-            pay_request: None,
-        }
-    }
-}
+// PreparedSend is no longer exposed to FFI - send operations are now atomic
 
 #[derive(Default)]
 pub struct ReceiveOptions {

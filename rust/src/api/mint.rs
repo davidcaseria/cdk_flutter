@@ -285,40 +285,34 @@ impl From<CdkHttpMethod> for HttpMethod {
 }
 
 pub enum HttpRoutePath {
-    MintQuoteBolt11,
-    MintBolt11,
-    MeltQuoteBolt11,
-    MeltBolt11,
-    MintQuoteBolt12,
-    MintBolt12,
-    MeltQuoteBolt12,
-    MeltBolt12,
+    MintQuote(String),
+    Mint(String),
+    MeltQuote(String),
+    Melt(String),
     Swap,
     Checkstate,
     Restore,
     MintBlindAuth,
+    Ws,
 }
 
 impl From<CdkHttpRoutePath> for HttpRoutePath {
     fn from(value: CdkHttpRoutePath) -> Self {
         match value {
-            CdkHttpRoutePath::MintQuoteBolt11 => Self::MintQuoteBolt11,
-            CdkHttpRoutePath::MintBolt11 => Self::MintBolt11,
-            CdkHttpRoutePath::MeltQuoteBolt11 => Self::MeltQuoteBolt11,
-            CdkHttpRoutePath::MeltBolt11 => Self::MeltBolt11,
-            CdkHttpRoutePath::MintQuoteBolt12 => Self::MintQuoteBolt12,
-            CdkHttpRoutePath::MintBolt12 => Self::MintBolt12,
-            CdkHttpRoutePath::MeltQuoteBolt12 => Self::MeltQuoteBolt12,
-            CdkHttpRoutePath::MeltBolt12 => Self::MeltBolt12,
+            CdkHttpRoutePath::MintQuote(method) => Self::MintQuote(method),
+            CdkHttpRoutePath::Mint(method) => Self::Mint(method),
+            CdkHttpRoutePath::MeltQuote(method) => Self::MeltQuote(method),
+            CdkHttpRoutePath::Melt(method) => Self::Melt(method),
             CdkHttpRoutePath::Swap => Self::Swap,
             CdkHttpRoutePath::Checkstate => Self::Checkstate,
             CdkHttpRoutePath::Restore => Self::Restore,
             CdkHttpRoutePath::MintBlindAuth => Self::MintBlindAuth,
+            CdkHttpRoutePath::Ws => Self::Ws,
         }
     }
 }
 
 pub async fn get_mint_info(mint_url: &str) -> Result<MintInfo, Error> {
-    let client = HttpClient::new(MintUrl::from_str(mint_url)?);
+    let client = HttpClient::new(MintUrl::from_str(mint_url)?, None);
     Ok(client.get_mint_info().await?.into())
 }

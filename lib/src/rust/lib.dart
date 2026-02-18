@@ -6,8 +6,5 @@
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CdkBolt11Invoice>>
-abstract class CdkBolt11Invoice implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CdkPaymentRequest>>
-abstract class CdkPaymentRequest implements RustOpaqueInterface {}
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Lifetimeable < CdkPreparedSend < 'static > >>>
+abstract class CdkPreparedSend implements RustOpaqueInterface {}
