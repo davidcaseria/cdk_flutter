@@ -314,11 +314,17 @@ class SendOptions {
   final String? pubkey;
   final Map<String, String>? metadata;
 
+  /// Include fee in the token amount
+  ///
+  /// When true, the token will include the amount + fees needed to redeem it
+  final bool? includeFee;
+
   const SendOptions({
     this.memo,
     this.includeMemo,
     this.pubkey,
     this.metadata,
+    this.includeFee,
   });
 
   static Future<SendOptions> default_() =>
@@ -329,7 +335,8 @@ class SendOptions {
       memo.hashCode ^
       includeMemo.hashCode ^
       pubkey.hashCode ^
-      metadata.hashCode;
+      metadata.hashCode ^
+      includeFee.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -339,7 +346,8 @@ class SendOptions {
           memo == other.memo &&
           includeMemo == other.includeMemo &&
           pubkey == other.pubkey &&
-          metadata == other.metadata;
+          metadata == other.metadata &&
+          includeFee == other.includeFee;
 }
 
 class Transaction {

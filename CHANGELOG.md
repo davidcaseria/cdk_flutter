@@ -20,6 +20,7 @@
 - NUT-26 Payment Request Bech32m Encoding support (CREQ-B format)
 - Generic payment method support (not limited to Bolt11/Bolt12)
 - Improved error recovery with saga compensation actions
+- **Added `include_fee` option to `SendOptions`** - when true, the token amount will include fees needed to redeem it, fixing P2PK sends on mints with input_fee_ppk > 0
 
 ### Improvements
 - Authentication (NUT-21/NUT-22) now always enabled

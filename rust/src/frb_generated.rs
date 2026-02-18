@@ -4669,11 +4669,13 @@ impl SseDecode for crate::api::wallet::SendOptions {
         let mut var_pubkey = <Option<String>>::sse_decode(deserializer);
         let mut var_metadata =
             <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
+        let mut var_includeFee = <Option<bool>>::sse_decode(deserializer);
         return crate::api::wallet::SendOptions {
             memo: var_memo,
             include_memo: var_includeMemo,
             pubkey: var_pubkey,
             metadata: var_metadata,
+            include_fee: var_includeFee,
         };
     }
 }
@@ -5802,6 +5804,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::wallet::SendOptions {
             self.include_memo.into_into_dart().into_dart(),
             self.pubkey.into_into_dart().into_dart(),
             self.metadata.into_into_dart().into_dart(),
+            self.include_fee.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -6870,6 +6873,7 @@ impl SseEncode for crate::api::wallet::SendOptions {
         <Option<bool>>::sse_encode(self.include_memo, serializer);
         <Option<String>>::sse_encode(self.pubkey, serializer);
         <Option<std::collections::HashMap<String, String>>>::sse_encode(self.metadata, serializer);
+        <Option<bool>>::sse_encode(self.include_fee, serializer);
     }
 }
 

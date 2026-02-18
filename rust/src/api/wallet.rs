@@ -613,6 +613,10 @@ pub struct SendOptions {
     pub include_memo: Option<bool>,
     pub pubkey: Option<String>,
     pub metadata: Option<HashMap<String, String>>,
+    /// Include fee in the token amount
+    /// 
+    /// When true, the token will include the amount + fees needed to redeem it
+    pub include_fee: Option<bool>,
 }
 
 impl TryInto<CdkSendOptions> for SendOptions {
@@ -628,6 +632,7 @@ impl TryInto<CdkSendOptions> for SendOptions {
             memo: send_memo,
             conditions: pubkey.map(|pubkey| SpendingConditions::new_p2pk(pubkey, None)),
             metadata: self.metadata.unwrap_or_default(),
+            include_fee: self.include_fee.unwrap_or_default(),
             ..Default::default()
         })
     }
